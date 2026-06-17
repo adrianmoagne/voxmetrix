@@ -1,9 +1,3 @@
-export { default as AudioRatingTrial } from "./AudioRatingTrial";
-export { default as FixationCrossTrial } from "./FixationCrossTrial";
 export { default as CalibrationTrial } from "./CalibrationTrial";
 export { default as ValidationTrial } from "./ValidationTrial";
-export { default as CameraInitTrial } from "./CameraInitTrial";
-export { default as InstructionTrial } from "./InstructionTrial";
 export { default as FeedbackSurveyTrial } from "./FeedbackSurveyTrial";
-export { default as ScreenTrial } from "./ScreenTrial";
-export { default as TextHighlightingTrial } from "./TextHighlightingTrial";

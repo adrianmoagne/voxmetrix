@@ -14,6 +14,3 @@ export { default as DisplayBuilder } from "./DisplayBuilder/DisplayBuilder";
 export { default as ScreenEditor } from "./ScreenEditor/ScreenEditor";
 export { ExperimentResults } from "./ExperimentResults";
 export { default as AudioPlayer } from "./AudioPlayer/AudioPlayer";
-export { ScreenRenderer } from "./ScreenRenderer";
-export { default as ExperimentTrialRenderer } from "./ExperimentTrialRenderer/ExperimentTrialRenderer";
-export { default as LocalPreview } from "./LocalPreview/LocalPreview";

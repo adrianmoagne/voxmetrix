@@ -2,6 +2,7 @@
 	"name": "voxmetric",
 	"version": "0.1.0",
 	"private": true,
+	"license": "CC-BY-NC-SA-4.0",
 	"description": "Open-source monorepo for the VoxMetric experiment platform.",
 	"workspaces": [
 		"packages/*"

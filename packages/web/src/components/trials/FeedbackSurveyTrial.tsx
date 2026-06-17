@@ -8,11 +8,11 @@ interface SurveyQuestion {
 }
 
 interface FeedbackSurveyTrialProps {
-	questions: SurveyQuestion[];
+	questions?: SurveyQuestion[];
 	onComplete: (response: Record<string, string>) => void;
 }
 
-const FeedbackSurveyTrial: React.FC<FeedbackSurveyTrialProps> = ({ questions, onComplete }) => {
+const FeedbackSurveyTrial: React.FC<FeedbackSurveyTrialProps> = ({ questions = [], onComplete }) => {
 	const [responses, setResponses] = useState<Record<string, string>>({});
 
 	const handleChange = (name: string, value: string) => {

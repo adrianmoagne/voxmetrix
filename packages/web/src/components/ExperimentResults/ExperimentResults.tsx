@@ -44,13 +44,27 @@ const getQuadrantMetric = (
 
 const getTargetMetric = (value: unknown): number => toNumberOrZero(value);
 
+interface HighlightItem {
+  start: number;
+  end: number;
+  text: string;
+}
+
+const getHighlights = (response: unknown): HighlightItem[] => {
+  if (response && typeof response === "object" && "highlights" in response) {
+    const highlights = (response as { highlights?: unknown }).highlights;
+    return Array.isArray(highlights) ? (highlights as HighlightItem[]) : [];
+  }
+  return [];
+};
+
 /** Infer trial type from its data shape */
 const inferTrialType = (trial: ExperimentTrial): TrialType => {
   // Check for text highlighting response
   if (
     trial.response &&
     typeof trial.response === "object" &&
-    "highlights" in (trial.response as any)
+    "highlights" in trial.response
   ) {
     return "textHighlighting";
   }
@@ -132,9 +146,8 @@ const ExperimentResults: React.FC<ExperimentResultsProps> = ({
         const trialType = inferTrialType(trial);
 
         if (trialType === "textHighlighting") {
-          const response = trial.response as any;
-          const highlights = response?.highlights || [];
-          const highlightedText = highlights.map((h: any) => `[${h.start}-${h.end}]: "${h.text}"`).join("; ");
+          const highlights = getHighlights(trial.response);
+          const highlightedText = highlights.map((h) => `[${h.start}-${h.end}]: "${h.text}"`).join("; ");
           csvContent += `"${participantName}","textHighlighting","${trial.screen_id}","${trial.audio_id || ""}","",${trial.rt || ""},${highlights.length},"${highlightedText}","","","","","","","","","","","",""\n`;
         } else if (trialType === "eyetracking") {
           const quadA = getQuadrantMetric(trial, "a");
@@ -203,7 +216,7 @@ const ExperimentResults: React.FC<ExperimentResultsProps> = ({
     const trials = getResultTrials(result);
     if (dominantType === "textHighlighting") {
       return `${(trials.reduce(
-        (acc, t) => acc + ((t.response as any)?.highlights?.length || 0),
+        (acc, t) => acc + getHighlights(t.response).length,
         0
       ) / (trials.length || 1)).toFixed(1)}`;
     }
@@ -360,11 +373,11 @@ const ExperimentResults: React.FC<ExperimentResultsProps> = ({
                       {trialType === "textHighlighting" ? (
                         <>
                           <Typography variant="body-2">
-                            Highlights: {(trial.response as any)?.highlights?.length || 0}
+                            Highlights: {getHighlights(trial.response).length}
                           </Typography>
-                          {(trial.response as any)?.highlights?.length > 0 && (
+                          {getHighlights(trial.response).length > 0 && (
                             <S.GazeStats>
-                              {(trial.response as any).highlights.map((h: any, hIdx: number) => (
+                              {getHighlights(trial.response).map((h, hIdx) => (
                                 <S.GazeStat key={hIdx}>
                                   <Typography variant="caption" textColor="placeholder">
                                     [{h.start}-{h.end}]

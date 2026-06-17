@@ -16,6 +16,9 @@ coverage/
 data/
 uploads/
 
+# Test runtime artifacts
+.jest-mongo-uri
+
 # Logs
 *.log
 npm-debug.log*

@@ -46,7 +46,7 @@ const createScreenSlice = createSlice({
 		removeComponent: (state, action: GenericAction<ScreenComponent["type"]>) => {
 			state.components = state.components.filter((c) => c.type !== action.payload);
 		},
-		updateComponentConfig: (state, action: GenericAction<{ type: ScreenComponent["type"]; config: Record<string, any> }>) => {
+		updateComponentConfig: (state, action: GenericAction<{ type: ScreenComponent["type"]; config: Record<string, unknown> }>) => {
 			const comp = state.components.find((c) => c.type === action.payload.type);
 			if (comp) {
 				comp.config = { ...comp.config, ...action.payload.config };
