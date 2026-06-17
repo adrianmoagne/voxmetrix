@@ -1,0 +1,65 @@
+{
+	"name": "@voxmetric/web",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "npx npm-run-all --parallel start typesafe-i18n",
+		"start": "vite --port=3001",
+		"build": "tsc -b && vite build",
+		"lint": "eslint .",
+		"preview": "vite preview",
+		"typesafe-i18n": "typesafe-i18n",
+		"setup:husky": "npx husky install && npx husky add ./.husky/pre-commit 'npx lint-staged'",
+		"setup:typesafe": "typesafe-i18n --setup-auto"
+	},
+	"dependencies": {
+		"@emotion/css": "^11.13.5",
+		"@leux/ui": "^0.6.6",
+		"@reduxjs/toolkit": "^2.8.2",
+		"axios": "^1.9.0",
+		"date-fns": "^4.1.0",
+		"i18next": "^25.2.1",
+		"i18next-browser-languagedetector": "^8.2.0",
+		"papaparse": "^5.5.3",
+		"react": "^19.1.0",
+		"react-dom": "^19.1.0",
+		"react-feather": "^2.0.10",
+		"react-hook-form": "^7.58.0",
+		"react-i18next": "^15.5.3",
+		"react-redux": "^9.2.0",
+		"react-router": "^7.6.2"
+	},
+	"devDependencies": {
+		"@emotion/styled": "^11.14.0",
+		"@eslint/js": "^9.25.0",
+		"@types/node": "^24.0.1",
+		"@types/papaparse": "^5.5.2",
+		"@types/react": "^19.1.2",
+		"@types/react-dom": "^19.1.2",
+		"@vitejs/plugin-react": "^4.4.1",
+		"eslint": "^9.25.0",
+		"eslint-plugin-react-hooks": "^5.2.0",
+		"eslint-plugin-react-refresh": "^0.4.19",
+		"globals": "^16.0.0",
+		"husky": "^8.0.1",
+		"lint-staged": "^13.0.3",
+		"npm-run-all": "^4.1.5",
+		"prettier": "^2.8.8",
+		"typesafe-i18n": "^5.26.2",
+		"typescript": "~5.8.3",
+		"typescript-eslint": "^8.30.1",
+		"vite": "^6.3.5"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"**/*.{ts,tsx}": [
+			"eslint . --fix",
+			"prettier --write ."
+		]
+	}
+}
