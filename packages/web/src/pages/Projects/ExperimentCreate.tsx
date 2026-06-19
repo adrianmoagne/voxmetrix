@@ -73,7 +73,7 @@ const ExperimentCreate: React.FC = () => {
 	}
 
 	return (
-		<div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+		<div style={{ flex: 1, minHeight: 0, width: "100%", overflow: "hidden" }}>
 			<ExperimentEditor
 				experiment={draft}
 				onSave={handleSave}

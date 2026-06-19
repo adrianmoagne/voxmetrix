@@ -330,6 +330,47 @@ const blockEditorSlice = createSlice({
 			const row = state.spreadsheet.rows.find((r) => r.uid === action.payload.rowUid);
 			if (row) row.values[action.payload.key] = action.payload.value;
 		},
+	
+		bulkFillColumn: (
+			state,
+			action: GenericAction<{ key: string; values: string[]; blockUid: string }>
+		) => {
+			const { key, values, blockUid } = action.payload;
+			if (!state.spreadsheet.columns.some((c) => c.key === key)) return;
+
+			let valueIndex = 0;
+			for (const row of state.spreadsheet.rows) {
+				if (valueIndex >= values.length) break;
+				if (row.blockUid !== blockUid) continue;
+				row.values[key] = values[valueIndex];
+				valueIndex += 1;
+			}
+
+			if (valueIndex >= values.length) return;
+
+
+			let insertIndex = state.spreadsheet.rows.length;
+			for (let i = state.spreadsheet.rows.length - 1; i >= 0; i -= 1) {
+				if (state.spreadsheet.rows[i].blockUid === blockUid) {
+					insertIndex = i + 1;
+					break;
+				}
+			}
+
+			const newRows: SpreadsheetRow[] = [];
+			while (valueIndex < values.length) {
+				const rowValues = makeEmptyRowValues(state.spreadsheet.columns);
+				rowValues[key] = values[valueIndex];
+				newRows.push({
+					uid: crypto.randomUUID(),
+					blockUid,
+					values: rowValues,
+				});
+				valueIndex += 1;
+			}
+
+			state.spreadsheet.rows.splice(insertIndex, 0, ...newRows);
+		},
 		setShuffleMode: (
 			state,
 			action: GenericAction<SpreadsheetDefinition["shuffleMode"]>

@@ -1,18 +1,10 @@
 import { Entrypoint } from "@/components";
 import { lazy, Suspense } from "react";
-import { createBrowserRouter, Navigate, useParams } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { Pages } from "../@types";
 import ProtectedRoute from "./ProtectedRoute";
 
-// Redirect legacy preview/participant routes to unified ones
-const RedirectToPreview = () => {
-	const { id } = useParams();
-	return <Navigate to={Pages.ExperimentPreview.replace(":id", id || "")} replace />;
-};
-const RedirectToParticipant = () => {
-	const { id } = useParams();
-	return <Navigate to={Pages.ExperimentParticipant.replace(":id", id || "")} replace />;
-};
+
 
 const LoginModule = lazy(() => import("../pages/Login/Login"));
 const SignUpModule = lazy(() => import("../pages/SignUp/SignUp"));
@@ -142,15 +134,7 @@ const router = createBrowserRouter([
 			</Suspense>
 		),
 	},
-	// Legacy preview redirects
-	{
-		path: Pages.ExperimentPreviewEyeTracking,
-		element: <RedirectToPreview />,
-	},
-	{
-		path: Pages.ExperimentPreviewMos,
-		element: <RedirectToPreview />,
-	},
+
 	{
 		path: Pages.Medias,
 		element: (
@@ -223,11 +207,7 @@ const router = createBrowserRouter([
 			</Suspense>
 		),
 	},
-	// Legacy preview redirect (text highlighting)
-	{
-		path: Pages.ExperimentPreviewTextHighlighting,
-		element: <RedirectToPreview />,
-	},
+
 	// Unified participant route (public, no auth)
 	{
 		path: Pages.ExperimentParticipant,
@@ -238,18 +218,7 @@ const router = createBrowserRouter([
 		),
 	},
 	// Legacy participant redirects
-	{
-		path: Pages.ExperimentParticipantMos,
-		element: <RedirectToParticipant />,
-	},
-	{
-		path: Pages.ExperimentParticipantEyeTracking,
-		element: <RedirectToParticipant />,
-	},
-	{
-		path: Pages.ExperimentParticipantTextHighlighting,
-		element: <RedirectToParticipant />,
-	},
+	
 ]);
 
 export default router;

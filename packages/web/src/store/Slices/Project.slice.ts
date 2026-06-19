@@ -10,6 +10,7 @@ export interface ProjectState {
 	loading: boolean;
 	deleting: boolean;
 	duplicating: boolean;
+	importing: boolean;
 	error: string | null;
 }
 const initialState: ProjectState = {
@@ -17,6 +18,7 @@ const initialState: ProjectState = {
 	loading: false,
 	deleting: false,
 	duplicating: false,
+	importing: false,
 	error: null,
 };
 
@@ -65,6 +67,32 @@ export const duplicateExperiment = createAsyncThunk(
 		const newId = createRes.data?.content?.id;
 		if (!newId) {
 			throw new Error("Failed to create experiment copy");
+		}
+
+		await dispatch(fetchProjects());
+		return { newId: String(newId), projectId };
+	}
+);
+
+export const importExperiment = createAsyncThunk(
+	"project/importExperiment",
+	async (
+		{ definition, projectId }: { definition: ExperimentDefinition; projectId: string },
+		{ dispatch }
+	) => {
+		// Regenerate every uid so the imported copy never collides with existing entities.
+		const cloned = cloneExperimentDefinition(definition, { nameSuffix: "" });
+		const createRes = await ExperimentService.createExperiment({
+			alias: cloned.name,
+			description: cloned.description,
+			status: "draft",
+			project_id: projectId,
+			definition: cloned,
+		});
+
+		const newId = createRes.data?.content?.id;
+		if (!newId) {
+			throw new Error("Failed to import experiment");
 		}
 
 		await dispatch(fetchProjects());
@@ -141,6 +169,17 @@ const ProjectSlice = createSlice({
 				state.duplicating = false;
 				state.error = action.error?.message ?? "Failed to duplicate experiment";
 			})
+			.addCase(importExperiment.pending, (state) => {
+				state.importing = true;
+				state.error = null;
+			})
+			.addCase(importExperiment.fulfilled, (state) => {
+				state.importing = false;
+			})
+			.addCase(importExperiment.rejected, (state, action) => {
+				state.importing = false;
+				state.error = action.error?.message ?? "Failed to import experiment";
+			})
 			.addCase(deleteProject.pending, (state) => {
 				state.deleting = true;
 				state.error = null;
@@ -163,6 +202,7 @@ export const projectActions = {
 	createProject,
 	deleteExperiment,
 	duplicateExperiment,
+	importExperiment,
 	deleteProject,
 };
 export const projectReducer = ProjectSlice.reducer;

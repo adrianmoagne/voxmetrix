@@ -1,30 +1,36 @@
 import { Table, Typography, Button, Box, Dropdown } from "@leux/ui";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import S from "./Projects.styles";
 import { useNavigate, useParams } from "react-router";
 import type { IExperiment, IProject } from "@/@types";
+import type { ExperimentDefinition } from "@/@types/screen.model";
 import { Pages } from "@/@types";
 import type { StoreDispatch, StoreState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
-import { duplicateExperiment, projectActions } from "@/store";
-import { AlertCircle, Copy, Trash2 } from "react-feather";
+import { duplicateExperiment, importExperiment, projectActions } from "@/store";
+import { AlertCircle, Copy, Download, Trash2, Upload } from "react-feather";
 import { IconButton } from "@/components";
 import { useTheme } from "@emotion/react"
 import { useModal } from "@leux/ui";
 import { ModalId, ModalSizes } from "@/@types";
 import { Modals } from "@/components";
+import { ExperimentService } from "@/api/services";
+import { downloadExperimentDefinition, parseExperimentDefinitionFile } from "@/utils";
 
 
 const ProjectDetail: React.FC = () => {
 	const params = useParams();
 	const navigate = useNavigate();
 	const projectId = params.id as string;
-	const { projects, loading, duplicating } = useSelector((state: StoreState) => state.project);
+	const { projects, loading, duplicating, importing } = useSelector(
+		(state: StoreState) => state.project
+	);
 	const project = projects.find((p: IProject) => p._id === projectId);
 	const dispatch = useDispatch<StoreDispatch>();
 	const theme = useTheme();
 	const { createModal } = useModal();
 	const [duplicatingId, setDuplicatingId] = useState<string | null>(null);
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		dispatch(projectActions.fetchProjects());
@@ -53,6 +59,36 @@ const ProjectDetail: React.FC = () => {
 		}
 	};
 
+	const handleExport = async (experimentId: string) => {
+		try {
+			const res = await ExperimentService.fetchExperimentById(experimentId);
+			const definition = res.data?.data?.definition as ExperimentDefinition | undefined;
+			if (!definition) {
+				throw new Error("Experiment definition not found");
+			}
+			downloadExperimentDefinition(definition);
+		} catch (err) {
+			console.error("Failed to export experiment:", err);
+		}
+	};
+
+	const handleImportFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		// Reset so selecting the same file again still triggers a change event.
+		event.target.value = "";
+		if (!file) return;
+
+		try {
+			const definition = parseExperimentDefinitionFile(await file.text());
+			const result = await dispatch(importExperiment({ definition, projectId }));
+			if (importExperiment.fulfilled.match(result)) {
+				navigate(Pages.Experiment.replace(":id", result.payload.newId));
+			}
+		} catch (err) {
+			console.error("Failed to import experiment:", err);
+		}
+	};
+
 	if (loading || projects.length === 0) {
 		return (
 			<S.Container>
@@ -78,12 +114,31 @@ const ProjectDetail: React.FC = () => {
 				<Typography variant="h3" textColor="textOne">
 					{project.alias}
 				</Typography>
-				<Button
-					colorScheme="primary"
-					onClick={() => navigate(Pages.ProjectExperimentCreate.replace(":id", project._id))}
-				>
-					New Experiment
-				</Button>
+				<div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 12 }}>
+					<input
+						ref={fileInputRef}
+						type="file"
+						accept="application/json,.json"
+						style={{ display: "none" }}
+						onChange={handleImportFile}
+					/>
+					<Button
+						colorScheme="secondary"
+						variant="outlined"
+						onClick={() => {
+							if (!importing) fileInputRef.current?.click();
+						}}
+					>
+						<Upload size={16} />
+						&nbsp; {importing ? "Importing…" : "Import"}
+					</Button>
+					<Button
+						colorScheme="primary"
+						onClick={() => navigate(Pages.ProjectExperimentCreate.replace(":id", project._id))}
+					>
+						New Experiment
+					</Button>
+				</div>
 			</Box>
 			<Typography variant="h6" textColor="textOne">
 				{project.description}
@@ -129,6 +184,14 @@ const ProjectDetail: React.FC = () => {
 											>
 												<Copy color={theme.main.tertiary} size={20} />
 												Duplicate
+											</Dropdown.Item>
+											<Dropdown.Item
+												onClick={() => {
+													void handleExport(exp._id);
+												}}
+											>
+												<Download color={theme.main.tertiary} size={20} />
+												Export
 											</Dropdown.Item>
 											<Dropdown.Item
 

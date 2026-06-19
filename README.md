@@ -1,29 +1,45 @@
 # VoxMetric
 
-VoxMetric is an experiment platform with a React/Vite web app and an Express/Mongoose API.
+VoxMetric is an open-source platform for designing and running **subject listening tests** in the browser. Researchers can present audio stimuli, collect subjective ratings (e.g. MOS), track gaze during playback, and export trial-level results — all from a single web interface.
 
-This repository is the open-source monorepo version intended for reproducible local development and publication. It uses local MongoDB and local disk media storage by default, so it does not require MongoDB Atlas or Cloudinary credentials.
+
+
+## Demo
+
+![VoxMetric web interface](docs/assets/web-interface-demo.gif)
+
+## Features
+
+- **Listening test experiments** — organize studies, define audio trials, and share participant links
+- **Audio stimulus playback** — present speech and audio samples with controlled timing and autoplay
+- **Subjective ratings** — collect MOS and other listener judgments after each trial
+- **Spreadsheet editor** — map audio files, screens, and trial variables 
+- **Screen builder** — compose trial screens with audio players, images, rating scales, and eye tracking (WebGazer)
+- **Media library** — upload and manage audio and image assets locally
+- **Results export** — download participant responses, reaction times, gaze metrics, and ratings as CSV
 
 ## Repository Structure
 
 ```text
 packages/
-	web/      React/Vite frontend
-	server/   Express/Mongoose API
+  web/      React/Vite frontend
+  server/   Express/Mongoose API
+docs/
+  assets/   README media (demo GIF, etc.)
 docker-compose.yml
 ```
 
-## Docker Local Run
+## Quick Start (Docker)
 
-Run the full local stack with Docker:
+Run the full local stack:
 
 ```bash
 docker compose up --build
 ```
 
-Then open `http://localhost:3001`. The API is available at `http://localhost:8080`, and MongoDB is local to the Compose project.
+Then open [http://localhost:3001](http://localhost:3001). The API is at [http://localhost:8080](http://localhost:8080).
 
-Stop the stack with:
+Stop the stack:
 
 ```bash
 docker compose down
@@ -43,7 +59,7 @@ Copy the environment template:
 cp .env.example .env
 ```
 
-Start MongoDB locally:
+Start MongoDB:
 
 ```bash
 docker compose up -d mongo
@@ -55,13 +71,13 @@ Run the API and web app on the host:
 npm run dev
 ```
 
-The web app runs on `http://localhost:3001`. The API defaults to `http://localhost:8080`, with routes under `/api`.
+The web app runs on [http://localhost:3001](http://localhost:3001). The API defaults to [http://localhost:8080](http://localhost:8080), with routes under `/api`.
 
-Uploaded media is stored locally under `packages/server/data/uploads` when running the server on the host. Dockerized server uploads are stored in the `uploads_data` Docker volume.
+Uploaded media is stored under `packages/server/data/uploads` when running the server on the host. Dockerized server uploads use the `uploads_data` volume.
 
-## Dockerized API
+### Dockerized API only
 
-To run only MongoDB and the API in Docker, then run the web app on the host:
+To run MongoDB and the API in Docker while developing the web app on the host:
 
 ```bash
 docker compose up -d mongo server
@@ -70,10 +86,13 @@ npm run dev:web
 
 ## Scripts
 
-```bash
-npm run dev
-npm run build
-npm run lint
-npm run test
-```
+| Command         | Description                         |
+| --------------- | ----------------------------------- |
+| `npm run dev`   | Start web and server in parallel    |
+| `npm run build` | Build server and web for production |
+| `npm run lint`  | Lint the web package                |
+| `npm run test`  | Run server tests                    |
 
+## License
+
+Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). See [LICENSE](LICENSE).

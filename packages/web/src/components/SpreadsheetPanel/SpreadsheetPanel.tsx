@@ -1,12 +1,17 @@
 import { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Plus, X, ChevronUp, ChevronDown } from "react-feather";
+import { useModal } from "@leux/ui";
+import { Plus, X, ChevronUp, ChevronDown, Image as ImageIcon } from "react-feather";
 import type { SpreadsheetDefinition } from "@/@types/screen.model";
+import type { IMedia } from "@/@types";
+import { ModalId, ModalSizes } from "@/@types";
+import { Modals } from "@/components";
 import { blockEditorActions, type StoreDispatch, type StoreState } from "@/store";
 import S from "./SpreadsheetPanel.styles";
 
 const SpreadsheetPanel: React.FC = () => {
 	const dispatch = useDispatch<StoreDispatch>();
+	const { createModal } = useModal();
 	const { blocks, spreadsheet, selectedBlockUid } = useSelector((s: StoreState) => s.blockEditor);
 
 	const [editingColKey, setEditingColKey] = useState<string | null>(null);
@@ -45,6 +50,38 @@ const SpreadsheetPanel: React.FC = () => {
 			setEditingColKey(null);
 		},
 		[spreadsheet.columns, dispatch]
+	);
+
+	const handleOpenMediaFill = useCallback(
+		(columnKey: string) => {
+			const defaultBlockUid = selectedBlockUid ?? blocks[0]?.uid;
+			if (!defaultBlockUid) return;
+			createModal({
+				id: ModalId.BulkMediaFill,
+				title: "Fill column with media",
+				width: ModalSizes.BulkMediaFill,
+				footer: null,
+				children: (
+					<Modals.BulkMediaFillModal.Content
+						columnKey={columnKey}
+						blocks={blocks.map((b) => ({ uid: b.uid, name: b.name }))}
+						defaultBlockUid={defaultBlockUid}
+						onConfirm={(medias: IMedia[], blockUid: string) => {
+							const values = medias.map((m) => m.src).filter(Boolean);
+							if (values.length === 0) return;
+							dispatch(
+								blockEditorActions.bulkFillColumn({
+									key: columnKey,
+									values,
+									blockUid,
+								})
+							);
+						}}
+					/>
+				),
+			});
+		},
+		[blocks, selectedBlockUid, createModal, dispatch]
 	);
 
 	const handleShuffleModeChange = useCallback(
@@ -115,6 +152,13 @@ const SpreadsheetPanel: React.FC = () => {
 												{col.key}
 											</span>
 										)}
+										<S.ColFillBtn
+											className="col-fill"
+											onClick={() => handleOpenMediaFill(col.key)}
+											title="Fill column from media library"
+										>
+											<ImageIcon size={11} />
+										</S.ColFillBtn>
 										<S.ColDeleteBtn
 											className="col-delete"
 											onClick={() => dispatch(blockEditorActions.removeColumn(col.key))}

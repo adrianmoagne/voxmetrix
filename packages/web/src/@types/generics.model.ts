@@ -49,6 +49,7 @@ export const ModalId = {
 	NewProject: "new-project",
 	InviteParticipants: "invite-participants",
 	NewExperiment: "new-experiment",
+	BulkMediaFill: "bulk-media-fill",
 };
 
 export const ModalSizes: Record<keyof typeof ModalId, number> = {
@@ -63,6 +64,7 @@ export const ModalSizes: Record<keyof typeof ModalId, number> = {
 	NewProject: 400,
 	InviteParticipants: 500,
 	NewExperiment: 620,
+	BulkMediaFill: 720,
 };
 
 export const LocalesArr: SelectOption[] = [

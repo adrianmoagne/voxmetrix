@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Package, Table, Settings, Save, Play, Check } from "react-feather";
+import { Package, Table, Settings, Save, Play, Check, BarChart2 } from "react-feather";
 import type { ExperimentDefinition, ScreenEntity, ParticipantAssignmentConfig } from "@/@types/screen.model";
 import { resolveAssignmentGroups } from "@/utils/participantAssignmentUtils";
 import { blockEditorActions, type StoreDispatch, type StoreState } from "@/store";
@@ -10,17 +10,20 @@ import { StepPropertyForm } from "@/components/StepPropertyForm";
 import { DrillInView } from "@/components/DrillInView";
 import { BlocksView } from "@/components/BlocksView";
 import { SettingsView, SettingsViewStyles as SV } from "@/components/SettingsView";
+import { ExperimentResults } from "@/components/ExperimentResults";
 import S from "./ExperimentEditor.styles";
 
-type View = "blocks" | "data" | "settings";
+type View = "blocks" | "data" | "results" | "settings";
 
 interface ExperimentEditorProps {
 	experiment?: ExperimentDefinition;
+	/** Persisted experiment id (Mongo `_id`) used to fetch and download results. */
+	experimentId?: string;
 	onSave?: (experiment: ExperimentDefinition) => void;
 	onRun?: (experiment: ExperimentDefinition) => void;
 }
 
-const ExperimentEditor: React.FC<ExperimentEditorProps> = ({ experiment, onSave, onRun }) => {
+const ExperimentEditor: React.FC<ExperimentEditorProps> = ({ experiment, experimentId, onSave, onRun }) => {
 	const dispatch = useDispatch<StoreDispatch>();
 	const state = useSelector((s: StoreState) => s.blockEditor);
 	const screenEditorState = useSelector((s: StoreState) => s.screenEntityEditor);
@@ -150,6 +153,12 @@ const ExperimentEditor: React.FC<ExperimentEditorProps> = ({ experiment, onSave,
 				);
 			case "data":
 				return <SpreadsheetPanel />;
+			case "results":
+				return experimentId ? (
+					<ExperimentResults experimentId={experimentId} />
+				) : (
+					<SV.Readonly>Save the experiment to collect and download results.</SV.Readonly>
+				);
 			case "settings":
 				return (
 					<SettingsView
@@ -295,6 +304,14 @@ const ExperimentEditor: React.FC<ExperimentEditorProps> = ({ experiment, onSave,
 					>
 						<Table size={18} />
 						<S.SidebarLabel>Data</S.SidebarLabel>
+					</S.SidebarItem>
+					<S.SidebarItem
+						$active={view === "results"}
+						onClick={() => { setView("results"); setEditingStep(null); }}
+						title="Results"
+					>
+						<BarChart2 size={18} />
+						<S.SidebarLabel>Results</S.SidebarLabel>
 					</S.SidebarItem>
 					<S.SidebarItem
 						$active={view === "settings"}

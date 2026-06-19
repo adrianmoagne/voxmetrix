@@ -13,6 +13,9 @@ module.exports = {
 		"^@utils$": "<rootDir>/src/utils",
 	},
 	modulePaths: ["<rootDir>/src"],
+	globalSetup: "<rootDir>/jest.globalSetup.js",
+	globalTeardown: "<rootDir>/jest.globalTeardown.js",
 	setupFiles: ["<rootDir>/jest.setup.js"],
-	testTimeout: 15000,
+	testTimeout: 30000,
+	maxWorkers: 1,
 };

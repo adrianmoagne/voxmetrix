@@ -1,70 +1,114 @@
 import mongoose from "mongoose";
 import { Endpoints } from "../../@types";
 import { server } from "../../app";
-import { TAdmin } from "./admin.model";
-import { mockAdmin } from "../../mocks/admin.mocks";
+import { AdminModel } from "./admin.model";
+import { buildAuthCookie } from "../../test-utils/auth";
 import st from "supertest";
 
-describe("Admin Test", () => {
-	let mong: typeof mongoose;
-	let createdAdmin: TAdmin;
+describe("Auth & Admin routes", () => {
+	const password = "securepassword123";
+	let adminId: string;
 
-	beforeEach(async () => {
-		mong = await mongoose.connect(process.env.DB_URL || "");
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DB_URL || "");
+		await AdminModel.deleteMany({});
+		const admin = await AdminModel.create({
+			username: "admin_user",
+			password,
+			name: "Admin",
+			mail: "admin_user@example.com",
+		});
+		adminId = admin._id.toString();
 	});
 
 	afterAll(async () => {
-		await mong.connection.close();
+		await mongoose.connection.dropDatabase();
+		await mongoose.connection.close();
 	});
 
-	describe(`POST ${Endpoints.AdminCreate}`, () => {
-		it("should create an admin", async () => {
-			const res = await st(server.app)
-				.post(`/api${Endpoints.AdminCreate}`)
-				.send(mockAdmin);
+	describe(`POST ${Endpoints.Register}`, () => {
+		it("registers a new admin", async () => {
+			const res = await st(server.app).post(`/api${Endpoints.Register}`).send({
+				username: "new_user",
+				password: "anotherpassword",
+				name: "New User",
+				mail: "new_user@example.com",
+			});
 
 			expect(res.statusCode).toBe(201);
+		});
 
-			createdAdmin = res.body.content;
+		it("rejects a duplicate email", async () => {
+			const res = await st(server.app).post(`/api${Endpoints.Register}`).send({
+				username: "dup_user",
+				password: "anotherpassword",
+				name: "Dup",
+				mail: "admin_user@example.com",
+			});
 
-			expect(createdAdmin).toBeTruthy();
+			expect(res.statusCode).toBe(409);
 		});
 	});
 
-	describe(`GET ${Endpoints.AdminList}`, () => {
-		it("should list all admins", async () => {
-			const res = await st(server.app).get(`/api${Endpoints.AdminList}`);
+	describe(`POST ${Endpoints.Login}`, () => {
+		it("logs in with valid credentials and sets a cookie", async () => {
+			const res = await st(server.app).post(`/api${Endpoints.Login}`).send({
+				email: "admin_user@example.com",
+				password,
+			});
 
 			expect(res.statusCode).toBe(200);
-			expect(res.body).toBeInstanceOf(Array);
-			expect(res.body.length).toBeGreaterThan(0);
+			expect(res.headers["set-cookie"]).toBeDefined();
+		});
+
+		it("rejects an invalid password", async () => {
+			const res = await st(server.app).post(`/api${Endpoints.Login}`).send({
+				email: "admin_user@example.com",
+				password: "wrong-password",
+			});
+
+			expect(res.statusCode).toBe(400);
+		});
+
+		it("returns 404 for an unknown user", async () => {
+			const res = await st(server.app).post(`/api${Endpoints.Login}`).send({
+				email: "nobody@example.com",
+				password,
+			});
+
+			expect(res.statusCode).toBe(404);
 		});
 	});
 
-	describe(`GET ${Endpoints.AdminListById}`, () => {
-		it("should get an admin by ID", async () => {
-			const res = await st(server.app).get(
-				`/api${Endpoints.AdminListById.replace(
-					":id",
-					createdAdmin._id.toString()
-				)}`
-			);
+	describe(`GET ${Endpoints.Me}`, () => {
+		it("requires authentication", async () => {
+			const res = await st(server.app).get(`/api${Endpoints.Me}`);
+			expect(res.statusCode).toBe(401);
+		});
+
+		it("succeeds with a valid auth cookie", async () => {
+			const res = await st(server.app)
+				.get(`/api${Endpoints.Me}`)
+				.set("Cookie", buildAuthCookie(adminId));
 
 			expect(res.statusCode).toBe(200);
-			expect(res.body._id).toEqual(createdAdmin._id.toString());
 		});
 	});
 
-	describe(`DELETE ${Endpoints.AdminListById}`, () => {
-		it("should delete an admin by ID", async () => {
-			const res = await st(server.app).delete(
-				`/api${Endpoints.AdminListById.replace(
-					":id",
-					createdAdmin._id.toString()
-				)}`
-			);
+	describe(`GET ${Endpoints.AdminbyId}`, () => {
+		it("requires authentication", async () => {
+			const res = await st(server.app).get(`/api${Endpoints.AdminbyId}`);
+			expect(res.statusCode).toBe(401);
+		});
 
-			expect(res.statusCode).toBe(204);
+		it("returns the authenticated admin's profile", async () => {
+			const res = await st(server.app)
+				.get(`/api${Endpoints.AdminbyId}`)
+				.set("Cookie", buildAuthCookie(adminId));
+
+			expect(res.statusCode).toBe(200);
+			expect(res.body.username).toBe("admin_user");
+			expect(res.body.email).toBe("admin_user@example.com");
 		});
 	});
 });

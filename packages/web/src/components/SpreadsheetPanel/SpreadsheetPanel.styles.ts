@@ -80,7 +80,8 @@ const Th = styled.th<{ $sticky?: boolean }>`
 			z-index: 3;
 		`}
 
-	&:hover button.col-delete {
+	&:hover button.col-delete,
+	&:hover button.col-fill {
 		opacity: 1;
 	}
 `;
@@ -123,6 +124,28 @@ const ColDeleteBtn = styled.button`
 	&:hover {
 		background: ${({ theme }) => theme.main.dangerGhost};
 		color: ${({ theme }) => theme.main.danger};
+	}
+`;
+
+const ColFillBtn = styled.button`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 16px;
+	height: 16px;
+	border-radius: 4px;
+	border: none;
+	background: transparent;
+	color: ${({ theme }) => theme.main.placeholder};
+	cursor: pointer;
+	padding: 0;
+	opacity: 0;
+	flex-shrink: 0;
+	transition: all 0.12s ease;
+
+	&:hover {
+		background: ${({ theme }) => theme.main.primaryGhost};
+		color: ${({ theme }) => theme.main.primary};
 	}
 `;
 
@@ -411,7 +434,7 @@ export default {
 	Wrapper, Header, Title, Count,
 	ShuffleControls, ShuffleLabel, ShuffleSelect, ShuffleHint,
 	TableScroll, Table, Th, ThContent,
-	ColKeyInput, ColDeleteBtn, AddColTh, AddColBtn,
+	ColKeyInput, ColDeleteBtn, ColFillBtn, AddColTh, AddColBtn,
 	BlockCellLabel, BlockSelect, Td, CellInput, RowDeleteBtn, RowActionBtn, RowActions, MetaCell, GroupInput,
 	ActionTd, AddTrialRow, AddTrialCell, AddTrialBtn, NewColInput,
 };
