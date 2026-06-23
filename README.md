@@ -2,8 +2,6 @@
 
 VoxMetric is an open-source platform for designing and running **subject listening tests** in the browser. Researchers can present audio stimuli, collect subjective ratings (e.g. MOS), track gaze during playback, and export trial-level results — all from a single web interface.
 
-
-
 ## Demo
 
 ![VoxMetric web interface](docs/assets/web-interface-demo.gif)
@@ -13,7 +11,7 @@ VoxMetric is an open-source platform for designing and running **subject listeni
 - **Listening test experiments** — organize studies, define audio trials, and share participant links
 - **Audio stimulus playback** — present speech and audio samples with controlled timing and autoplay
 - **Subjective ratings** — collect MOS and other listener judgments after each trial
-- **Spreadsheet editor** — map audio files, screens, and trial variables 
+- **Spreadsheet editor** — map audio files, screens, and trial variables
 - **Screen builder** — compose trial screens with audio players, images, rating scales, and eye tracking (WebGazer)
 - **Media library** — upload and manage audio and image assets locally
 - **Results export** — download participant responses, reaction times, gaze metrics, and ratings as CSV
@@ -95,4 +93,5 @@ npm run dev:web
 
 ## License
 
-Licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). See [LICENSE](LICENSE).
+This project is licensed under the GNU Affero General Public License v3.0.
+See the LICENSE file for details.
