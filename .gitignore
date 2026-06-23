@@ -15,6 +15,8 @@ coverage/
 # Local uploads and runtime data
 data/
 uploads/
+!experiments/data/
+!experiments/data/**
 
 # Test runtime artifacts
 .jest-mongo-uri
@@ -29,4 +31,3 @@ yarn-error.log*
 .DS_Store
 .idea/
 .vscode/
-

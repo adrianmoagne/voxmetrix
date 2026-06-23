@@ -25,15 +25,17 @@ packages/
 docs/
   assets/   README media (demo GIF, etc.)
 experiments/
-  README.md                 Reproduction instructions
-  *.experiment.json         Importable paper experiment definitions
+  README.md          Reproduction instructions
+  *.experiment.json  Importable experiment definitions
+  data/              Pseudonymized publication data
+  analysis/          Public analysis scripts
 docker-compose.yml
 ```
 
 ## Reproduce the Paper Experiments
 
-The importable MOS and eye-tracking MOS definitions, and instructions are in
-[`experiments/`](experiments/README.md).
+The importable definitions, pseudonymized data, analysis scripts, and instructions
+are in [`experiments/`](experiments/README.md).
 
 ## Quick Start (Docker)
 
