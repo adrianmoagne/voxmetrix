@@ -1,0 +1,1881 @@
+{
+  "$type": "voxmetric/experiment-definition",
+  "exportedAt": "2026-06-20T14:13:15.691Z",
+  "definition": {
+    "schemaVersion": 2,
+    "uid": "ef4f3a3b-14a8-4d1a-af34-c215ea5f1d77",
+    "name": "MOS",
+    "blocks": [
+      {
+        "uid": "9c5c66fd-2692-4fb5-9e38-0b6bda29b80d",
+        "kind": "Block",
+        "name": "Instructions",
+        "props": {},
+        "steps": [
+          {
+            "uid": "f59bef27-1b60-4da9-89c2-fd4c0e8c906d",
+            "kind": "Screen",
+            "name": "TCLE",
+            "props": {
+              "grid": {
+                "type": "3x3",
+                "subtype": "equal"
+              }
+            },
+            "children": [
+              {
+                "uid": "6d870b77-c2a9-4c82-b23f-8ef5e13de34f",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 0
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Gostaríamos de convidá-lo(a) a participar, como voluntário(a), de uma pesquisa sobre avaliação da qualidade da fala gerada por computador. Neste estudo, investigamos como as pessoas percebem a qualidade de diferentes tipos de fala, incluindo fala natural (humana) e fala sintetizada (gerada por sistemas computacionais). Durante o experimento, você ouvirá áudios e verá imagens na tela. Em alguns momentos, serão apresentadas duas imagens: uma representando um falante humano (fala natural) e outra representando um robô ou avatar (fala sintetizada). Em determinadas tarefas, analisaremos o movimento e o tempo do seu olhar na tela para entender sua percepção. A pesquisa envolve duas atividades principais: 1. Avaliar a qualidade da fala por meio de respostas simples, como escolher entre opções apresentadas ou atribuir notas após ouvir os áudios. 2. Registro do movimento do olhar durante a tarefa, utilizando a webcam do seu computador. A pesquisa será realizada por meio de uma plataforma web acessada pelo navegador de internet do participante. Os avaliadores receberão o convite para participar via e-mail, com o link do teste e a avaliação poderá ser realizada das residências ou da universidade, em um lugar sem barulho. O avaliador é aconselhado a usar fones de ouvido.",
+                  "fontSize": 15,
+                  "align": "left"
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "669fe549-b13c-4770-84c4-c5f257d42b5c",
+                "name": "ContinueButton",
+                "placement": {
+                  "area": "footer",
+                  "position": "BC",
+                  "order": 1
+                },
+                "kind": "ContinueButton",
+                "props": {
+                  "label": "Aceitar"
+                },
+                "phase": "ready"
+              },
+              {
+                "uid": "4dc38a94-8f85-40f5-aee2-a09ec24c76bb",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 2,
+                  "vAlign": "top"
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Esclarecemos que sua participação é totalmente voluntária, podendo recusar-se a participar, ou mesmo desistir a qualquer momento, sem que isto acarrete qualquer ônus ou prejuízo a sua pessoa. Esclarecemos, também, que informações, como o IP de seu computador, não serão armazenadas após o teste. Imagens ou vídeos da sua face durante a captura da webcam também não são armazenados, apenas as coordenadas da fixação ocular na tela. Os dados capturados pela webcam serão utilizados exclusivamente para estimar padrões de movimento e fixação do olhar durante a tarefa experimental. Nenhuma imagem ou gravação de vídeo será armazenada ou divulgada. O processamento ocorre automaticamente durante a realização da tarefa e apenas os dados derivados necessários para análise científica (como coordenadas de fixação na tela e tempos de resposta) são registrados.",
+                  "fontSize": 15,
+                  "align": "left"
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "3181ee5f-4710-4a58-9d7c-e143ad8bfdeb",
+                "name": "Text",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 3,
+                  "vAlign": "top"
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Os pesquisadores tratarão a sua identidade com padrões profissionais de sigilo, atendendo a legislação brasileira (Resolução Nº 466/12 do Conselho Nacional de Saúde), utilizando as informações somente para fins acadêmicos e científicos. Os dados coletados nesta pesquisa serão armazenados em ambiente digital seguro, com acesso restrito aos pesquisadores envolvidos no projeto. As informações que possam identificar o participante serão mantidas por até 1 ano após o término da coleta de dados e, após esse período, serão excluídas ou tornadas anônimas. Os dados anonimizados, que não permitem a identificação dos participantes, poderão ser utilizados para fins acadêmicos e científicos e eventualmente disponibilizados em repositórios públicos (por exemplo, em plataformas como GitHub), com o objetivo de promover a transparência e a reprodutibilidade da pesquisa. O pesquisador responsável pelo estudo será o encarregado pela guarda, pelo controle de acesso e pelo uso adequado dos dados coletados nesta pesquisa",
+                  "align": "left",
+                  "fontSize": 15
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "7593baa2-d2a7-492f-b59c-7d8da1dd33bd",
+                "name": "Text",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 4
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "É possível que você sinta leve desconforto por se manter sentado(a) e parcialmente imóvel durante a sessão. No entanto, buscamos minimizar ao máximo esse desconforto, pedindo que realize a tarefa em local tranquilo e confortável e realizaremos o teste com a duração média de 30 minutos. Você encontra-se livre para encerrar a atividade a qualquer momento. Os riscos envolvidos na realização da tarefa são mínimos, similares aos envolvidos em atividades diárias como uso de computador e de televisão. Você não pagará e nem será remunerado(a) por sua participação. Sua participação voluntária irá, contudo, contribuir para as pesquisas em Processamento de Línguas Naturais, sobre avaliação e desenvolvimento de métodos de síntese de fala. Os resultados da pesquisa poderão ser divulgados em artigos científicos e eventos acadêmicos, sempre de forma agregada e sem qualquer identificação dos participantes.",
+                  "fontSize": 15,
+                  "align": "left"
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "5848bdc7-231e-4b49-aee3-d6cd2fdcf6ee",
+                "name": "Text",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 6
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "No caso de haver dúvidas sobre aspectos éticos desse estudo, você poderá consultar: • Pesquisador(a) Responsável: Renato Moraes Silva • Endereço: Av. Trabalhador São Carlense, 400 - CEP 13566-590 - São Carlos, SP, Brasil • e-mail: renatoms@icmc.usp.br • Telefone para contato: (16) 3373-6624 Para contato com o Comitê de Ética em Pesquisa (CEP)-IB responsável pela avaliação ética desta pesquisa, você poderá consultar: Comitê de Ética em Pesquisa – Seres Humanos (CEP) do Instituto de Biociências da Universidade de São Paulo • Rua do Matão – travessa 14, 321 – Cidade Universitária, CEP: 05508-090 – São Paulo – SP • Telefone (11) 3091-8761 - e-mail: cepibusp@ib.usp.br. "
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "fe2d6639-8c58-49a9-b89e-e3fabd05344d",
+                "name": "Image",
+                "placement": {
+                  "area": "heading",
+                  "position": "UL",
+                  "order": 6,
+                  "hAlign": "left",
+                  "vAlign": "top"
+                },
+                "kind": "Image",
+                "props": {
+                  "imageSrc": "https://res.cloudinary.com/dksemmwll/image/upload/v1779750957/tts/dest.png"
+                },
+                "phase": "stimulus"
+              },
+              {
+                "uid": "e2bb04c8-1275-447c-b3b9-589b8390d202",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": -1
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Termo de Consentimento Livre e Esclarecido (TCLE)",
+                  "fontSize": 28
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "59512246-2b23-49b6-8c8a-f5c0761dd7b1",
+                "name": "Text",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 5
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Outras informações ",
+                  "fontSize": 23
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "7464f2cc-fd92-4e45-bff9-86efaecaaa58",
+                "name": "Text",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 7
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Declaração de leitura do termo ",
+                  "fontSize": 23
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "afac6069-bd4f-49a5-a4e6-611c34c53221",
+                "name": "Text",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 8
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Para prosseguir para a pesquisa, o participante deverá declarar que leu e compreendeu as informações apresentadas neste Termo de Consentimento Livre e Esclarecido. O prosseguimento para o experimento somente será possível após a confirmação de que o participante leu este documento. "
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "910fd88d-b9b6-4b59-ac95-31a5471371ba",
+                "name": "Text",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 9
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Consentimento do Participante ",
+                  "fontSize": 23
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "7ea455bf-017b-468b-a50e-6ca096dcb567",
+                "name": "Text",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 10
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Após a leitura deste documento e de ter tido a oportunidade de esclarecer todas as minhas dúvidas, acredito estar suficientemente informado(a), estando ciente também dos objetivos da pesquisa, dos procedimentos aos quais serei submetido(a), dos possíveis danos ou riscos deles provenientes e da garantia de confidencialidade e esclarecimentos sempre que desejar. Diante das informações apresentadas, concordo de forma livre e voluntária em participar deste estudo. O aceite deste Termo de Consentimento Livre e Esclarecido (TCLE) ocorrerá de forma eletrônica, por meio do clique no botão ACEITAR"
+                },
+                "phase": "all"
+              }
+            ],
+            "behaviors": [
+              {
+                "uid": "762b0b92-58a7-4ee6-afdd-caeefa59fac0",
+                "kind": "AdvanceRule",
+                "name": "Advance Rule",
+                "props": {
+                  "when": "continue-click"
+                }
+              }
+            ]
+          },
+          {
+            "uid": "31603568-8a9f-4c70-aa9a-5b536f88bdfa",
+            "kind": "Screen",
+            "name": "train_instruc_1",
+            "props": {
+              "grid": {
+                "type": "3x3",
+                "subtype": "equal"
+              }
+            },
+            "children": [
+              {
+                "uid": "2a3f3687-ebd2-4cf8-b5da-ca57de013ea7",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 0
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Treinamento - passo 1 de 1",
+                  "fontSize": 23
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "07aec501-df16-4fd0-aecf-ab08c7195ee3",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 1
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Neste experimento, você ouvirá  áudios de voz natural e sintetizada em sequência.",
+                  "fontSize": 20
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "ecbc1be5-154c-4f3c-9400-51a992603438",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 2
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "- É permitido ouvir cada áudio quantas vezes for necessário.",
+                  "fontSize": 20
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "a136cdfe-5284-460c-a924-9b0849f23faf",
+                "name": "ContinueButton",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 3
+                },
+                "kind": "ContinueButton",
+                "props": {
+                  "label": "Continue"
+                },
+                "phase": "ready"
+              },
+              {
+                "uid": "8b4c139f-6f65-4c64-aad9-1be77a6b36b7",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 4
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "- A critério de comparação, serão fornecidos três áudios a seguir, de notas 1, 3 e 5, respectivamente.",
+                  "fontSize": 20
+                },
+                "phase": "all"
+              }
+            ],
+            "behaviors": [
+              {
+                "uid": "a5b60783-d7b0-491e-b0a5-fdc12412f934",
+                "kind": "AdvanceRule",
+                "name": "Advance Rule",
+                "props": {
+                  "when": "continue-click"
+                }
+              }
+            ]
+          },
+          {
+            "uid": "9211af3b-5ce7-4d35-8d30-bfcd3550db0a",
+            "kind": "Screen",
+            "name": "nota1",
+            "props": {
+              "grid": {
+                "type": "3x3",
+                "subtype": "equal"
+              }
+            },
+            "children": [
+              {
+                "uid": "0550f010-4335-4473-baba-3568aa642ae0",
+                "name": "AudioPlayer",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 0
+                },
+                "kind": "AudioPlayer",
+                "props": {
+                  "audioSrc": "https://res.cloudinary.com/dksemmwll/video/upload/v1767614611/tts/%5Bnota1%5D%20brce-1-syntacc-295Ksteps.mp3",
+                  "autoplay": true,
+                  "hidden": false
+                },
+                "phase": "stimulus"
+              },
+              {
+                "uid": "86fb2f49-b626-420b-aceb-ea4c8f7acb13",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 2
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Audio nota 1",
+                  "fontSize": 25
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "19f2bc40-1137-4548-b416-32d4ed171f40",
+                "name": "ContinueButton",
+                "placement": {
+                  "area": "footer",
+                  "position": "BC",
+                  "order": 3
+                },
+                "kind": "ContinueButton",
+                "props": {
+                  "label": "Continue"
+                },
+                "phase": "ready"
+              },
+              {
+                "uid": "aba83394-66a4-4fea-a9c2-5fc5a007dbcb",
+                "name": "RatingScale",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 4
+                },
+                "kind": "RatingScale",
+                "props": {
+                  "prompt": "",
+                  "scale": [
+                    "1 - Completamente não natural",
+                    "2 - Majoritariamente não natural",
+                    "3 - Igualmente natural e não natural",
+                    "4 - Majoritariamente natural",
+                    "5 - Completamente natural"
+                  ]
+                },
+                "phase": "response"
+              }
+            ],
+            "behaviors": [
+              {
+                "uid": "6968ec6e-fba6-4d9b-9661-23cbbd7753b8",
+                "kind": "AdvanceRule",
+                "name": "Advance Rule",
+                "props": {
+                  "when": "continue-click"
+                }
+              }
+            ]
+          },
+          {
+            "uid": "eb74dd28-8f8f-44ae-8ea3-5aaed647b086",
+            "kind": "Screen",
+            "name": "nota3",
+            "props": {
+              "grid": {
+                "type": "3x3",
+                "subtype": "equal"
+              }
+            },
+            "children": [
+              {
+                "uid": "4ac9e798-7b8f-4c3a-af26-bd4ac23f5734",
+                "name": "AudioPlayer",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 0
+                },
+                "kind": "AudioPlayer",
+                "props": {
+                  "audioSrc": "https://res.cloudinary.com/dksemmwll/video/upload/v1767614611/tts/%5Bnota3%5D%20brsp-26-syntacc-295Ksteps%5Bcortado%5D.mp3",
+                  "autoplay": true
+                },
+                "phase": "stimulus"
+              },
+              {
+                "uid": "d309532b-0577-40d1-988b-c79769dee62d",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 1
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Áudio nota 3",
+                  "fontSize": 20
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "7ed35daf-f34d-417d-a9b2-c17b55b9d22a",
+                "name": "ContinueButton",
+                "placement": {
+                  "area": "footer",
+                  "position": "BC",
+                  "order": 2
+                },
+                "kind": "ContinueButton",
+                "props": {
+                  "label": "Continue"
+                },
+                "phase": "ready"
+              },
+              {
+                "uid": "a46cbae0-c39a-4682-91a4-dd8fdc0a0c50",
+                "name": "RatingScale",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 3
+                },
+                "kind": "RatingScale",
+                "props": {
+                  "prompt": "",
+                  "scale": [
+                    "1 - Completamente não natural",
+                    "2 - Majoritariamente não natural",
+                    "3 - Igualmente natural e não natural",
+                    "4 - Majoritariamente natural",
+                    "5 - Completamente natural"
+                  ]
+                },
+                "phase": "response"
+              }
+            ],
+            "behaviors": []
+          },
+          {
+            "uid": "2a6f6b99-663c-4f73-be82-fec67d66b315",
+            "kind": "Screen",
+            "name": "nota5",
+            "props": {
+              "grid": {
+                "type": "3x3",
+                "subtype": "equal"
+              }
+            },
+            "children": [
+              {
+                "uid": "9bfc70ff-ebe3-442f-9b57-e6307475161f",
+                "name": "AudioPlayer",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 0
+                },
+                "kind": "AudioPlayer",
+                "props": {
+                  "audioSrc": "https://res.cloudinary.com/dksemmwll/video/upload/v1767614611/tts/%5Bnota5%5D%20brpr-23-syntacc-295Ksteps.mp3",
+                  "autoplay": true
+                },
+                "phase": "stimulus"
+              },
+              {
+                "uid": "36545383-6003-4eb4-a78e-9b0ea177dd64",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 1
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Áudio nota 5",
+                  "fontSize": 20
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "d1faa460-b9cd-4e28-b93a-1c47140b811e",
+                "name": "RatingScale",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 2
+                },
+                "kind": "RatingScale",
+                "props": {
+                  "prompt": "",
+                  "scale": [
+                    "1 - Completamente não natural",
+                    "2 - Majoritariamente não natural",
+                    "3 - Igualmente natural e não natural",
+                    "4 - Majoritariamente natural",
+                    "5 - Completamente natural"
+                  ]
+                },
+                "phase": "response"
+              },
+              {
+                "uid": "f32d45f0-8482-4db3-838b-6b4a707ba61a",
+                "name": "ContinueButton",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 3
+                },
+                "kind": "ContinueButton",
+                "props": {
+                  "label": "Continue"
+                },
+                "phase": "ready"
+              }
+            ],
+            "behaviors": [
+              {
+                "uid": "1d72172b-97c3-4947-a744-c5dcfcccbef1",
+                "kind": "AdvanceRule",
+                "name": "Advance Rule",
+                "props": {
+                  "when": "continue-click"
+                }
+              }
+            ]
+          },
+          {
+            "uid": "9cc3190f-28b7-41cd-abab-45fa1e86a880",
+            "kind": "Screen",
+            "name": "New Screen",
+            "props": {
+              "grid": {
+                "type": "3x3",
+                "subtype": "equal"
+              }
+            },
+            "children": [
+              {
+                "uid": "1078e060-f465-4a05-aa7a-d75e859af505",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 0
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Treinamento - Concluído",
+                  "fontSize": 25
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "dd6a3533-608c-429a-9a94-a8e2b7518928",
+                "name": "Text",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 1
+                },
+                "kind": "Text",
+                "props": {
+                  "text": "Na próxima etapa o experimento será iniciado.  Escute cada áudio com atenção quantas vezes for necessário.",
+                  "fontSize": 20
+                },
+                "phase": "all"
+              },
+              {
+                "uid": "c349cf83-b506-4aa9-9498-b1cf90a1933f",
+                "name": "ContinueButton",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 2
+                },
+                "kind": "ContinueButton",
+                "props": {
+                  "label": "Continue"
+                },
+                "phase": "ready"
+              }
+            ],
+            "behaviors": [
+              {
+                "uid": "f5164980-9b36-4636-b875-93e526b02a39",
+                "kind": "AdvanceRule",
+                "name": "Advance Rule",
+                "props": {
+                  "when": "continue-click"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+        "kind": "Block",
+        "name": "evaluation",
+        "props": {},
+        "steps": [
+          {
+            "uid": "cafd61d6-154f-418e-823b-e40174cd8c9b",
+            "kind": "Screen",
+            "name": "mos",
+            "props": {
+              "grid": {
+                "type": "3x3",
+                "subtype": "equal"
+              }
+            },
+            "children": [
+              {
+                "uid": "2c2309d0-b1c3-40bd-a621-f9c46f2324ab",
+                "name": "AudioPlayer",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 0
+                },
+                "kind": "AudioPlayer",
+                "props": {
+                  "audioSrc": {
+                    "kind": "binding",
+                    "column": "audio_src"
+                  },
+                  "autoplay": true,
+                  "hidden": false
+                },
+                "phase": "stimulus"
+              },
+              {
+                "uid": "ea035d0d-fd56-4eef-965f-542853615e16",
+                "name": "RatingScale",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 1,
+                  "vAlign": "top"
+                },
+                "kind": "RatingScale",
+                "props": {
+                  "prompt": "",
+                  "scale": [
+                    "1 - Completamente não natural",
+                    "2 - Majoritariamente não natural",
+                    "3 - Igualmente natural e não natural",
+                    "4 - Majoritariamente natural",
+                    "5 - Completamente natural"
+                  ]
+                },
+                "phase": "response"
+              }
+            ],
+            "behaviors": [
+              {
+                "uid": "83f79fd9-3cf3-4663-982f-e9f1da8aae23",
+                "kind": "AdvanceRule",
+                "name": "Advance Rule",
+                "props": {
+                  "when": "responses-complete"
+                }
+              },
+              {
+                "uid": "5e830d80-9943-4ee5-95a5-4cf2bb5265d8",
+                "kind": "AudioProgress",
+                "name": "Audio Progress",
+                "props": {
+                  "label": "Audio"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "uid": "7c829bfb-7abc-405d-b9c3-97b1bfb0b777",
+        "kind": "Block",
+        "name": "feedback",
+        "props": {},
+        "steps": [
+          {
+            "uid": "b4227d9c-2b04-4c02-a1b7-2a668464d29a",
+            "kind": "Screen",
+            "name": "New Screen",
+            "props": {
+              "grid": {
+                "type": "3x3",
+                "subtype": "equal"
+              }
+            },
+            "children": [
+              {
+                "uid": "33b225dd-6b6f-44e6-bc4f-5d8cb3f600c4",
+                "name": "RatingScale",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 0
+                },
+                "kind": "RatingScale",
+                "props": {
+                  "prompt": "A execução desta avaliação foi uma experiência agradável.",
+                  "scale": [
+                    "1 - Discordo totalmente",
+                    "2",
+                    "3",
+                    "4",
+                    "5 - Concordo totalmente"
+                  ]
+                },
+                "phase": "response"
+              },
+              {
+                "uid": "c7064f8b-4cc5-40ff-9255-bc1df7ef0311",
+                "name": "RatingScale",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 1
+                },
+                "kind": "RatingScale",
+                "props": {
+                  "prompt": "As instruções deste método de avaliação foram claras e fáceis de entender",
+                  "scale": [
+                    "1 - Discordo totalmente",
+                    "2",
+                    "3",
+                    "4",
+                    "5 - Concordo totalmente"
+                  ]
+                },
+                "phase": "response"
+              },
+              {
+                "uid": "e2ba6d1e-cee5-43b6-a737-e53b0be952ba",
+                "name": "RatingScale",
+                "placement": {
+                  "area": "heading",
+                  "position": "UC",
+                  "order": 2
+                },
+                "kind": "RatingScale",
+                "props": {
+                  "prompt": "Foi fácil realizar este método de avaliação sem cometer erros.",
+                  "scale": [
+                    "1 - Discordo totalmente",
+                    "2",
+                    "3",
+                    "4",
+                    "5 - Concordo totalmente"
+                  ]
+                },
+                "phase": "response"
+              },
+              {
+                "uid": "b9d4def9-8c59-42c7-bc0b-7fb3533535d3",
+                "name": "RatingScale",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 3
+                },
+                "kind": "RatingScale",
+                "props": {
+                  "prompt": "O tempo necessário para completar este método de avaliação foi adequado.",
+                  "scale": [
+                    "1 - Discordo totalmente",
+                    "2",
+                    "3",
+                    "4",
+                    "5 - Concordo totalmente"
+                  ]
+                },
+                "phase": "response"
+              },
+              {
+                "uid": "deba8198-fa2b-42cb-bece-f0f69253fee1",
+                "name": "RatingScale",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 4
+                },
+                "kind": "RatingScale",
+                "props": {
+                  "prompt": "Este método de avaliação gerou cansaço físico ou mental para ser concluído.",
+                  "scale": [
+                    "1 - Discordo totalmente",
+                    "2",
+                    "3",
+                    "4",
+                    "5 - Concordo totalmente"
+                  ]
+                },
+                "phase": "response"
+              },
+              {
+                "uid": "3a651659-78f6-4d2e-8099-13ded5bb2d7f",
+                "name": "ContinueButton",
+                "placement": {
+                  "area": "content",
+                  "position": "C",
+                  "order": 5
+                },
+                "kind": "ContinueButton",
+                "props": {
+                  "label": "Continue"
+                },
+                "phase": "ready"
+              }
+            ],
+            "behaviors": [
+              {
+                "uid": "1698de94-f092-4fa7-94b7-89e06f54eaec",
+                "kind": "AdvanceRule",
+                "name": "Advance Rule",
+                "props": {
+                  "when": "continue-click"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "spreadsheet": {
+      "columns": [
+        {
+          "key": "audio_src",
+          "type": "string"
+        }
+      ],
+      "rows": [
+        {
+          "uid": "21e96984-7840-48e6-8d40-0d795b632f5a",
+          "blockUid": "9c5c66fd-2692-4fb5-9e38-0b6bda29b80d",
+          "values": {
+            "audio_src": ""
+          },
+          "fixed": true
+        },
+        {
+          "uid": "cfca5d73-4c45-4a8e-a6f0-51c622dbe470",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757960638/tts/02%20segundos%20brce-26-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "9f0c8275-24ec-414e-ac8a-283afcc841bc",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757960939/tts/02%20segundos%20brrs-10-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "b6bcdb34-7b78-4610-b57d-01eb2f396ab7",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757960980/tts/02%20segundos%20brsp-11-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "60f4f081-3ed5-48fd-abac-1820d29957c7",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877795/tts/02%20segundos%20brsp-13-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "e3fa7216-f3d8-4f51-8784-1aa940efc46e",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877795/tts/02%20segundos%20brsp-22-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "a7cd81f0-0ce4-46e7-8e73-e9a37b430c3b",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877795/tts/02%20segundos%20brsp-24-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "2c3ce1a0-f7a9-4864-9cdc-a060d6fbf55e",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961009/tts/03%20segundos%20bral-20-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "3f7b2d27-6a76-419e-9817-d69e704bb230",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877795/tts/03%20segundos%20bral-23-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "2e8f1123-776d-45a9-bcc2-1c8d3ac85513",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877796/tts/03%20segundos%20bral-26-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "75a63be6-f9e1-43fb-a27b-ad60c7b14afd",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877795/tts/03%20segundos%20brba-21-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "bae7b064-2ed4-4763-9cf0-7a28093bfcca",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877796/tts/03%20segundos%20brba-24-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "54c3c05b-56dc-4d9f-befb-2e8f9a06cfd4",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877796/tts/03%20segundos%20brpb-22-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "ff0ba661-9e83-44ba-a0dd-3b184b59c5a5",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877796/tts/03%20segundos%20brpe-26-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "73464c1e-0d90-4f5f-b55d-b6abac8fd4af",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877796/tts/03%20segundos%20brpe-28-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "8617a198-9d1f-4937-abb6-f8dc79c6ef3c",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877797/tts/03%20segundos%20brpe-29-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "6a772bd4-81eb-42b7-8d95-3125cced38c7",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877796/tts/03%20segundos%20brpr-18-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "d5094c3d-edd3-44e1-9ffb-36fd9287ada0",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961106/tts/03%20segundos%20brrs-14-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "1517bdd8-a8fb-4d03-bedb-9890ea6020c5",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877796/tts/03%20segundos%20brrs-16-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "73c056ca-037d-40b2-a247-6e05111de136",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877797/tts/03%20segundos%20brrs-18-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "186581eb-eb72-4071-b1e5-761e28ec7257",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877796/tts/03%20segundos%20brrs-20-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "ef4b81af-e2f0-4b54-82a7-f14be2f4315b",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877797/tts/03%20segundos%20brrs-23-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "150dcf47-0254-4469-a61c-1c41b48c994f",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877797/tts/03%20segundos%20brrs-25-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "344d96f3-e3bb-4da5-8dfc-fb65ff3871ab",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877797/tts/03%20segundos%20brrs-28-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "ed5207b5-62c4-4c62-b950-e2c7a5458690",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877797/tts/03%20segundos%20brsp-10-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "f0192f5e-a0c2-44aa-929c-d2595039ea12",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877797/tts/03%20segundos%20brsp-28-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "ca9978b5-548b-43fb-833b-d0f4395b343b",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877797/tts/04%20segundos%20bral-22-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "71aab48c-9e6d-4341-878d-9628e0f9cae7",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961295/tts/04%20segundos%20brba-23-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "b9dab152-b05c-4138-882d-1bc2ce940afe",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961158/tts/04%20segundos%20brsp-29-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "8baf44eb-17a1-4eb8-b5f4-940f9739765e",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961296/tts/05%20segundos%20brpr-10-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "998f0b38-d6f2-4ffa-aade-c8db9ac707d8",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961296/tts/05%20segundos%20brpr-14-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "10112f16-2d87-4f74-8679-843947f9755d",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961275/tts/05%20segundos%20brpr-15-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "9b25bbe4-c7f8-47a9-a84e-1d85d3cba42e",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961276/tts/05%20segundos%20brpr-22-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "40b35d2a-3ad2-46d8-a2a9-58ce517b04c7",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877798/tts/05%20segundos%20brrs-26-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "c494a9b3-322a-49a3-928a-0738521f31aa",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961198/tts/06%20segundos%20bral-24-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "18bbf855-66a9-45fe-8013-57b7cfa68ef7",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877798/tts/06%20segundos%20brmg-26-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "605ec7f0-166f-48fa-972b-4795f889f1ba",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877798/tts/06%20segundos%20brpr-13-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "99e7583f-84ab-4b66-84f4-81d1eb2b8539",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877798/tts/06%20segundos%20brpr-19-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "47961d20-b1a8-4126-bf63-073786466c1d",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877798/tts/06%20segundos%20brsp-25-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "64732fe3-dd32-4e45-b2b2-e91dcd0930fd",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764863281/tts/07%20segundos%20brce-22-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "86710d4a-3c83-4f44-96a1-f55688ee65c3",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/07%20segundos%20brmg-22-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "c67b9932-9cc1-4005-8e98-dc05ebaba3ec",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/07%20segundos%20brpr-20-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "f29be2ed-7880-4f7a-9737-8135c89697d2",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/07%20segundos%20brpr-27-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "82de2477-6014-4ebb-b694-df8a88d6796e",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/08%20segundos%20brce-20-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "b18ab935-4514-4e29-b259-7facf7d3c61c",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/08%20segundos%20brpr-28-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "5ff7b3d5-582c-4057-a182-f673eb35ed40",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/08%20segundos%20brrj-26-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "1213e36d-74fe-4c3f-8473-08d8dc815aba",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/08%20segundos%20brrs-29-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "b9add0e3-fb4c-4f8c-8d28-3aeddc4fa977",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/09%20segundos%20brba-22-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "755493cc-cc20-4055-a369-5ca8891f3ff0",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/09%20segundos%20brmg-29-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "a88b97ad-9b40-437b-83c1-7d5ac2a7aaf0",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/09%20segundos%20brpr-24-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "bda89a76-459c-471d-b741-2eda2b9bbeb8",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/10%20segundos%20brce-29-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "0cf41974-0bb7-4ce0-a8ca-3766c8f5a472",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877799/tts/10%20segundos%20brgo-28-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "41f13a0b-dd4c-4138-9d1c-7a1f067e04cc",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961314/tts/10%20segundos%20brpe-22-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "07de6458-af5d-4e64-9783-d04fd29714f7",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961316/tts/10%20segundos%20brpr-29-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "247a5dc1-92cf-457b-980f-b2bc7f9c03a9",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961316/tts/11%20segundos%20brpe-20-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "7c1d54ed-97bf-4bd3-8e70-e791642f3096",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961638/tts/11%20segundos%20brpr-25-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "98631426-787b-4782-b355-1a67c7ae0237",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961639/tts/12%20segundos%20brpb-28-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "6e75fe04-dd9e-4c2f-8c9a-31545ba00cc7",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877800/tts/12%20segundos%20brpr-21-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "23d4983b-44ed-44d7-b4c4-7977a25d7c34",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764877800/tts/13%20segundos%20brpb-20-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "34118bac-e907-4c5c-87a9-572426f04f7b",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961677/tts/14%20segundos%20brrs-24-gt%20M-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "35b4ecba-d067-4cee-9b80-4f2ed1ff22f0",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1757961658/tts/17%20segundos%20brrs-21-gt%20F-n-20db.wav"
+          },
+          "condition": "B"
+        },
+        {
+          "uid": "4d53f04c-e62d-40ad-bb0d-b91801c1524c",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760860/tts/04%20segundos%20brmg-26-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "8c214f16-6142-4434-bdec-750326854925",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760860/tts/04%20segundos%20brpr-14-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "6c8b6d79-22de-41b2-a911-a1f9b720279a",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1762451150/tts/04%20segundos%20brpr-15-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "9643d3bf-e21f-4603-97bc-8472fa3d12e9",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760861/tts/04%20segundos%20brpr-19-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "677051e2-3296-4cdb-83e1-a12c6996ff7a",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760862/tts/04%20segundos%20brpr-20-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "4207d7f9-21a9-449b-9303-5a411b363fa3",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760862/tts/04%20segundos%20brpr-27-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "bc26fccc-224e-4e5d-a156-671f9740fd34",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760862/tts/04%20segundos%20brrs-10-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "5ed69f9b-257d-45a4-8a0c-0a023d05efc9",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760863/tts/04%20segundos%20brrs-14-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "d89c9166-c59b-4e54-a035-a8e2881c47d6",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760863/tts/04%20segundos%20brrs-16-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "bfc1cb0c-89c9-4e86-9942-85594ccda673",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760863/tts/04%20segundos%20brrs-18-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "e87c61db-e332-48a7-8ff3-7ae08c963490",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760863/tts/04%20segundos%20brsp-10-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "9f3e0c8a-6dcc-4bea-9bcc-02836522d912",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760864/tts/04%20segundos%20brsp-11-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "98b953af-0837-4491-a747-e611d2e1ca95",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760864/tts/04%20segundos%20brsp-13-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "dfec3339-cca9-4ccf-af0f-5f6c92318ab7",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760864/tts/04%20segundos%20brsp-25-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "3029d5f8-30c4-4d6b-9dd5-e95fa3c6bc3a",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760865/tts/05%20segundos%20bral-20-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "26a983df-d219-4edc-bc04-3a5eeb4d694c",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760865/tts/05%20segundos%20bral-22-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "5724315c-b75b-4e14-b339-438a9960cb0a",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760866/tts/05%20segundos%20bral-23-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "2d8df4f0-192a-44b5-b2da-95cc8e41b204",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760865/tts/05%20segundos%20bral-24-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "a6675877-6141-4a7b-8712-637c1e9be0bf",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760866/tts/05%20segundos%20brba-21-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "113d6f88-b0e5-407a-8701-fbbba8925c09",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760866/tts/05%20segundos%20brce-22-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "e078f73e-7bd9-45fc-8260-2ad6cda12375",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760866/tts/05%20segundos%20brce-26-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "4359bfdf-e016-4002-bab8-e2afbe220a77",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760866/tts/05%20segundos%20brmg-22-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "59d1721a-566e-4654-9f10-12981959d0bd",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760866/tts/05%20segundos%20brmg-29-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "e0646fc4-9f6d-427c-9d84-540a01823f64",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760867/tts/05%20segundos%20brpb-22-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "4f2ae3ad-7e7a-4510-b7ab-3aed30586064",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760867/tts/05%20segundos%20brpe-22-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "465b0ad7-0e7e-4c3d-a0c9-dbbb69750a5c",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760867/tts/05%20segundos%20brpe-26-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "9eb8cd82-963d-4ee7-976a-bab40de9134a",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760868/tts/05%20segundos%20brpe-29-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "e823a70a-f8f2-4011-8901-92b02e5f82b9",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760867/tts/05%20segundos%20brpr-10-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "b06c6183-caf5-4c9f-8c3d-cc4a21ef5c15",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760868/tts/05%20segundos%20brpr-13-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "650683cf-7624-4ce7-aaab-eb90bc2767b9",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760868/tts/05%20segundos%20brpr-18-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "173602f4-c86f-4d53-909f-722f28b5b066",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760868/tts/05%20segundos%20brpr-28-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "a2871156-3f36-4e54-b21e-255151aae223",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760868/tts/05%20segundos%20brrj-26-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "3aed530a-b9ec-454c-a718-04b4c57f9e81",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760869/tts/05%20segundos%20brrs-25-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "295b81f3-7e8a-4a05-a9cb-76cddc8df482",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760869/tts/05%20segundos%20brrs-28-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "5bfa82a8-35af-483f-8ed5-d25f04dfafc6",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760869/tts/05%20segundos%20brrs-29-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "6b3a927f-bb13-43a1-bc03-672e29ff8699",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760869/tts/05%20segundos%20brsp-22-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "a04b885a-e39f-4984-a968-a8763fd5c9a9",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760869/tts/05%20segundos%20brsp-24-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "5f392761-4916-40b6-a666-4e804ee0f74f",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760870/tts/05%20segundos%20brsp-28-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "29581016-e1af-4194-a3a9-51fd6debfe94",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760870/tts/06%20segundos%20bral-26-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "653c9244-c03b-4092-9dba-62da71d77e26",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760871/tts/06%20segundos%20brba-22-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "802d3339-1740-4aa1-844a-014328b23659",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760870/tts/06%20segundos%20brba-24-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "27ea2baa-90a0-4756-a5e2-4ba9a75c6635",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760871/tts/06%20segundos%20brce-20-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "b7a0f6a9-3dd7-4ee0-a4ee-57d0ef9932ff",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760871/tts/06%20segundos%20brpe-28-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "1dddaa2a-4ec1-4f18-b635-ac5a46b110c4",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760873/tts/06%20segundos%20brpr-24-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "e0350f4c-c730-4057-a318-7e9744124054",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760874/tts/06%20segundos%20brrs-20-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "8829326f-1c81-4902-84e8-f157fb63e90c",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760871/tts/07%20segundos%20brba-23-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "071a6d8f-8ee8-4a44-b79e-ef7d72a68ea1",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760871/tts/07%20segundos%20brce-29-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "0b3f31f2-f65e-412d-b960-d964e419f506",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760871/tts/07%20segundos%20brgo-28-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "c05bed7f-da45-4fab-8eb4-b0dc34577fe0",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760871/tts/07%20segundos%20brpe-20-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "fe5d37db-696c-4169-b820-1ce9138e869c",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760872/tts/07%20segundos%20brpr-21-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "2dff06a8-a619-4482-badd-2a3824f1b57c",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760872/tts/07%20segundos%20brpr-29-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "9519528b-3b89-4d95-9d3d-eec05e562e69",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760872/tts/07%20segundos%20brrs-23-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "8c91f7ec-123c-412a-94a2-236706ff71ca",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760873/tts/08%20segundos%20brpr-22-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "0d959758-5a25-4190-849a-ab399a120049",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760872/tts/08%20segundos%20brpr-25-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "1a113581-aff7-4c01-ab42-e22b1883740a",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760873/tts/08%20segundos%20brrs-21-syntacc-295Ksteps%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "a1fa5fc6-565e-41e7-a862-ebd68a100e50",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760874/tts/08%20segundos%20brsp-27-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "763df596-bc0a-4e34-b6fd-d167c64b9bb4",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760874/tts/08%20segundos%20brsp-29-gt%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "12f6dd02-fd72-4b8a-a3d7-da9f6aefd3f7",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760873/tts/09%20segundos%20brpb-20-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "d6883a70-e859-4a83-82be-b624b38eb636",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760875/tts/09%20segundos%20brrs-26-gt%20F-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "3534c1e3-0459-493c-9513-e20842d8eb9a",
+          "blockUid": "49665abb-2e42-44fc-8ad8-787eea4ab5af",
+          "values": {
+            "audio_src": "https://res.cloudinary.com/dksemmwll/video/upload/v1764760875/tts/10%20segundos%20brpb-28-syntacc-295Ksteps%20M-n-20db.wav"
+          },
+          "condition": "A"
+        },
+        {
+          "uid": "4efeaf69-67a5-49ca-b0d1-ced846a50fe7",
+          "blockUid": "7c829bfb-7abc-405d-b9c3-97b1bfb0b777",
+          "values": {
+            "audio_src": ""
+          },
+          "fixed": true
+        }
+      ],
+      "shuffleMode": "within-group"
+    },
+    "participantAssignment": {
+      "enabled": true,
+      "mode": "url"
+    }
+  }
+}
