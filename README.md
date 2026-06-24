@@ -1,10 +1,10 @@
-# VoxMetric
+# VoxMetrix
 
-VoxMetric is an open-source platform for designing and running **subject listening tests** in the browser. Researchers can present audio stimuli, collect subjective ratings (e.g. MOS), track gaze during playback, and export trial-level results — all from a single web interface.
+VoxMetrix is an open-source platform for designing and running **subject listening tests** in the browser. Researchers can present audio stimuli, collect subjective ratings (e.g. MOS), track gaze during playback, and export trial-level results — all from a single web interface.
 
 ## Demo
 
-![VoxMetric web interface](docs/assets/web-interface-demo.gif)
+![VoxMetrix web interface](docs/assets/web-interface-demo.gif)
 
 ## Features
 
@@ -14,7 +14,8 @@ VoxMetric is an open-source platform for designing and running **subject listeni
 - **Spreadsheet editor** — map audio files, screens, and trial variables
 - **Screen builder** — compose trial screens with audio players, images, rating scales, and eye tracking (WebGazer)
 - **Media library** — upload and manage audio and image assets locally
-- **Results export** — download participant responses, reaction times, gaze metrics, and ratings as CSV
+- **Results export** — download participant responses, reaction times, gaze metrics, and ratings 
+- **Scripts analysis** — Functions for processing exported results, quality and sensitivity analysis, as well as fixation, saccade, AOI-switch, and scanpath metrics. See [`experiments/analysis/`](experiments/analysis/) for scripts.
 
 ## Repository Structure
 
@@ -27,6 +28,7 @@ docs/
 experiments/
   README.md          Reproduction instructions
   *.experiment.json  Importable experiment definitions
+  raw/               Anonymized raw result exports
   data/              Pseudonymized publication data
   analysis/          Public analysis scripts
 docker-compose.yml

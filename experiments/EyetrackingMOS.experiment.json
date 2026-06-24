@@ -1,5 +1,5 @@
 {
-  "$type": "voxmetric/experiment-definition",
+  "$type": "voxmetrix/experiment-definition",
   "exportedAt": "2026-06-20T14:12:59.663Z",
   "definition": {
     "schemaVersion": 2,
@@ -929,7 +929,7 @@
                 "props": {
                   "imageSrc": {
                     "kind": "binding",
-                    "column": "image_right"
+                    "column": "image_left"
                   }
                 },
                 "phase": "stimulus"
@@ -946,7 +946,7 @@
                 "props": {
                   "imageSrc": {
                     "kind": "binding",
-                    "column": "image_left"
+                    "column": "image_right"
                   }
                 },
                 "phase": "stimulus"

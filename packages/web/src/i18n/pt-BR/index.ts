@@ -1,7 +1,7 @@
 import type { BaseTranslation } from "../i18n-types.js";
 
 const pt_BR = {
-	App: "VoxMetric",
+	App: "VoxMetrix",
 	Roles: {
 		Admin: "Administrador",
 		Participant: "Participante",

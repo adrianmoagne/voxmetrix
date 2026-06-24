@@ -17,6 +17,7 @@ data/
 uploads/
 !experiments/data/
 !experiments/data/**
+experiments/raw_exports/
 
 # Test runtime artifacts
 .jest-mongo-uri

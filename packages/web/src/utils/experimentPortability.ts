@@ -1,7 +1,7 @@
 import type { ExperimentDefinition } from "@/@types/screen.model";
 
-/** Marker used to recognise files exported from Voxmetric. */
-const EXPORT_TYPE = "voxmetric/experiment-definition";
+/** Marker used to recognise files exported from Voxmetrix. */
+const EXPORT_TYPE = "voxmetrix/experiment-definition";
 
 interface ExperimentExportFile {
 	$type: typeof EXPORT_TYPE;

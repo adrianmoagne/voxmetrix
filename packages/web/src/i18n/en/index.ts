@@ -1,7 +1,7 @@
 import type { Translation } from "../i18n-types.js";
 
 const en = {
-	App: "VoxMetric",
+	App: "VoxMetrix",
 	Roles: {
 		Admin: "Admin",
 		Participant: "Participant",

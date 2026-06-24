@@ -1,5 +1,5 @@
 {
-  "$type": "voxmetric/experiment-definition",
+  "$type": "voxmetrix/experiment-definition",
   "exportedAt": "2026-06-20T14:13:15.691Z",
   "definition": {
     "schemaVersion": 2,

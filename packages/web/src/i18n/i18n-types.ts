@@ -500,7 +500,7 @@ type RootTranslation = {
 
 export type TranslationFunctions = {
 	/**
-	 * VoxMetric
+	 * VoxMetrix
 	 */
 	App: () => LocalizedString
 	Roles: {

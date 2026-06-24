@@ -1,5 +1,5 @@
 {
-	"name": "@voxmetric/server",
+	"name": "@voxmetrix/server",
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
@@ -12,13 +12,13 @@
 		"test:watch": "npx jest --watch --findRelatedTests"
 	},
 	"keywords": [],
-	"author": "VoxMetric contributors",
+	"author": "VoxMetrix contributors",
 	"license": "CC-BY-NC-SA-4.0",
-	"description": "Express/Mongoose API for VoxMetric.",
+	"description": "Express/Mongoose API for VoxMetrix.",
 	"bugs": {
-		"url": "https://github.com/voxmetric/voxmetric/issues"
+		"url": "https://github.com/voxmetrix/voxmetrix/issues"
 	},
-	"homepage": "https://github.com/voxmetric/voxmetric#readme",
+	"homepage": "https://github.com/voxmetrix/voxmetrix#readme",
 	"dependencies": {
 		"bcrypt": "^6.0.0",
 		"body-parser": "^2.2.0",

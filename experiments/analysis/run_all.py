@@ -33,11 +33,21 @@ def main():
     participant_audio, audio, merged = scores.build(mos, eyetracking)
     scores.write(participant_audio, audio)
 
-    print("[3/8] Correlations and balanced robustness analysis")
+    print("[3/8] Correlations and optional balanced robustness analysis")
     correlations = stats_correlations.build(audio)
     stats_correlations.write(correlations)
-    balanced = balanced_2to1.build(merged=merged)
-    balanced_2to1.write(balanced)
+    balanced = None
+    try:
+        specialists = common.load_specialists()
+        if specialists.empty:
+            print("    skipped balanced robustness analysis: specialist roster is empty")
+        else:
+            balanced = balanced_2to1.build(merged=merged, specialists=specialists)
+            balanced_2to1.write(balanced)
+    except FileNotFoundError:
+        print("    skipped balanced robustness analysis: no specialist roster found")
+    except ValueError as exc:
+        print(f"    skipped balanced robustness analysis: {exc}")
 
     print("[4/8] Mixed-effects tests")
     mixed = stats_mixed.build(merged)
@@ -79,7 +89,9 @@ def main():
             }
             for _, row in mixed.iterrows()
         },
-        "specialists_by_condition": balanced.attrs["specialists_by_list"],
+        "specialists_by_condition": (
+            balanced.attrs["specialists_by_list"] if balanced is not None else {}
+        ),
     }
     with open(os.path.join(common.OUTPUT_DIR, "summary.json"), "w", encoding="utf-8") as file:
         json.dump(summary, file, indent=2)

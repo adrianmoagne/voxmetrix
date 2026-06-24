@@ -8,23 +8,24 @@ data, and analysis scripts used for the paper.
 - [`MOS.experiment.json`](MOS.experiment.json): importable MOS definition.
 - [`EyetrackingMOS.experiment.json`](EyetrackingMOS.experiment.json): importable
   eye-tracking MOS definition.
+- [`raw/`](raw/README.md): anonymized, layout-correct raw result exports.
 - [`data/`](data/README.md): pseudonymized trial- and sample-level data.
 - [`analysis/`](analysis/README.md): reproducibility workflow.
 
 ## Prerequisites
 
-- A running VoxMetric instance. See the [project quick start](../README.md#quick-start-docker).
+- A running VoxMetrix instance. See the [project quick start](../README.md#quick-start-docker).
 - Internet access. The definitions reference the original audio and image stimuli through pinned URLs.
 - For `EyetrackingMOS.experiment.json`: a computer with a webcam, browser camera permission, stable lighting, and a participant positioned directly in front of the screen.
 
 ## Import the definitions
 
-1. Start VoxMetric and open `http://localhost:3001`.
+1. Start VoxMetrix and open `http://localhost:3001`.
 2. Create an account or sign in.
 3. Open **Projects**, create a project, and open it.
 4. Select **Import**.
 5. Choose either `MOS.experiment.json` or `EyetrackingMOS.experiment.json` from this directory.
-6. VoxMetric creates a project-local copy and opens it in the experiment editor.
+6. VoxMetrix creates a project-local copy and opens it in the experiment editor.
 7. Select **Save Experiment** before distributing participant links.
 
 Import the second file in the same way if both experiments will be reproduced.
@@ -37,8 +38,8 @@ Import the second file in the same way if both experiments will be reproduced.
 4. Append the assigned condition to the URL:
 
 ```text
-https://<voxmetric-host>/experiment/run/<experiment-id>?condition=A
-https://<voxmetric-host>/experiment/run/<experiment-id>?condition=B
+https://<voxmetrix-host>/experiment/run/<experiment-id>?condition=A
+https://<voxmetrix-host>/experiment/run/<experiment-id>?condition=B
 ```
 
 5. Give each participant only the URL for their assigned condition.
@@ -49,6 +50,8 @@ link without `?condition=A` or `?condition=B` will not start a valid assigned ru
 
 ## Reproduce the analysis
 
+Use the prepared public data:
+
 ```bash
 cd experiments/analysis
 python3 -m venv .venv
@@ -58,3 +61,16 @@ python3 run_all.py
 ```
 
 The workflow reads only the pseudonymized files under `experiments/data/`.
+
+To regenerate those files from anonymized raw exports first:
+
+```bash
+cd experiments/analysis
+python3 prepare_public_data.py \
+  --mos-results ../raw/mos_results.anonymized.json.gz \
+  --eyetracking-results ../raw/eyetracking_results.anonymized.json.gz \
+  --out-dir ../data
+python3 run_all.py
+```
+
+

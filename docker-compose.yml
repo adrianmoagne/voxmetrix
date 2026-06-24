@@ -31,7 +31,7 @@ services:
     environment:
       PORT: 8080
       API_PREFIX: /api
-      DB_URL: mongodb://mongo:27017/voxmetric
+      DB_URL: mongodb://mongo:27017/voxmetrix
       JWT_SECRET: replace-with-a-local-development-secret
       JWT_EXPIRES_IN: 1d
       AUTH_COOKIE_NAME: auth_token

@@ -11,7 +11,7 @@ ARG VITE_API_URL=http://localhost:8080
 ENV VITE_API_URL=$VITE_API_URL
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build -w @voxmetric/web
+RUN npm run build -w @voxmetrix/web
 
 FROM nginx:1.27-alpine AS runner
 COPY packages/web/nginx.conf /etc/nginx/conf.d/default.conf
