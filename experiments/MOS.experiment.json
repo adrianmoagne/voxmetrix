@@ -118,22 +118,6 @@
 								"phase": "all"
 							},
 							{
-								"uid": "fe2d6639-8c58-49a9-b89e-e3fabd05344d",
-								"name": "Image",
-								"placement": {
-									"area": "heading",
-									"position": "UL",
-									"order": 6,
-									"hAlign": "left",
-									"vAlign": "top"
-								},
-								"kind": "Image",
-								"props": {
-									"imageSrc": "https://res.cloudinary.com/dksemmwll/image/upload/v1779750957/tts/dest.png"
-								},
-								"phase": "stimulus"
-							},
-							{
 								"uid": "e2bb04c8-1275-447c-b3b9-589b8390d202",
 								"name": "Text",
 								"placement": {
