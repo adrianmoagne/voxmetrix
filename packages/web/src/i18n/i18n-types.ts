@@ -15,7 +15,7 @@ export type Translations = RootTranslation
 
 type RootTranslation = {
 	/**
-	 * V​o​x​M​e​t​r​i​c
+	 * V​o​x​M​e​t​r​i​x
 	 */
 	App: string
 	Roles: {
