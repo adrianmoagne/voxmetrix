@@ -1,13 +1,7 @@
 # Public analysis workflow
 
-This workflow reproduces the paper statistics and figures from public data.
-The committed raw exports are anonymized; the analysis code
-does not require private names, emails, tokens, session IDs, or a private
-participant mapping.
-
-## Run from prepared public data
-
-From this directory:
+Reproduces the paper statistics and figures from the public data in
+[`../data`](../data/). Nothing here needs private names, e-mails or tokens.
 
 ```bash
 python3 -m venv .venv
@@ -16,41 +10,42 @@ pip install -r requirements.txt
 python3 run_all.py
 ```
 
-Generated tables, figures, and `summary.json` are written to `output/`.
+Tables, figures and `summary.json` are written to `output/`. The run takes about
+a minute.
 
-## Rebuild public data from anonymized raw exports
-
-The CSV files in [`../data`](../data/) can be regenerated from the compressed raw
-exports in [`../raw`](../raw/):
-
-```bash
-python3 prepare_public_data.py \
-  --mos-results ../raw/mos_results.anonymized.json.gz \
-  --eyetracking-results ../raw/eyetracking_results.anonymized.json.gz \
-  --out-dir ../data
-```
-
-Then run:
+To rebuild the public CSVs from the anonymized raw exports in [`../raw`](../raw/)
+first (defaults point at those files):
 
 ```bash
+python3 prepare_public_data.py
 python3 run_all.py
 ```
 
-`prepare_public_data.py` also accepts fresh VoxMetrix result exports from newly
-imported experiments.
+## Files
 
-The workflow validates participant and trial counts before analysis. Randomized
-analyses use the fixed seed `12345`: 5,000 speaker-cluster bootstrap resamples
-for correlation intervals and 1,000 stratified samples for the specialist
-robustness analysis.
+| File | What it does |
+| --- | --- |
+| `prepare_public_data.py` | Raw session JSON -> `../data/*.csv`. Pairs participants across the two experiments, parses stimulus names, computes per-trial gaze dwell and EyetrackingMOS, writes `SHA256SUMS`. |
+| `run_all.py` | `../data/*.csv` -> `output/`. Runs top to bottom: validation, scores, correlations with speaker-cluster bootstrap, specialist robustness, mixed effects, gaze quality, gaze dynamics, figures, summary. |
+| `gaze.py` | Gaze math for one trial, shared by both scripts: sample durations, dwell per AOI, EyetrackingMOS bins, I-DT fixations, dynamics metrics. |
+| `figures.py` | The paper figures. |
 
-## Analysis modules
+## How gaze time is measured
 
-- `scores.py`: participant/audio and audio-level score tables.
-- `stats_correlations.py`: correlations, errors, and cluster-bootstrap intervals.
-- `stats_mixed.py`: crossed participant/stimulus mixed-effects models.
-- `gaze_quality.py`: sampling/dwell quality and sensitivity analysis.
-- `gaze_dynamics.py`:  fixation, saccade, AOI, and scanpath metrics.
-- `balanced_2to1.py`: specialist/non-specialist robustness analysis.
-- `figures.py`: publication figures.
-- `raw_exports.py`: raw JSON export parsing and public CSV generation.
+Every gaze sample carries `audioTime`, the audio player's position (seconds) when
+the sample was taken. A sample lasts until the next sample **on that clock**, so
+time only accrues while the clip is actually playing; samples taken while the
+player was paused or after the clip ended weigh zero, and samples without
+`audioTime` (player not running) are dropped. `person_gaze_pct` is the share of
+on-screen dwell spent on the half of the screen showing the person, and
+`eyetracking_mos` maps it to five 20-point bins.
+
+The clip duration used for `audio_coverage_pct` is the largest `audioTime` ever
+recorded for that audio (the player clamps at the end of the clip).
+
+Fixation detection (`gaze.fixations`) is the one place that uses the browser
+timestamp `t_ms`, because it describes eye movement rather than listening time.
+
+Randomized steps use the fixed seed `12345`: 5,000 speaker-cluster bootstrap
+resamples for correlation intervals and 1,000 random panels for the 2:1
+specialist robustness analysis.

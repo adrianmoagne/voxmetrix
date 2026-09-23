@@ -8,9 +8,15 @@ data, and analysis scripts used for the paper.
 - [`MOS.experiment.json`](MOS.experiment.json): importable MOS definition.
 - [`EyetrackingMOS.experiment.json`](EyetrackingMOS.experiment.json): importable
   eye-tracking MOS definition.
+- Stimuli: https://github.com/GustavoEvangelistaAraujo/EyetrackingMOS-STIL/tree/main/stimuli
 - [`raw/`](raw/README.md): anonymized, layout-correct raw result exports.
 - [`data/`](data/README.md): pseudonymized trial- and sample-level data.
 - [`analysis/`](analysis/README.md): reproducibility workflow.
+
+## Stimuli
+
+Audio stimuli for conditions A and B:
+https://github.com/GustavoEvangelistaAraujo/EyetrackingMOS-STIL/tree/main/stimuli
 
 ## Prerequisites
 
@@ -66,11 +72,6 @@ To regenerate those files from anonymized raw exports first:
 
 ```bash
 cd experiments/analysis
-python3 prepare_public_data.py \
-  --mos-results ../raw/mos_results.anonymized.json.gz \
-  --eyetracking-results ../raw/eyetracking_results.anonymized.json.gz \
-  --out-dir ../data
+python3 prepare_public_data.py
 python3 run_all.py
 ```
-
-
