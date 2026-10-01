@@ -1,5 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import useWebGazer, { type ActiveAudio, type GazePoint } from "@/hooks/useWebGazer";
+import useWebGazer, {
+	type ActiveAudio,
+	type GazeCaptureResult,
+	type GazePoint,
+} from "@/hooks/useWebGazer";
 import type { WebAudioTrack } from "@/utils/webAudioPlayback";
 
 export interface CalibrationResult {
@@ -26,7 +30,10 @@ export interface EyeTrackingSession {
 
 	ensureReady: () => Promise<void>;
 	startCapture: () => Promise<void>;
-	stopCapture: () => GazePoint[];
+	/** Stops at once; a prediction in flight and the end of the audio may be lost. */
+	stopCapture: () => GazeCaptureResult;
+	/** Keeps capturing until the frames covering the end of the audio have been analyzed. */
+	finishCapture: () => Promise<GazeCaptureResult>;
 	clearCapture: () => void;
 
 	registerActiveAudio: (uid: string, track: WebAudioTrack) => void;
@@ -84,6 +91,7 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 		initCamera,
 		startTracking,
 		stopTracking,
+		finishTracking,
 		clearData,
 		recordScreenPosition,
 		getCurrentPrediction,
@@ -103,6 +111,7 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 	const [error, setError] = useState<string | null>(null);
 
 	const readyPromiseRef = useRef<Promise<void> | null>(null);
+	const captureGenerationRef = useRef(0);
 
 	const ensureReady = useCallback(async () => {
 		if (isReady) return;
@@ -129,6 +138,7 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 
 	const startCapture = useCallback(async () => {
 		await ensureReady();
+		captureGenerationRef.current++;
 		startTracking();
 		setStatus("tracking");
 	}, [ensureReady, startTracking]);
@@ -138,6 +148,15 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 		setStatus("ready");
 		return gazeData;
 	}, [stopTracking]);
+
+	const finishCapture = useCallback(async () => {
+		const generation = captureGenerationRef.current;
+		const gazeData = await finishTracking();
+		if (captureGenerationRef.current === generation) {
+			setStatus("ready");
+		}
+		return gazeData;
+	}, [finishTracking]);
 
 	const clearCapture = useCallback(() => {
 		clearData();
@@ -185,6 +204,7 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 			ensureReady,
 			startCapture,
 			stopCapture,
+			finishCapture,
 			clearCapture,
 			registerActiveAudio,
 			unregisterActiveAudio,
@@ -211,6 +231,7 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 			ensureReady,
 			startCapture,
 			stopCapture,
+			finishCapture,
 			clearCapture,
 			registerActiveAudio,
 			unregisterActiveAudio,

@@ -89,6 +89,8 @@ export const ScreenRuntimeProvider: React.FC<ScreenRuntimeProviderProps> = ({
 	const [fixationActive, setFixationActive] = useState(initialSnapshot.fixationActive);
 	const [pendingAdvanceRequest, setPendingAdvanceRequest] = useState<AdvanceRequest | null>(null);
 	const pendingAdvanceRequestRef = useRef<AdvanceRequest | null>(null);
+	// Finalizing can wait for eye tracking to drain; completion is when the participant advanced.
+	const advanceRequestedAtRef = useRef<number | null>(null);
 
 	const clearFixation = useCallback(() => {
 		setFixationActive(false);
@@ -163,6 +165,7 @@ export const ScreenRuntimeProvider: React.FC<ScreenRuntimeProviderProps> = ({
 		if (completedRef.current || pendingAdvanceRequestRef.current) return;
 
 		pendingAdvanceRequestRef.current = request;
+		advanceRequestedAtRef.current = performance.now();
 		setPendingAdvanceRequest(request);
 	}, []);
 
@@ -182,7 +185,7 @@ export const ScreenRuntimeProvider: React.FC<ScreenRuntimeProviderProps> = ({
 			rowUid,
 			advanceReason: pendingAdvanceRequestRef.current.reason,
 			startedAt: startedAtRef.current,
-			completedAt: performance.now(),
+			completedAt: advanceRequestedAtRef.current ?? performance.now(),
 			responses,
 			audioTelemetry: audioStates,
 			extras: completionExtrasRef.current,

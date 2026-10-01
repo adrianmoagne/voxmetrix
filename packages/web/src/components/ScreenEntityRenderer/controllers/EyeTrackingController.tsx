@@ -25,24 +25,27 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 		setCompletionExtras,
 		finalizeAdvance,
 	} = useScreenRuntime();
-	const {
-		isTracking,
-		startCapture,
-		stopCapture,
-	} = useEyeTrackingSession();
+	const { isTracking, startCapture, stopCapture, finishCapture } = useEyeTrackingSession();
 	const trackingRef = useRef(false);
 	const startingRef = useRef(false);
+	const finishingRef = useRef<Promise<void> | null>(null);
+	const finalizeAdvanceRef = useRef(finalizeAdvance);
+	const mountedRef = useRef(true);
 	const [captureStartSettled, setCaptureStartSettled] = useState(true);
+
+	useEffect(() => {
+		finalizeAdvanceRef.current = finalizeAdvance;
+	}, [finalizeAdvance]);
 
 	const targetEntityUids = useMemo(
 		() => (targets === "all-trackable" ? trackableEntityUids : targets.entityUids),
 		[targets, trackableEntityUids]
 	);
 
-	const stopAndStoreCapture = useCallback(() => {
-		if (!trackingRef.current) return;
+	const stopAndStoreCapture = useCallback((): Promise<void> => {
+		if (!trackingRef.current) return finishingRef.current ?? Promise.resolve();
+		trackingRef.current = false;
 
-		const gazeData = stopCapture();
 		const targetBoundingBoxes = targetEntityUids
 			.map((entityUid) => {
 				const element = document.querySelector<HTMLElement>(`[data-entity-uid="${entityUid}"]`);
@@ -63,12 +66,21 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 			})
 			.filter(Boolean);
 
-		trackingRef.current = false;
-		setCompletionExtras({
-			gazeData,
-			targetBoundingBoxes,
-		});
-	}, [setCompletionExtras, stopCapture, targetEntityUids]);
+		const finishing: Promise<void> = finishCapture()
+			.then(({ samples: gazeData, capture: gazeCapture }) => {
+				setCompletionExtras({
+					gazeData,
+					gazeCapture,
+					targetBoundingBoxes,
+				});
+			})
+			.catch(() => undefined)
+			.finally(() => {
+				if (finishingRef.current === finishing) finishingRef.current = null;
+			});
+		finishingRef.current = finishing;
+		return finishing;
+	}, [finishCapture, setCompletionExtras, targetEntityUids]);
 
 	// Start tracking
 	useEffect(() => {
@@ -93,9 +105,9 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 		void startCapture()
 			.then(() => {
 				if (cancelled) {
-					const gazeData = stopCapture();
+					const { samples: gazeData, capture: gazeCapture } = stopCapture();
 					if (gazeData.length > 0) {
-						setCompletionExtras({ gazeData });
+						setCompletionExtras({ gazeData, gazeCapture });
 					}
 					return;
 				}
@@ -133,7 +145,7 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 		}
 
 		if (shouldStop) {
-			stopAndStoreCapture();
+			void stopAndStoreCapture();
 		}
 	}, [audioStates, responseStates, stopAndStoreCapture, stopOn]);
 
@@ -142,17 +154,10 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 		if (!pendingAdvanceRequest) return;
 		if (!captureStartSettled || startingRef.current) return;
 
-		if (trackingRef.current) {
-			stopAndStoreCapture();
-		}
-
-		finalizeAdvance();
-	}, [
-		captureStartSettled,
-		finalizeAdvance,
-		pendingAdvanceRequest,
-		stopAndStoreCapture,
-	]);
+		void stopAndStoreCapture().then(() => {
+			if (mountedRef.current) finalizeAdvanceRef.current();
+		});
+	}, [captureStartSettled, pendingAdvanceRequest, stopAndStoreCapture]);
 
 	// Cursor hiding
 	useEffect(() => {
@@ -166,8 +171,11 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 
 	// Cleanup on unmount
 	useEffect(() => {
+		mountedRef.current = true;
 		return () => {
-			if (trackingRef.current) {
+			// Stopping resolves a pending drain; the advance waiting on it must not run.
+			mountedRef.current = false;
+			if (trackingRef.current || finishingRef.current) {
 				stopCapture();
 				trackingRef.current = false;
 			}
