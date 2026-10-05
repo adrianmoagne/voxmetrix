@@ -5,6 +5,7 @@ export * from "./cloneExperimentDefinition";
 export * from "./experimentPortability";
 export * from "./renderInlineMarkdown";
 export * from "./renderTextMarkdown";
+export * from "./ratingScale";
 export * from "./validationUtils";
 export * from "./audioProgressUtils";
 export * from "./lateralCounterbalanceUtils";

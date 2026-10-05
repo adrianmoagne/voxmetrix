@@ -3,6 +3,7 @@ import type {
 	BlockEntity,
 	Bound,
 	ExperimentDefinition,
+	RatingOption,
 	ScreenChildEntity,
 	ScreenEntity,
 	SpreadsheetRow,
@@ -132,6 +133,58 @@ const getAudioTelemetry = (step: JsonRecord): JsonRecord => {
 	return isRecord(step.audioTelemetry) ? step.audioTelemetry : {};
 };
 
+const getResponseTelemetry = (step: JsonRecord): JsonRecord => {
+	return isRecord(step.responseTelemetry) ? step.responseTelemetry : {};
+};
+
+/**
+ * One option per scale entry so indexes stay aligned with the definition. Legacy string
+ * entries score their position (1-based). Mirrors `normalizeRatingOptions` in the web app.
+ */
+export const normalizeRatingOptions = (scale: unknown): RatingOption[] => {
+	if (!Array.isArray(scale)) return [];
+
+	return scale.map((option, index) => {
+		if (isRecord(option)) {
+			return {
+				value: toFiniteNumber(option.value) ?? index + 1,
+				label: typeof option.label === "string" ? option.label : String(option.label ?? ""),
+			};
+		}
+
+		return { value: index + 1, label: String(option ?? "") };
+	});
+};
+
+/**
+ * Current clients submit `{ index, value, label }`; older ones submitted the label string,
+ * which is matched against the scale.
+ */
+const resolveRatingResponse = (scale: unknown, value: unknown) => {
+	const options = normalizeRatingOptions(scale);
+
+	if (isRecord(value)) {
+		const index = toFiniteNumber(value.index);
+		const validIndex =
+			index !== undefined && Number.isInteger(index) && index >= 0 ? index : undefined;
+		const option = validIndex !== undefined ? options[validIndex] : undefined;
+
+		return {
+			selectedIndex: validIndex,
+			score: toFiniteNumber(value.value) ?? option?.value,
+			label: typeof value.label === "string" ? value.label : option?.label,
+		};
+	}
+
+	const index = options.findIndex((option) => option.label === String(value));
+
+	return {
+		selectedIndex: index >= 0 ? index : undefined,
+		score: index >= 0 ? options[index].value : undefined,
+		label: typeof value === "string" ? value : undefined,
+	};
+};
+
 const buildRowContext = (
 	row: SpreadsheetRow | undefined,
 	indexes: DefinitionIndexes
@@ -217,12 +270,12 @@ const getResponseScale = (
 const buildKnownResponseItem = (
 	child: ScreenChildEntity,
 	row: SpreadsheetRow | undefined,
-	value: unknown
+	value: unknown,
+	telemetry: unknown,
+	stepStartedAt: unknown
 ) => {
 	const scale = getResponseScale(child, row);
-	const selectedIndex = Array.isArray(scale)
-		? scale.findIndex((option) => String(option) === String(value))
-		: undefined;
+	const telemetryRecord = isRecord(telemetry) ? telemetry : undefined;
 
 	return {
 		entityUid: child.uid,
@@ -232,10 +285,13 @@ const buildKnownResponseItem = (
 		text: getResponseText(child, row),
 		scale,
 		value,
-		selectedIndex:
-			selectedIndex !== undefined && selectedIndex >= 0
-				? selectedIndex
-				: undefined,
+		...(child.kind === "RatingScale"
+			? resolveRatingResponse(scale, value)
+			: { selectedIndex: undefined }),
+		telemetry,
+		confirmedAfterMs: telemetryRecord
+			? durationBetween(stepStartedAt, telemetryRecord.completedAtMs)
+			: undefined,
 	};
 };
 
@@ -245,6 +301,7 @@ const buildResponseItemContexts = (
 	step: JsonRecord
 ) => {
 	const responses = getResponses(step);
+	const responseTelemetry = getResponseTelemetry(step);
 	const responseChildren = new Map<string, ScreenChildEntity>();
 
 	if (screen) {
@@ -259,7 +316,13 @@ const buildResponseItemContexts = (
 		const child = responseChildren.get(entityUid);
 
 		if (child) {
-			return buildKnownResponseItem(child, row, value);
+			return buildKnownResponseItem(
+				child,
+				row,
+				value,
+				responseTelemetry[entityUid],
+				step.startedAt
+			);
 		}
 
 		return {

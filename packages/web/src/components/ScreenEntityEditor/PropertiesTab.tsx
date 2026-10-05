@@ -7,9 +7,18 @@ import type {
 	Bound,
 } from "@/@types/screen.model";
 import BoundField from "./BoundField";
+import RatingOptionsField from "./RatingOptionsField";
 import PlacementEditor from "./PlacementEditor";
 import S from "./ScreenEntityEditor.styles";
 import { DEFAULT_TEXT_FONT_SIZE } from "../ScreenEntityRenderer/children/TextEntity";
+import {
+	DEFAULT_RATING_CONFIRM_LABEL,
+	DEFAULT_RATING_LOCKED_HINT,
+} from "../ScreenEntityRenderer/children/RatingScaleEntity";
+import {
+	DEFAULT_HIGHLIGHTER_CONFIRM_LABEL,
+	DEFAULT_HIGHLIGHTER_INSTRUCTIONS,
+} from "../ScreenEntityRenderer/children/TextHighlighterEntity";
 
 interface PropertiesTabProps {
 	entity: ScreenChildEntity | ScreenBehaviorEntity | null;
@@ -131,7 +140,9 @@ const ChildProps: React.FC<{
 			return (
 				<>
 					<BoundField label="Prompt" value={entity.props.prompt} onChange={(v) => onChange(uid, "prompt", v)} placeholder="Rating prompt" />
-					<BoundField label="Scale" value={entity.props.scale} onChange={(v) => onChange(uid, "scale", v)} type="string[]" placeholder="1, 2, 3, 4, 5" />
+					<RatingOptionsField label="Scale" value={entity.props.scale} onChange={(v) => onChange(uid, "scale", v)} />
+					<BoundField label="Confirm Button" value={entity.props.confirmLabel ?? ""} onChange={(v) => onChange(uid, "confirmLabel", v)} placeholder={DEFAULT_RATING_CONFIRM_LABEL} />
+					<BoundField label="Locked Hint" value={entity.props.lockedHint ?? ""} onChange={(v) => onChange(uid, "lockedHint", v)} placeholder={DEFAULT_RATING_LOCKED_HINT} />
 				</>
 			);
 		case "TextHighlighter":
@@ -139,6 +150,8 @@ const ChildProps: React.FC<{
 				<>
 					<BoundField label="Text" value={entity.props.text} onChange={(v) => onChange(uid, "text", v)} placeholder="Text to highlight" />
 					<BoundField label="Highlight Color" value={entity.props.highlightColor ?? "rgba(255,255,0,0.3)"} onChange={(v) => onChange(uid, "highlightColor", v)} />
+					<BoundField label="Instructions" value={entity.props.instructions ?? ""} onChange={(v) => onChange(uid, "instructions", v)} placeholder={DEFAULT_HIGHLIGHTER_INSTRUCTIONS} />
+					<BoundField label="Confirm Button" value={entity.props.confirmLabel ?? ""} onChange={(v) => onChange(uid, "confirmLabel", v)} placeholder={DEFAULT_HIGHLIGHTER_CONFIRM_LABEL} />
 				</>
 			);
 		case "ContinueButton":

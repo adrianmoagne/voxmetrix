@@ -1,5 +1,5 @@
 import type { ExperimentDefinition, Placement } from "../experiment/experiment-definition.types";
-import { enrichResultSteps } from "./result-enrichment";
+import { enrichResultSteps, normalizeRatingOptions } from "./result-enrichment";
 
 const basePlacement: Placement = {
 	area: "content",
@@ -92,6 +92,37 @@ const buildDefinition = (): ExperimentDefinition => ({
 		shuffleMode: "none",
 	},
 });
+
+const buildDefinitionWithScale = (scale: unknown): ExperimentDefinition => {
+	const definition = buildDefinition();
+	const screen = definition.blocks[0].steps[0];
+	if (screen.kind !== "Screen") throw new Error("Expected the fixture's first step to be a screen");
+	const rating = screen.children.find((child) => child.kind === "RatingScale");
+	if (rating?.kind !== "RatingScale") throw new Error("Expected a RatingScale in the fixture");
+	rating.props.scale = scale as typeof rating.props.scale;
+	return definition;
+};
+
+const enrichRating = (
+	definition: ExperimentDefinition,
+	response: unknown,
+	extra: Record<string, unknown> = {}
+) => {
+	const [step] = enrichResultSteps(
+		[
+			{
+				screenUid: "screen-1",
+				rowUid: "row-1",
+				startedAt: 1000,
+				completedAt: 7000,
+				responses: { "rating-1": response },
+				...extra,
+			},
+		],
+		definition
+	) as any[];
+	return step.responseItems[0];
+};
 
 describe("result enrichment", () => {
 	it("adds readable context while preserving the submitted step fields", () => {
@@ -212,5 +243,58 @@ describe("result enrichment", () => {
 				value: "5",
 			},
 		]);
+	});
+
+	it("scores current-format responses from the submitted option", () => {
+		const definition = buildDefinitionWithScale([
+			{ value: -3, label: "Much worse" },
+			{ value: 0, label: "About the same" },
+			{ value: 3, label: "Much better" },
+		]);
+
+		const item = enrichRating(definition, { index: 0, value: -3, label: "Much worse" });
+
+		expect(item).toMatchObject({ selectedIndex: 0, score: -3, label: "Much worse" });
+	});
+
+	it("scores legacy label responses with the matching option's value", () => {
+		const definition = buildDefinitionWithScale([
+			{ value: 0, label: "Bad" },
+			{ value: 10, label: "Good" },
+		]);
+
+		const item = enrichRating(definition, "Good");
+
+		expect(item).toMatchObject({ value: "Good", selectedIndex: 1, score: 10, label: "Good" });
+	});
+
+	it("keeps the submitted score when the scale was edited after the participant answered", () => {
+		const definition = buildDefinitionWithScale(["1", "2", "3", "4", "5"]);
+
+		const item = enrichRating(definition, { index: 4, value: 7, label: "Seven" });
+
+		expect(item).toMatchObject({ selectedIndex: 4, score: 7, label: "Seven" });
+	});
+
+	it("attaches response telemetry and the time to confirm", () => {
+		const telemetry = { selectionCount: 2, firstSelectedAtMs: 6500, completedAtMs: 6900.5 };
+
+		const item = enrichRating(buildDefinition(), { index: 2, value: 3, label: "3" }, {
+			responseTelemetry: { "rating-1": telemetry },
+		});
+
+		expect(item.telemetry).toEqual(telemetry);
+		expect(item.confirmedAfterMs).toBe(5900.5);
+	});
+
+	it("normalizes mixed legacy and option scales without shifting indexes", () => {
+		expect(
+			normalizeRatingOptions(["Bad", { value: 10, label: "Good" }, { label: "No score" }])
+		).toEqual([
+			{ value: 1, label: "Bad" },
+			{ value: 10, label: "Good" },
+			{ value: 3, label: "No score" },
+		]);
+		expect(normalizeRatingOptions(undefined)).toEqual([]);
 	});
 });

@@ -2,10 +2,16 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { Button, Typography } from "@leux/ui";
 import { useScreenRuntime } from "../ScreenRuntimeContext";
 
+export const DEFAULT_HIGHLIGHTER_INSTRUCTIONS =
+	"Select parts of the text that sound notable. Click a highlight to remove it.";
+export const DEFAULT_HIGHLIGHTER_CONFIRM_LABEL = "Confirm Selection";
+
 interface TextHighlighterEntityProps {
 	uid: string;
 	text: string;
 	highlightColor?: string;
+	instructions?: string;
+	confirmLabel?: string;
 }
 
 interface HighlightRange {
@@ -59,8 +65,11 @@ const TextHighlighterEntity: React.FC<TextHighlighterEntityProps> = ({
 	uid,
 	text,
 	highlightColor = "#FFEB3B",
+	instructions = DEFAULT_HIGHLIGHTER_INSTRUCTIONS,
+	confirmLabel = DEFAULT_HIGHLIGHTER_CONFIRM_LABEL,
 }) => {
-	const { isEntityInteractive, responseStates, markResponseCompleted } = useScreenRuntime();
+	const { isEntityInteractive, responseStates, markResponseSelected, markResponseCompleted } =
+		useScreenRuntime();
 	const active = isEntityInteractive(uid);
 	const completed = responseStates[uid]?.completed ?? false;
 	const [highlights, setHighlights] = useState<HighlightRange[]>([]);
@@ -76,7 +85,8 @@ const TextHighlighterEntity: React.FC<TextHighlighterEntityProps> = ({
 		if (selectionHandledRef.current) return;
 		if (!active || completed) return;
 		setHighlights((prev) => prev.filter((_, i) => i !== index));
-	}, [active, completed]);
+		markResponseSelected(uid);
+	}, [active, completed, markResponseSelected, uid]);
 
 	const handleMouseUp = useCallback(() => {
 		if (!active || completed) return;
@@ -94,12 +104,13 @@ const TextHighlighterEntity: React.FC<TextHighlighterEntityProps> = ({
 		if (start === end) return;
 
 		setHighlights((prev) => normalizeRanges([...prev, { start, end }], text));
+		markResponseSelected(uid);
 		selectionHandledRef.current = true;
 		window.setTimeout(() => {
 			selectionHandledRef.current = false;
 		}, 0);
 		selection.removeAllRanges();
-	}, [active, completed, text]);
+	}, [active, completed, markResponseSelected, text, uid]);
 
 	const handleConfirm = () => {
 		const normalizedHighlights = normalizeRanges(highlights, text);
@@ -146,7 +157,7 @@ const TextHighlighterEntity: React.FC<TextHighlighterEntityProps> = ({
 		>
 
 			<Typography variant="caption" customStyles={{ marginBottom: 12 }}>
-				Select parts of the text that sound notable. Click a highlight to remove it.
+				{instructions}
 			</Typography>
 			<div
 				ref={containerRef}
@@ -165,7 +176,7 @@ const TextHighlighterEntity: React.FC<TextHighlighterEntityProps> = ({
 						{highlights.length} highlight{highlights.length !== 1 ? "s" : ""}
 					</Typography>
 					<Button colorScheme="primary" onClick={handleConfirm}>
-						Confirm Selection
+						{confirmLabel}
 					</Button>
 				</div>
 			)}

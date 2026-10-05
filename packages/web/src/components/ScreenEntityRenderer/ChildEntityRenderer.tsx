@@ -1,4 +1,5 @@
 import type { ScreenChildEntity, SpreadsheetRow } from "@/@types/screen.model";
+import { normalizeRatingOptions } from "@/utils";
 import { resolveBound } from "./resolveBound";
 import AudioPlayerEntity from "./children/AudioPlayerEntity";
 import ImageEntity from "./children/ImageEntity";
@@ -50,7 +51,11 @@ const ChildEntityRenderer: React.FC<ChildEntityRendererProps> = ({ entity, row }
 				<RatingScaleEntity
 					uid={entity.uid}
 					prompt={resolveBound(entity.props.prompt, row)}
-					scale={resolveBound(entity.props.scale, row)}
+					options={normalizeRatingOptions(resolveBound(entity.props.scale, row))}
+					confirmLabel={
+						entity.props.confirmLabel ? resolveBound(entity.props.confirmLabel, row) : undefined
+					}
+					lockedHint={entity.props.lockedHint ? resolveBound(entity.props.lockedHint, row) : undefined}
 				/>
 			);
 
@@ -63,6 +68,12 @@ const ChildEntityRenderer: React.FC<ChildEntityRendererProps> = ({ entity, row }
 						entity.props.highlightColor
 							? resolveBound(entity.props.highlightColor, row)
 							: undefined
+					}
+					instructions={
+						entity.props.instructions ? resolveBound(entity.props.instructions, row) : undefined
+					}
+					confirmLabel={
+						entity.props.confirmLabel ? resolveBound(entity.props.confirmLabel, row) : undefined
 					}
 				/>
 			);

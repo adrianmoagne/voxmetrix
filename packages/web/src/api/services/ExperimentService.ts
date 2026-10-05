@@ -129,6 +129,7 @@ export interface ExperimentStep {
 	completedAt?: number;
 	responses?: Record<string, unknown>;
 	audioTelemetry?: Record<string, unknown>;
+	responseTelemetry?: Record<string, unknown>;
 	extras?: Record<string, unknown>;
 }
 

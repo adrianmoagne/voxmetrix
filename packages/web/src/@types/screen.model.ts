@@ -91,7 +91,9 @@ export type ScreenChildEntity =
 			"RatingScale",
 			{
 				prompt: Bound<string>;
-				scale: Bound<string[]>;
+				scale: Bound<RatingScaleOption[]>;
+				confirmLabel?: Bound<string>;
+				lockedHint?: Bound<string>;
 				required?: Bound<boolean>;
 			}
 	  > & {
@@ -103,6 +105,8 @@ export type ScreenChildEntity =
 			{
 				text: Bound<string>;
 				highlightColor?: Bound<string>;
+				instructions?: Bound<string>;
+				confirmLabel?: Bound<string>;
 				required?: Bound<boolean>;
 			}
 	  > & {
@@ -279,21 +283,59 @@ export interface AdvanceRequest {
 export interface AudioRuntimeState {
 	started: boolean;
 	completed: boolean;
+	/** First playback start (performance.now). */
 	startedAtMs?: number;
+	/** First time playback reached the end (performance.now). */
 	completedAtMs?: number;
+	/** Playbacks started from the beginning: 1 = heard once, 2 = one replay. Resumes are not counted. */
+	playCount: number;
+	/** Pauses made by the participant. */
+	pauseCount: number;
+	/** Total time the audio was actually playing, across all plays. */
+	listenedMs: number;
+	/** Set while playing; used to accumulate listenedMs. */
+	playingSinceMs?: number;
+}
+
+export interface ResponseRuntimeState {
+	completed: boolean;
+	value?: unknown;
+	/** Times the participant picked or changed an answer before confirming. */
+	selectionCount: number;
+	firstSelectedAtMs?: number;
+	completedAtMs?: number;
+}
+
+export type ResponseTelemetry = Omit<ResponseRuntimeState, "completed" | "value">;
+
+export interface RatingOption {
+	value: number;
+	label: string;
+}
+
+/** A plain string is a legacy option: the label at index i scores i + 1. */
+export type RatingScaleOption = string | RatingOption;
+
+/** What a RatingScale submits; index refers to the scale as shown. */
+export interface RatingResponse {
+	index: number;
+	value: number;
+	label: string;
 }
 
 export interface ScreenRuntime {
 	phase: ScreenPhase;
 
 	audioStates: Record<string, AudioRuntimeState>; // key is entity uid of AudioPlayer
-	responseStates: Record<string, { completed: boolean; value?: unknown }>; // key is entity uid of RatingScale or TextHighlighter
+	responseStates: Record<string, ResponseRuntimeState>; // key is entity uid of RatingScale or TextHighlighter
 
 	fixationActive: boolean;
 	pendingAdvanceRequest: AdvanceRequest | null;
 
-	markAudioStarted: (entityUid: string) => void;
+	markAudioStarted: (entityUid: string, fromStart: boolean) => void;
+	markAudioPaused: (entityUid: string) => void;
 	markAudioCompleted: (entityUid: string) => void;
+	markResponseSelected: (entityUid: string) => void;
 	markResponseCompleted: (entityUid: string, value: unknown) => void;
 	requestAdvance: (request: AdvanceRequest) => void;
 	finalizeAdvance: () => void;
@@ -326,6 +368,7 @@ export interface ScreenCompletionData {
 	completedAt: number;
 	responses: Record<string, unknown>;
 	audioTelemetry?: Record<string, AudioRuntimeState>;
+	responseTelemetry?: Record<string, ResponseTelemetry>;
 	presentation?: LateralCounterbalancePresentation;
 	extras?: {
 		gazeData?: unknown;

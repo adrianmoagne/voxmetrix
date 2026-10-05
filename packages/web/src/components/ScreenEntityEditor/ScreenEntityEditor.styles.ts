@@ -493,6 +493,30 @@ const FieldTextarea = styled(FieldInput.withComponent("textarea"))`
 	resize: vertical;
 `;
 
+const OptionRow = styled.div`
+	display: grid;
+	grid-template-columns: 64px 1fr auto;
+	gap: 6px;
+	align-items: center;
+`;
+
+const OptionRemoveButton = styled.button`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 6px;
+	border: none;
+	border-radius: 6px;
+	background: transparent;
+	color: ${({ theme }) => theme.main.placeholder};
+	cursor: pointer;
+
+	&:hover {
+		color: ${({ theme }) => theme.main.textOne};
+		background: ${({ theme }) => theme.main.backgroundTwo};
+	}
+`;
+
 const FieldHint = styled.span`
 	font-size: 11px;
 	color: ${({ theme }) => theme.main.placeholder};
@@ -707,6 +731,8 @@ const S = {
 	FieldInput,
 	FieldTextarea,
 	FieldHint,
+	OptionRow,
+	OptionRemoveButton,
 	FieldSelect,
 	PhaseBadge,
 	ToolbarInput,

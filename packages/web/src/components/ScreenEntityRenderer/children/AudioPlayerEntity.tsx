@@ -18,15 +18,20 @@ const AudioPlayerEntity: React.FC<AudioPlayerEntityProps> = ({
 	autoplay = false,
 	hidden = false,
 }) => {
-	const { markAudioStarted, markAudioCompleted, fixationActive } = useScreenRuntime();
+	const { markAudioStarted, markAudioPaused, markAudioCompleted, fixationActive } =
+		useScreenRuntime();
 	const eyeTracking = useOptionalEyeTrackingSession();
 	const registerActiveAudio = eyeTracking?.registerActiveAudio;
 	const unregisterActiveAudio = eyeTracking?.unregisterActiveAudio;
 	const playerRef = useRef<AudioPlayerHandle>(null);
 	const hasRegisteredPlaybackRef = useRef(false);
+	// The next "playing" event starts from the beginning (first play or replay after the end)
+	// rather than resuming after a pause.
+	const nextPlayFromStartRef = useRef(true);
 
 	useEffect(() => {
 		hasRegisteredPlaybackRef.current = false;
+		nextPlayFromStartRef.current = true;
 	}, [audioSrc]);
 
 	useEffect(() => {
@@ -36,14 +41,20 @@ const AudioPlayerEntity: React.FC<AudioPlayerEntityProps> = ({
 	}, [audioSrc, markAudioCompleted, uid]);
 
 	const handlePlaying = useCallback(() => {
-		markAudioStarted(uid);
+		markAudioStarted(uid, nextPlayFromStartRef.current);
+		nextPlayFromStartRef.current = false;
 		const track = playerRef.current?.getTrack();
 		if (!track || hasRegisteredPlaybackRef.current) return;
 		hasRegisteredPlaybackRef.current = true;
 		registerActiveAudio?.(uid, track);
 	}, [markAudioStarted, registerActiveAudio, uid]);
 
+	const handlePause = useCallback(() => {
+		markAudioPaused(uid);
+	}, [markAudioPaused, uid]);
+
 	const handleEnded = useCallback(() => {
+		nextPlayFromStartRef.current = true;
 		markAudioCompleted(uid);
 		unregisterActiveAudio?.(uid);
 	}, [markAudioCompleted, unregisterActiveAudio, uid]);
@@ -61,6 +72,7 @@ const AudioPlayerEntity: React.FC<AudioPlayerEntityProps> = ({
 			autoPlay={shouldAutoPlay}
 			hidden={hidden}
 			onPlaying={handlePlaying}
+			onPause={handlePause}
 			onEnded={handleEnded}
 		/>
 	);

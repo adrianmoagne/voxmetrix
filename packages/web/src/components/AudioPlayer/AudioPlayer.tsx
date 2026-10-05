@@ -15,6 +15,8 @@ interface AudioPlayerProps {
 	hidden?: boolean;
 	onEnded?: () => void;
 	onPlaying?: () => void;
+	/** Called when the participant pauses with the play/pause control. */
+	onPause?: () => void;
 }
 
 export interface  AudioPlayerHandle {
@@ -24,12 +26,13 @@ export interface  AudioPlayerHandle {
 }
 
 const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
-	({ src, autoPlay = false, hidden = false, onEnded, onPlaying }, ref) => {
+	({ src, autoPlay = false, hidden = false, onEnded, onPlaying, onPause }, ref) => {
 		const [isPlaying, setIsPlaying] = useState(false);
 		const trackRef = useRef<WebAudioTrack | null>(null);
 		const progressFillRef = useRef<HTMLDivElement | null>(null);
 		const onEndedRef = useRef(onEnded);
 		const onPlayingRef = useRef(onPlaying);
+		const onPauseRef = useRef(onPause);
 
 		const setBarProgress = useCallback((value: number) => {
 			if (progressFillRef.current) {
@@ -40,7 +43,8 @@ const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
 		useEffect(() => {
 			onEndedRef.current = onEnded;
 			onPlayingRef.current = onPlaying;
-		}, [onEnded, onPlaying]);
+			onPauseRef.current = onPause;
+		}, [onEnded, onPlaying, onPause]);
 
 		useEffect(() => {
 			const track = createWebAudioTrack(src);
@@ -108,6 +112,7 @@ const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(
 			if (isPlaying) {
 				track.pause();
 				setIsPlaying(false);
+				onPauseRef.current?.();
 			} else {
 				track.play().catch(console.error);
 			}

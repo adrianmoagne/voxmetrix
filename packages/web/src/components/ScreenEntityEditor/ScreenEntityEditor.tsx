@@ -49,7 +49,10 @@ function defaultChildEntity(
 			return {
 				...base,
 				kind,
-				props: { prompt: "", scale: ["1", "2", "3", "4", "5"] },
+				props: {
+					prompt: "",
+					scale: [1, 2, 3, 4, 5].map((value) => ({ value, label: String(value) })),
+				},
 				phase: "response" as const,
 			};
 		case "TextHighlighter":

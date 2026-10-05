@@ -19,6 +19,14 @@ export interface BindingRef<T = string> {
 
 export type Bound<T> = T | BindingRef<T>;
 
+export interface RatingOption {
+	value: number;
+	label: string;
+}
+
+/** A plain string is a legacy option: the label at index i scores i + 1. */
+export type RatingScaleOption = string | RatingOption;
+
 export interface Placement {
 	area: ItemArea;
 	position: ItemPosition;
@@ -80,7 +88,9 @@ export type ScreenChildEntity =
 			"RatingScale",
 			{
 				prompt: Bound<string>;
-				scale: Bound<string[]>;
+				scale: Bound<RatingScaleOption[]>;
+				confirmLabel?: Bound<string>;
+				lockedHint?: Bound<string>;
 				required?: Bound<boolean>;
 			}
 	  > & {
@@ -92,6 +102,8 @@ export type ScreenChildEntity =
 			{
 				text: Bound<string>;
 				highlightColor?: Bound<string>;
+				instructions?: Bound<string>;
+				confirmLabel?: Bound<string>;
 				required?: Bound<boolean>;
 			}
 	  > & {
