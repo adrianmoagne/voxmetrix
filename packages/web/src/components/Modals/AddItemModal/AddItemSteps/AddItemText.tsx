@@ -1,4 +1,4 @@
-import { Box, Typography, Badge } from "@leux/ui";
+import { Box, Typography } from "@leux/ui";
 import S from "../AddItemModal.styles";
 import type { ItemPosition } from "@/@types";
 import { addItemActions, type StoreState } from "@/store";
@@ -32,12 +32,6 @@ const AddItemText: React.FC = () => {
 
 	return (
 		<>
-			<Typography variant="body-2">Selected text type</Typography>
-			<S.Row>
-				<Badge>String</Badge>
-				<Badge>HTML</Badge>
-			</S.Row>
-
 			<Typography variant="body-2">Select item position</Typography>
 			<Box flex flexDirection="column" flexGap={6}>
 				<S.Grid>
@@ -63,7 +57,7 @@ const AddItemText: React.FC = () => {
 				<Typography variant="body-2">Text Editor</Typography>
 				<S.TextEditor
 					value={draft?.text ?? ""}
-					placeholder="Type your text here"
+					placeholder="Type your text here. Supports # headings, - lists, 1. numbered lists, **bold** and *italic*."
 					onChange={(e) => handleTextChange(e.target.value)}
 				></S.TextEditor>
 			</Box>

@@ -1,3 +1,7 @@
+import { renderTextMarkdown } from "@/utils";
+
+export const DEFAULT_TEXT_FONT_SIZE = 14;
+
 interface TextEntityProps {
 	uid: string;
 	text: string;
@@ -8,7 +12,7 @@ interface TextEntityProps {
 const TextEntity: React.FC<TextEntityProps> = ({
 	uid,
 	text,
-	fontSize = 14,
+	fontSize = DEFAULT_TEXT_FONT_SIZE,
 	align = "center",
 }) => {
 	return (
@@ -16,13 +20,15 @@ const TextEntity: React.FC<TextEntityProps> = ({
 			data-entity-uid={uid}
 			style={{
 				padding: "8px",
+				maxWidth: "75ch",
 				textAlign: align,
 				wordBreak: "break-word",
 				fontSize: `${fontSize}px`,
+				lineHeight: 1.5,
 				color: "#333",
 			}}
 		>
-			{text}
+			{renderTextMarkdown(text ?? "", { align })}
 		</div>
 	);
 };

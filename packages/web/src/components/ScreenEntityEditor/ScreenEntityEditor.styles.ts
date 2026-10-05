@@ -487,6 +487,17 @@ const FieldInput = styled.input`
 	}
 `;
 
+const FieldTextarea = styled(FieldInput.withComponent("textarea"))`
+	min-height: 120px;
+	line-height: 1.4;
+	resize: vertical;
+`;
+
+const FieldHint = styled.span`
+	font-size: 11px;
+	color: ${({ theme }) => theme.main.placeholder};
+`;
+
 const FieldSelect = styled.select`
 	width: 100%;
 	padding: 7px 10px;
@@ -694,6 +705,8 @@ const S = {
 	StackIndicator,
 	EntityPreview,
 	FieldInput,
+	FieldTextarea,
+	FieldHint,
 	FieldSelect,
 	PhaseBadge,
 	ToolbarInput,

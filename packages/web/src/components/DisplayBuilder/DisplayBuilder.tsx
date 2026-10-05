@@ -5,7 +5,7 @@ import { ModalSizes, ModalId, type ItemPosition, type ItemAlignment, type IMedia
 import { Modals } from "@/components";
 import { useDispatch, useSelector } from "react-redux";
 import { createScreenActions, type StoreDispatch, type StoreState } from "@/store";
-import { getItemPositionFromMap } from "@/utils";
+import { getItemPositionFromMap, renderTextMarkdown } from "@/utils";
 import { useTheme } from "@emotion/react";
 type BoardScreen = {
 	id: string;
@@ -171,9 +171,10 @@ const DisplayBuilder: React.FC<DisplayBuilderProps> = ({
 					textAlign: "center",
 					wordBreak: "break-word",
 					fontSize: "14px",
+					lineHeight: 1.5,
 					color: "#333"
 				}}>
-					{item.text}
+					{renderTextMarkdown(item.text, { align: "center" })}
 				</div>
 			);
 		}

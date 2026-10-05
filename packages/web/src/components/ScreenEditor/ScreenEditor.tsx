@@ -31,7 +31,7 @@ import {
 	type ScreenComponentType,
 } from "@/@types";
 import type { ScreenComponent } from "@/@types/screen.model";
-import { getItemPositionFromMap, getPositionsMap } from "@/utils";
+import { getItemPositionFromMap, getPositionsMap, renderTextMarkdown } from "@/utils";
 import type { GridType } from "@/@types";
 import { Modals } from "@/components";
 
@@ -180,8 +180,8 @@ const ScreenEditor: React.FC<ScreenEditorProps> = ({ boardScreen, onSave: onSave
 
 		if (item.type === "text" && item.text) {
 			return (
-				<div style={{ padding: "8px", textAlign: "center", wordBreak: "break-word", fontSize: "14px", color: "#333" }}>
-					{item.text}
+				<div style={{ padding: "8px", textAlign: "center", wordBreak: "break-word", fontSize: "14px", lineHeight: 1.5, color: "#333" }}>
+					{renderTextMarkdown(item.text, { align: "center" })}
 				</div>
 			);
 		}

@@ -9,6 +9,7 @@ import type {
 import BoundField from "./BoundField";
 import PlacementEditor from "./PlacementEditor";
 import S from "./ScreenEntityEditor.styles";
+import { DEFAULT_TEXT_FONT_SIZE } from "../ScreenEntityRenderer/children/TextEntity";
 
 interface PropertiesTabProps {
 	entity: ScreenChildEntity | ScreenBehaviorEntity | null;
@@ -104,8 +105,15 @@ const ChildProps: React.FC<{
 		case "Text":
 			return (
 				<>
-					<BoundField label="Text" value={entity.props.text} onChange={(v) => onChange(uid, "text", v)} placeholder="Text content" />
-					<BoundField label="Font Size" value={entity.props.fontSize ?? 16} onChange={(v) => onChange(uid, "fontSize", v)} type="number" />
+					<BoundField
+						label="Text"
+						value={entity.props.text}
+						onChange={(v) => onChange(uid, "text", v)}
+						type="text"
+						placeholder="Text content"
+						hint="# Heading, - list, 1. numbered, **bold**, *italic*. Blank line starts a new paragraph."
+					/>
+					<BoundField label="Font Size" value={entity.props.fontSize ?? DEFAULT_TEXT_FONT_SIZE} onChange={(v) => onChange(uid, "fontSize", v)} type="number" />
 					<BoundField
 						label="Align"
 						value={entity.props.align ?? "center"}

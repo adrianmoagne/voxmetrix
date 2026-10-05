@@ -10,7 +10,7 @@ function isBinding<T>(value: Bound<T>): value is BindingRef<T> {
 	);
 }
 
-type FieldType = "string" | "number" | "boolean" | "select" | "string[]";
+type FieldType = "string" | "text" | "number" | "boolean" | "select" | "string[]";
 
 const parseValueByType = (raw: string, type: FieldType): unknown => {
 	if (raw === "") return undefined;
@@ -50,6 +50,7 @@ interface BoundFieldProps {
 	type?: FieldType;
 	options?: { label: string; value: string }[];
 	placeholder?: string;
+	hint?: string;
 }
 
 const BoundField: React.FC<BoundFieldProps> = ({
@@ -59,6 +60,7 @@ const BoundField: React.FC<BoundFieldProps> = ({
 	type = "string",
 	options,
 	placeholder,
+	hint,
 }) => {
 	const bound = isBinding(value);
 	const binding = bound ? (value as BindingRef<unknown>) : null;
@@ -135,6 +137,16 @@ const BoundField: React.FC<BoundFieldProps> = ({
 					/>
 				);
 			}
+
+		if (type === "text") {
+			return (
+				<S.FieldTextarea
+					value={String(value ?? "")}
+					onChange={(e) => onChange(e.target.value)}
+					placeholder={placeholder}
+				/>
+			);
+		}
 
 		return (
 			<S.FieldInput
@@ -231,6 +243,7 @@ const BoundField: React.FC<BoundFieldProps> = ({
 				</S.BindingToggle>
 			</S.BoundFieldRow>
 			{bound ? renderBindingInput() : renderDirectInput()}
+			{hint && <S.FieldHint>{hint}</S.FieldHint>}
 		</S.BoundFieldWrapper>
 	);
 };

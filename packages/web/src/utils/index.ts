@@ -4,6 +4,7 @@ export * from "./experimentUtils";
 export * from "./cloneExperimentDefinition";
 export * from "./experimentPortability";
 export * from "./renderInlineMarkdown";
+export * from "./renderTextMarkdown";
 export * from "./validationUtils";
 export * from "./audioProgressUtils";
 export * from "./lateralCounterbalanceUtils";
