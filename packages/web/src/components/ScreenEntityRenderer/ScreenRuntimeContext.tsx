@@ -7,7 +7,7 @@ import type {
 	AdvanceRequest,
 	ScreenCompletionData,
 	AudioRuntimeState,
-	ResponseRuntimeState,
+	AudioPlaybackTelemetry,
 	ResponseTelemetry,
 } from "../../@types/screen.model";
 
@@ -19,33 +19,29 @@ export function useScreenRuntime(): ScreenRuntime {
 	return ctx;
 }
 
+interface PlaybackRecord extends AudioPlaybackTelemetry {
+	playingSinceMs?: number;
+}
+
+const playbackRecordFor = (records: Record<string, PlaybackRecord>, uid: string): PlaybackRecord =>
+	(records[uid] ??= { playCount: 0, pauseCount: 0, listenedMs: 0 });
+
+const responseRecordFor = (
+	records: Record<string, ResponseTelemetry>,
+	uid: string
+): ResponseTelemetry => (records[uid] ??= { selectionCount: 0 });
+
+const stopListening = (record: PlaybackRecord, now: number) => {
+	if (record.playingSinceMs === undefined) return;
+	record.listenedMs += Math.max(0, now - record.playingSinceMs);
+	record.playingSinceMs = undefined;
+};
+
 function resolveStimulusPhase(audioCount: number, responseCount: number): ScreenPhase {
 	if (audioCount === 0 && responseCount === 0) return "ready";
 	if (audioCount === 0) return "response";
 	return "stimulus";
 }
-
-const emptyAudioState = (): AudioRuntimeState => ({
-	started: false,
-	completed: false,
-	playCount: 0,
-	pauseCount: 0,
-	listenedMs: 0,
-});
-
-const emptyResponseState = (): ResponseRuntimeState => ({
-	completed: false,
-	selectionCount: 0,
-});
-
-const closeListeningInterval = (state: AudioRuntimeState, now: number): AudioRuntimeState => {
-	if (state.playingSinceMs === undefined) return state;
-	return {
-		...state,
-		listenedMs: state.listenedMs + Math.max(0, now - state.playingSinceMs),
-		playingSinceMs: undefined,
-	};
-};
 
 function buildRuntimeSnapshot(
 	entityChildren: ScreenChildEntity[],
@@ -60,12 +56,12 @@ function buildRuntimeSnapshot(
 
 	const audioStates: Record<string, AudioRuntimeState> = {};
 	for (const entity of audioEntities) {
-		audioStates[entity.uid] = emptyAudioState();
+		audioStates[entity.uid] = { started: false, completed: false };
 	}
 
-	const responseStates: Record<string, ResponseRuntimeState> = {};
+	const responseStates: Record<string, { completed: boolean; value?: unknown }> = {};
 	for (const entity of responseEntities) {
-		responseStates[entity.uid] = emptyResponseState();
+		responseStates[entity.uid] = { completed: false };
 	}
 
 	const phase = hasFixationGate
@@ -106,6 +102,10 @@ export const ScreenRuntimeProvider: React.FC<ScreenRuntimeProviderProps> = ({
 	const startedAtRef = useRef(performance.now());
 	const completedRef = useRef(false);
 	const completionExtrasRef = useRef<ScreenCompletionData["extras"]>(undefined);
+	// Telemetry lives in refs, not state: eye tracking effects depend on audioStates and
+	// responseStates, and extra updates there would restart gaze capture.
+	const playbackRef = useRef<Record<string, PlaybackRecord>>({});
+	const responseTelemetryRef = useRef<Record<string, ResponseTelemetry>>({});
 
 	const [phase, setPhase] = useState(initialSnapshot.phase);
 	const [audioStates, setAudioStates] = useState(initialSnapshot.audioStates);
@@ -123,57 +123,49 @@ export const ScreenRuntimeProvider: React.FC<ScreenRuntimeProviderProps> = ({
 	}, [audioEntities.length, responseEntities.length]);
 
 	const markAudioStarted = useCallback((entityUid: string, fromStart: boolean) => {
-		const now = performance.now();
+		const playback = playbackRecordFor(playbackRef.current, entityUid);
+		if (playback.playingSinceMs === undefined) {
+			if (fromStart) playback.playCount += 1;
+			playback.playingSinceMs = performance.now();
+		}
+
 		setAudioStates((prev) => {
-			const currentState = prev[entityUid] ?? emptyAudioState();
-			if (currentState.playingSinceMs !== undefined) {
+			const currentState = prev[entityUid];
+			if (currentState?.started) {
 				return prev;
 			}
 
 			return {
 				...prev,
 				[entityUid]: {
-					...currentState,
 					started: true,
-					startedAtMs: currentState.startedAtMs ?? now,
-					playCount: currentState.playCount + (fromStart ? 1 : 0),
-					playingSinceMs: now,
+					completed: currentState?.completed ?? false,
+					startedAtMs: performance.now(),
+					completedAtMs: currentState?.completedAtMs,
 				},
 			};
 		});
 	}, []);
 
 	const markAudioPaused = useCallback((entityUid: string) => {
-		const now = performance.now();
-		setAudioStates((prev) => {
-			const currentState = prev[entityUid];
-			if (!currentState || currentState.playingSinceMs === undefined) {
-				return prev;
-			}
-
-			return {
-				...prev,
-				[entityUid]: {
-					...closeListeningInterval(currentState, now),
-					pauseCount: currentState.pauseCount + 1,
-				},
-			};
-		});
+		const playback = playbackRecordFor(playbackRef.current, entityUid);
+		if (playback.playingSinceMs === undefined) return;
+		stopListening(playback, performance.now());
+		playback.pauseCount += 1;
 	}, []);
 
 	const markAudioCompleted = useCallback(
 		(entityUid: string) => {
-			const now = performance.now();
+			stopListening(playbackRecordFor(playbackRef.current, entityUid), performance.now());
 			setAudioStates((prev) => {
-				const currentState = closeListeningInterval(prev[entityUid] ?? emptyAudioState(), now);
+				const currentState = prev[entityUid];
 				const next = {
 					...prev,
 					[entityUid]: {
-						...currentState,
 						started: true,
 						completed: true,
-						startedAtMs: currentState.startedAtMs ?? now,
-						completedAtMs: currentState.completedAtMs ?? now,
+						startedAtMs: currentState?.startedAtMs ?? performance.now(),
+						completedAtMs: currentState?.completedAtMs ?? performance.now(),
 					},
 				};
 				const allDone = Object.values(next).every((s) => s.completed);
@@ -190,31 +182,18 @@ export const ScreenRuntimeProvider: React.FC<ScreenRuntimeProviderProps> = ({
 	);
 
 	const markResponseSelected = useCallback((entityUid: string) => {
-		const now = performance.now();
-		setResponseStates((prev) => {
-			const currentState = prev[entityUid] ?? emptyResponseState();
-			if (currentState.completed) return prev;
-
-			return {
-				...prev,
-				[entityUid]: {
-					...currentState,
-					selectionCount: currentState.selectionCount + 1,
-					firstSelectedAtMs: currentState.firstSelectedAtMs ?? now,
-				},
-			};
-		});
+		const record = responseRecordFor(responseTelemetryRef.current, entityUid);
+		if (record.completedAtMs !== undefined) return;
+		record.selectionCount += 1;
+		record.firstSelectedAtMs ??= performance.now();
 	}, []);
 
 	const markResponseCompleted = useCallback(
 		(entityUid: string, value: unknown) => {
-			const now = performance.now();
+			responseRecordFor(responseTelemetryRef.current, entityUid).completedAtMs ??=
+				performance.now();
 			setResponseStates((prev) => {
-				const currentState = prev[entityUid] ?? emptyResponseState();
-				const next = {
-					...prev,
-					[entityUid]: { ...currentState, completed: true, value, completedAtMs: now },
-				};
+				const next = { ...prev, [entityUid]: { completed: true, value } };
 				const allDone = Object.values(next).every((s) => s.completed);
 				if (allDone) {
 					setPhase((currentPhase) =>
@@ -239,27 +218,30 @@ export const ScreenRuntimeProvider: React.FC<ScreenRuntimeProviderProps> = ({
 		completedRef.current = true;
 
 		const responses: Record<string, unknown> = {};
-		const responseTelemetry: Record<string, ResponseTelemetry> = {};
 		for (const [uid, state] of Object.entries(responseStates)) {
 			if (state.completed && state.value !== undefined) {
 				responses[uid] = state.value;
 			}
-			responseTelemetry[uid] = {
-				selectionCount: state.selectionCount,
-				firstSelectedAtMs: state.firstSelectedAtMs,
-				completedAtMs: state.completedAtMs,
+		}
+
+		// Audio still playing when the participant advanced counts up to that moment, not up to
+		// now: finalizing can wait for eye tracking to finish storing its capture.
+		const advancedAt = pendingAdvanceRequestRef.current.at;
+		const audioTelemetry: NonNullable<ScreenCompletionData["audioTelemetry"]> = {};
+		for (const [uid, state] of Object.entries(audioStates)) {
+			const { playingSinceMs, ...playback } = playbackRecordFor(playbackRef.current, uid);
+			const stillPlayingMs =
+				playingSinceMs === undefined ? 0 : Math.max(0, advancedAt - playingSinceMs);
+			audioTelemetry[uid] = {
+				...state,
+				...playback,
+				listenedMs: playback.listenedMs + stillPlayingMs,
 			};
 		}
 
-		// Audio still playing when the participant advanced counts up to now.
-		const finishedAt = performance.now();
-		const audioTelemetry: Record<string, AudioRuntimeState> = {};
-		for (const [uid, state] of Object.entries(audioStates)) {
-			const { playingSinceMs: _playingSinceMs, ...telemetry } = closeListeningInterval(
-				state,
-				finishedAt
-			);
-			audioTelemetry[uid] = telemetry;
+		const responseTelemetry: NonNullable<ScreenCompletionData["responseTelemetry"]> = {};
+		for (const uid of Object.keys(responseStates)) {
+			responseTelemetry[uid] = { ...responseRecordFor(responseTelemetryRef.current, uid) };
 		}
 
 		onComplete({

@@ -283,30 +283,28 @@ export interface AdvanceRequest {
 export interface AudioRuntimeState {
 	started: boolean;
 	completed: boolean;
-	/** First playback start (performance.now). */
 	startedAtMs?: number;
-	/** First time playback reached the end (performance.now). */
 	completedAtMs?: number;
+}
+
+// Playback and response telemetry are kept outside React state on purpose: eye tracking
+// effects depend on audioStates/responseStates, and extra updates would restart capture.
+
+export interface AudioPlaybackTelemetry {
 	/** Playbacks started from the beginning: 1 = heard once, 2 = one replay. Resumes are not counted. */
 	playCount: number;
 	/** Pauses made by the participant. */
 	pauseCount: number;
-	/** Total time the audio was actually playing, across all plays. */
+	/** Total time the audio was actually playing, up to the moment the participant advanced. */
 	listenedMs: number;
-	/** Set while playing; used to accumulate listenedMs. */
-	playingSinceMs?: number;
 }
 
-export interface ResponseRuntimeState {
-	completed: boolean;
-	value?: unknown;
+export interface ResponseTelemetry {
 	/** Times the participant picked or changed an answer before confirming. */
 	selectionCount: number;
 	firstSelectedAtMs?: number;
 	completedAtMs?: number;
 }
-
-export type ResponseTelemetry = Omit<ResponseRuntimeState, "completed" | "value">;
 
 export interface RatingOption {
 	value: number;
@@ -327,7 +325,7 @@ export interface ScreenRuntime {
 	phase: ScreenPhase;
 
 	audioStates: Record<string, AudioRuntimeState>; // key is entity uid of AudioPlayer
-	responseStates: Record<string, ResponseRuntimeState>; // key is entity uid of RatingScale or TextHighlighter
+	responseStates: Record<string, { completed: boolean; value?: unknown }>; // key is entity uid of RatingScale or TextHighlighter
 
 	fixationActive: boolean;
 	pendingAdvanceRequest: AdvanceRequest | null;
@@ -367,7 +365,7 @@ export interface ScreenCompletionData {
 	startedAt: number;
 	completedAt: number;
 	responses: Record<string, unknown>;
-	audioTelemetry?: Record<string, AudioRuntimeState>;
+	audioTelemetry?: Record<string, AudioRuntimeState & AudioPlaybackTelemetry>;
 	responseTelemetry?: Record<string, ResponseTelemetry>;
 	presentation?: LateralCounterbalancePresentation;
 	extras?: {
