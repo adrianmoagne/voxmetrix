@@ -133,6 +133,25 @@ const getAudioTelemetry = (step: JsonRecord): JsonRecord => {
 	return isRecord(step.audioTelemetry) ? step.audioTelemetry : {};
 };
 
+/** Entity uid -> column it showed, from a ShuffleStimuli record on the step. */
+const getShownColumns = (step: JsonRecord): Map<string, string> => {
+	const shownColumns = new Map<string, string>();
+	const assignments = isRecord(step.shuffle) ? step.shuffle.assignments : undefined;
+	if (!Array.isArray(assignments)) return shownColumns;
+
+	for (const assignment of assignments) {
+		if (!isRecord(assignment)) continue;
+		const entityUid = normalizeString(assignment.entityUid);
+		const shownColumn = normalizeString(assignment.shownColumn);
+		if (entityUid && shownColumn) shownColumns.set(entityUid, shownColumn);
+	}
+	return shownColumns;
+};
+
+/** A binding redirected to the column the entity actually showed in this trial. */
+const withShownColumn = <T>(value: Bound<T>, shownColumn: string | undefined): Bound<T> =>
+	shownColumn && isBinding(value) ? { ...value, column: shownColumn } : value;
+
 const getResponseTelemetry = (step: JsonRecord): JsonRecord => {
 	return isRecord(step.responseTelemetry) ? step.responseTelemetry : {};
 };
@@ -210,11 +229,13 @@ const buildAudioContexts = (
 	if (!screen) return [];
 
 	const audioTelemetry = getAudioTelemetry(step);
+	const shownColumns = getShownColumns(step);
 
 	return screen.children
 		.filter((child) => child.kind === "AudioPlayer")
 		.map((child) => {
 			const telemetry = audioTelemetry[child.uid];
+			const shownColumn = shownColumns.get(child.uid);
 			const telemetryRecord = isRecord(telemetry) ? telemetry : undefined;
 
 			return {
@@ -222,7 +243,8 @@ const buildAudioContexts = (
 				name: child.name,
 				kind: child.kind,
 				label: resolveBound(child.props.label, row),
-				source: resolveBound(child.props.audioSrc, row),
+				source: resolveBound(withShownColumn(child.props.audioSrc, shownColumn), row),
+				...(shownColumn ? { shownColumn } : {}),
 				telemetry,
 				listenDurationMs: telemetryRecord
 					? durationBetween(

@@ -92,6 +92,7 @@ export type ScreenChildEntity =
 			{
 				prompt: Bound<string>;
 				scale: Bound<RatingScaleOption[]>;
+				layout?: Bound<RatingScaleLayout>;
 				confirmLabel?: Bound<string>;
 				lockedHint?: Bound<string>;
 				required?: Bound<boolean>;
@@ -164,6 +165,13 @@ export type ScreenBehaviorEntity =
 				columnB: string;
 				leftColumn: string;
 				rightColumn: string;
+			}
+	  >
+	| BaseEntity<
+			"ShuffleStimuli",
+			{
+				/** Entities whose bound columns are randomly permuted among them on each trial. */
+				entityUids: string[];
 			}
 	  >;
 
@@ -314,6 +322,9 @@ export interface RatingOption {
 /** A plain string is a legacy option: the label at index i scores i + 1. */
 export type RatingScaleOption = string | RatingOption;
 
+/** How a RatingScale arranges its options; "vertical" is the default. */
+export type RatingScaleLayout = "vertical" | "horizontal";
+
 /** What a RatingScale submits; index refers to the scale as shown. */
 export interface RatingResponse {
 	index: number;
@@ -358,6 +369,20 @@ export interface LateralCounterbalancePresentation {
 	presentedRight: string;
 }
 
+export interface StimulusShuffleAssignment {
+	entityUid: string;
+	entityName: string;
+	/** Column the entity is bound to in the definition. */
+	column: string;
+	/** Column the entity actually showed in this trial. */
+	shownColumn: string;
+	value: unknown;
+}
+
+export interface StimulusShufflePresentation {
+	assignments: StimulusShuffleAssignment[];
+}
+
 export interface ScreenCompletionData {
 	screenUid: string;
 	rowUid?: string; // which spreadsheet row produced this screen
@@ -368,6 +393,7 @@ export interface ScreenCompletionData {
 	audioTelemetry?: Record<string, AudioRuntimeState & AudioPlaybackTelemetry>;
 	responseTelemetry?: Record<string, ResponseTelemetry>;
 	presentation?: LateralCounterbalancePresentation;
+	shuffle?: StimulusShufflePresentation;
 	extras?: {
 		/** Per-frame gaze samples (`GazeSample[]`), each with its frame time and audio position. */
 		gazeData?: unknown;

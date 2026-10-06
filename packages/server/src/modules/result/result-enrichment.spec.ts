@@ -297,4 +297,49 @@ describe("result enrichment", () => {
 		]);
 		expect(normalizeRatingOptions(undefined)).toEqual([]);
 	});
+
+	it("reports the audio each shuffled entity actually played", () => {
+		const definition = buildDefinition();
+		const screen = definition.blocks[0].steps[0];
+		if (screen.kind !== "Screen") throw new Error("Expected the fixture's first step to be a screen");
+		screen.children = [
+			{
+				uid: "audio-a",
+				kind: "AudioPlayer",
+				name: "Audio A",
+				props: { audioSrc: { kind: "binding", column: "system_1" } },
+				placement: basePlacement,
+				phase: "stimulus",
+			},
+			{
+				uid: "audio-b",
+				kind: "AudioPlayer",
+				name: "Audio B",
+				props: { audioSrc: { kind: "binding", column: "system_2" } },
+				placement: { ...basePlacement, order: 1 },
+				phase: "stimulus",
+			},
+		];
+		definition.spreadsheet.rows[0].values = {
+			system_1: "https://example.com/model-1.wav",
+			system_2: "https://example.com/model-2.wav",
+		};
+		const shuffle = {
+			assignments: [
+				{ entityUid: "audio-a", entityName: "Audio A", column: "system_1", shownColumn: "system_2" },
+				{ entityUid: "audio-b", entityName: "Audio B", column: "system_2", shownColumn: "system_1" },
+			],
+		};
+
+		const [step] = enrichResultSteps(
+			[{ screenUid: "screen-1", rowUid: "row-1", startedAt: 0, completedAt: 1, responses: {}, shuffle }],
+			definition
+		) as any[];
+
+		expect(step.shuffle).toEqual(shuffle);
+		expect(step.audios).toMatchObject([
+			{ entityUid: "audio-a", source: "https://example.com/model-2.wav", shownColumn: "system_2" },
+			{ entityUid: "audio-b", source: "https://example.com/model-1.wav", shownColumn: "system_1" },
+		]);
+	});
 });

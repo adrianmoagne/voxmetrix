@@ -6,6 +6,7 @@ import type {
 	SpreadsheetRow,
 	ScreenCompletionData,
 	LateralCounterbalancePresentation,
+	StimulusShufflePresentation,
 } from "@/@types/screen.model";
 import { defaultCalibrationConfig } from "@/@types/screen.model";
 import { checkValidationFailed, type ValidationResponse } from "@/utils/validationUtils";
@@ -14,6 +15,7 @@ import {
 	type AudioProgressState,
 } from "@/utils/audioProgressUtils";
 import { applyRowPresentationForStep } from "@/utils/lateralCounterbalanceUtils";
+import { applyStimulusShuffle } from "@/utils/stimulusShuffleUtils";
 
 const EYE_TRACKING_STEP_KINDS = new Set(["CalibrationStep", "ValidationStep"]);
 
@@ -50,6 +52,7 @@ export interface ExecutionStep {
 	step: StepEntity;
 	row: SpreadsheetRow;
 	presentation?: LateralCounterbalancePresentation;
+	shuffle?: StimulusShufflePresentation;
 }
 
 function shuffleRows(rows: SpreadsheetRow[], mode: string | undefined): SpreadsheetRow[] {
@@ -131,7 +134,14 @@ export function buildExecutionQueue(
 					row,
 					step
 				);
-				queue.push({ index: index++, step, row: presentationRow, presentation });
+				const { screen: trialStep, shuffle } = applyStimulusShuffle(step, presentationRow);
+				queue.push({
+					index: index++,
+					step: trialStep,
+					row: presentationRow,
+					presentation,
+					shuffle,
+				});
 				continue;
 			}
 
@@ -239,6 +249,7 @@ export function useExperimentEngine({
 			const mergedData: ScreenCompletionData = {
 				...data,
 				presentation: data.presentation ?? executionStep?.presentation,
+				shuffle: data.shuffle ?? executionStep?.shuffle,
 			};
 
 			if (step?.kind === "ValidationStep") {

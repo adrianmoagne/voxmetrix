@@ -27,6 +27,8 @@ export interface RatingOption {
 /** A plain string is a legacy option: the label at index i scores i + 1. */
 export type RatingScaleOption = string | RatingOption;
 
+export type RatingScaleLayout = "vertical" | "horizontal";
+
 export interface Placement {
 	area: ItemArea;
 	position: ItemPosition;
@@ -89,6 +91,7 @@ export type ScreenChildEntity =
 			{
 				prompt: Bound<string>;
 				scale: Bound<RatingScaleOption[]>;
+				layout?: Bound<RatingScaleLayout>;
 				confirmLabel?: Bound<string>;
 				lockedHint?: Bound<string>;
 				required?: Bound<boolean>;
@@ -167,6 +170,12 @@ export type ScreenBehaviorEntity =
 				columnB: string;
 				leftColumn: string;
 				rightColumn: string;
+			}
+	  >
+	| BaseEntity<
+			"ShuffleStimuli",
+			{
+				entityUids: string[];
 			}
 	  >;
 

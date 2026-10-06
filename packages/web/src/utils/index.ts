@@ -9,3 +9,4 @@ export * from "./ratingScale";
 export * from "./validationUtils";
 export * from "./audioProgressUtils";
 export * from "./lateralCounterbalanceUtils";
+export * from "./stimulusShuffleUtils";

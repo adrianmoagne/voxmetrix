@@ -18,6 +18,7 @@ import {
 	applyRowPresentationForStep,
 	defaultLateralCounterbalanceConfig,
 } from "@/utils/lateralCounterbalanceUtils";
+import { applyStimulusShuffle } from "@/utils/stimulusShuffleUtils";
 import EntityCanvas from "./EntityCanvas";
 import ChildrenTab from "./ChildrenTab";
 import BehaviorsTab from "./BehaviorsTab";
@@ -103,6 +104,13 @@ function defaultBehaviorEntity(kind: ScreenBehaviorEntity["kind"]): ScreenBehavi
 				kind,
 				name: "Lateral Counterbalance",
 				props: defaultLateralCounterbalanceConfig(),
+			};
+		case "ShuffleStimuli":
+			return {
+				uid,
+				kind,
+				name: "Shuffle Stimuli",
+				props: { entityUids: [] },
 			};
 	}
 }
@@ -252,10 +260,12 @@ const ScreenEntityEditor: React.FC<ScreenEntityEditorProps> = ({
 
 	const previewPresentation = useMemo(() => {
 		if (!previewRow) {
-			return { row: previewRow, presentation: undefined };
+			return { row: previewRow, screen: previewScreen };
 		}
 
-		return applyRowPresentationForStep(previewRow, previewScreen);
+		const { row } = applyRowPresentationForStep(previewRow, previewScreen);
+		const { screen } = applyStimulusShuffle(previewScreen, row);
+		return { row, screen };
 	}, [previewRow, previewScreen, previewSeed]);
 
 	const gridTypes: GridType[] = ["1x1", "2x2", "3x3"];
@@ -358,6 +368,7 @@ const ScreenEntityEditor: React.FC<ScreenEntityEditorProps> = ({
 					{activeTab === "properties" && (
 						<PropertiesTab
 							entity={selectedEntity}
+							screenChildren={editorState.children}
 							gridType={editorState.gridType}
 							onUpdateName={(uid, name) =>
 								dispatch(screenEntityEditorActions.updateChildName({ uid, name }))
@@ -410,7 +421,7 @@ const ScreenEntityEditor: React.FC<ScreenEntityEditorProps> = ({
 						) : (
 							<ScreenEntityRenderer
 								key={`${previewScreen.uid}-${previewRow?.uid ?? "preview"}-${previewSeed}`}
-								screen={previewScreen}
+								screen={previewPresentation.screen}
 								row={previewPresentation.row}
 								onComplete={handlePreviewComplete}
 								audioProgress={

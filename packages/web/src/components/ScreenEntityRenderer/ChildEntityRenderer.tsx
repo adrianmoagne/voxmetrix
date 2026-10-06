@@ -52,6 +52,7 @@ const ChildEntityRenderer: React.FC<ChildEntityRendererProps> = ({ entity, row }
 					uid={entity.uid}
 					prompt={resolveBound(entity.props.prompt, row)}
 					options={normalizeRatingOptions(resolveBound(entity.props.scale, row))}
+					layout={entity.props.layout ? resolveBound(entity.props.layout, row) : undefined}
 					confirmLabel={
 						entity.props.confirmLabel ? resolveBound(entity.props.confirmLabel, row) : undefined
 					}

@@ -1,5 +1,5 @@
 import { Typography } from "@leux/ui";
-import { Eye, SkipForward, Crosshair, Trash2, List, Shuffle } from "react-feather";
+import { Eye, SkipForward, Crosshair, Trash2, List, Shuffle, Columns } from "react-feather";
 import { useTheme } from "@emotion/react";
 import type { ScreenBehaviorEntity } from "@/@types/screen.model";
 import S from "./ScreenEntityEditor.styles";
@@ -11,16 +11,25 @@ const behaviorDefs: {
 	label: string;
 	description: string;
 	icon: React.FC<{ size?: number; color?: string }>;
+	/** Listed only on screens that already use it; new screens can't add it. */
+	legacy?: boolean;
 }[] = [
 		{ kind: "EyeTracking", label: "Eye Tracking", description: "Enable gaze tracking", icon: Eye },
 		{ kind: "AdvanceRule", label: "Advance Rule", description: "Control screen advancement", icon: SkipForward },
 		{ kind: "FixationGate", label: "Fixation Gate", description: "Fixation cross before content", icon: Crosshair },
 		{ kind: "AudioProgress", label: "Audio Progress", description: "Show audio trial counter (e.g. 1/60)", icon: List },
 		{
-			kind: "LateralCounterbalance",
-			label: "Lateral Counterbalance",
-			description: "Randomly swap left/right each trial",
+			kind: "ShuffleStimuli",
+			label: "Shuffle Stimuli",
+			description: "Randomly swap which entity shows which column each trial",
 			icon: Shuffle,
+		},
+		{
+			kind: "LateralCounterbalance",
+			label: "Lateral Counterbalance (legacy)",
+			description: "Replaced by Shuffle Stimuli; kept for existing screens",
+			icon: Columns,
+			legacy: true,
 		},
 	];
 
@@ -48,6 +57,7 @@ const BehaviorsTab: React.FC<BehaviorsTabProps> = ({
 			</S.SectionLabel>
 			{behaviorDefs.map((def) => {
 				const active = behaviors.find((b) => b.kind === def.kind);
+				if (def.legacy && !active) return null;
 				const Icon = def.icon;
 				return (
 					<S.ComponentToggle

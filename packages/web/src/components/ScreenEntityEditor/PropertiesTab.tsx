@@ -8,11 +8,13 @@ import type {
 } from "@/@types/screen.model";
 import BoundField from "./BoundField";
 import RatingOptionsField from "./RatingOptionsField";
+import ShuffleStimuliField from "./ShuffleStimuliField";
 import PlacementEditor from "./PlacementEditor";
 import S from "./ScreenEntityEditor.styles";
 import { DEFAULT_TEXT_FONT_SIZE } from "../ScreenEntityRenderer/children/TextEntity";
 import {
 	DEFAULT_RATING_CONFIRM_LABEL,
+	DEFAULT_RATING_LAYOUT,
 	DEFAULT_RATING_LOCKED_HINT,
 } from "../ScreenEntityRenderer/children/RatingScaleEntity";
 import {
@@ -22,6 +24,7 @@ import {
 
 interface PropertiesTabProps {
 	entity: ScreenChildEntity | ScreenBehaviorEntity | null;
+	screenChildren: ScreenChildEntity[];
 	gridType: GridType;
 	onUpdateName: (uid: string, name: string) => void;
 	onUpdateChildProps: (uid: string, props: Record<string, unknown>) => void;
@@ -31,6 +34,7 @@ interface PropertiesTabProps {
 
 const PropertiesTab: React.FC<PropertiesTabProps> = ({
 	entity,
+	screenChildren,
 	gridType,
 	onUpdateName,
 	onUpdateChildProps,
@@ -70,7 +74,11 @@ const PropertiesTab: React.FC<PropertiesTabProps> = ({
 				{"placement" in entity ? (
 					<ChildProps entity={entity} onChange={handlePropChange} />
 				) : (
-					<BehaviorProps entity={entity} onChange={handlePropChange} />
+					<BehaviorProps
+						entity={entity}
+						screenChildren={screenChildren}
+						onChange={handlePropChange}
+					/>
 				)}
 			</S.PropertySection>
 
@@ -141,6 +149,16 @@ const ChildProps: React.FC<{
 				<>
 					<BoundField label="Prompt" value={entity.props.prompt} onChange={(v) => onChange(uid, "prompt", v)} placeholder="Rating prompt" />
 					<RatingOptionsField label="Scale" value={entity.props.scale} onChange={(v) => onChange(uid, "scale", v)} />
+					<BoundField
+						label="Layout"
+						value={entity.props.layout ?? DEFAULT_RATING_LAYOUT}
+						onChange={(v) => onChange(uid, "layout", v)}
+						type="select"
+						options={[
+							{ label: "Vertical list", value: "vertical" },
+							{ label: "Horizontal row", value: "horizontal" },
+						]}
+					/>
 					<BoundField label="Confirm Button" value={entity.props.confirmLabel ?? ""} onChange={(v) => onChange(uid, "confirmLabel", v)} placeholder={DEFAULT_RATING_CONFIRM_LABEL} />
 					<BoundField label="Locked Hint" value={entity.props.lockedHint ?? ""} onChange={(v) => onChange(uid, "lockedHint", v)} placeholder={DEFAULT_RATING_LOCKED_HINT} />
 				</>
@@ -167,8 +185,9 @@ const ChildProps: React.FC<{
 
 const BehaviorProps: React.FC<{
 	entity: ScreenBehaviorEntity;
+	screenChildren: ScreenChildEntity[];
 	onChange: (uid: string, key: string, value: Bound<unknown> | string) => void;
-}> = ({ entity, onChange }) => {
+}> = ({ entity, screenChildren, onChange }) => {
 	const uid = entity.uid;
 
 	switch (entity.kind) {
@@ -284,6 +303,14 @@ const BehaviorProps: React.FC<{
 						columns on each spreadsheet row.
 					</Typography>
 				</>
+			);
+		case "ShuffleStimuli":
+			return (
+				<ShuffleStimuliField
+					entityUids={entity.props.entityUids ?? []}
+					screenChildren={screenChildren}
+					onChange={(entityUids) => onChange(uid, "entityUids", entityUids)}
+				/>
 			);
 		default:
 			return null;
