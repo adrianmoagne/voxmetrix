@@ -1,0 +1,1240 @@
+{
+	"$type": "voxmetrix/experiment-definition",
+	"exportedAt": "2026-10-06T16:08:42.934Z",
+	"definition": {
+		"schemaVersion": 2,
+		"uid": "ef5a6b93-ab60-4577-a4b3-c38d87eaba41",
+		"name": "XAB",
+		"description": "Referência X (natural) e amostras A/B (Modelo A x Modelo B, lados aleatórios): qual é mais semelhante a X?",
+		"blocks": [
+			{
+				"uid": "07f5feeb-7991-483f-8f3c-f2e81c5ba10e",
+				"kind": "Block",
+				"name": "Instruções",
+				"props": {},
+				"steps": [
+					{
+						"uid": "2b3319c4-f0e1-4ad7-8872-afd309a89836",
+						"kind": "Screen",
+						"name": "TCLE",
+						"props": {
+							"grid": {
+								"type": "3x3",
+								"subtype": "equal"
+							}
+						},
+						"children": [
+							{
+								"uid": "0d82e885-9169-445e-99c9-102e7f1fb9ae",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 0
+								},
+								"kind": "Text",
+								"props": {
+									"text": "Gostaríamos de convidá-lo(a) a participar, como voluntário(a), de uma pesquisa sobre avaliação da qualidade da fala gerada por computador. Neste estudo, investigamos como as pessoas percebem a qualidade de diferentes tipos de fala, incluindo fala natural (humana) e fala sintetizada (gerada por sistemas computacionais). Durante o experimento, você ouvirá áudios e verá imagens na tela. Em alguns momentos, serão apresentadas duas imagens: uma representando um falante humano (fala natural) e outra representando um robô ou avatar (fala sintetizada). Em determinadas tarefas, analisaremos o movimento e o tempo do seu olhar na tela para entender sua percepção. A pesquisa envolve duas atividades principais: 1. Avaliar a qualidade da fala por meio de respostas simples, como escolher entre opções apresentadas ou atribuir notas após ouvir os áudios. 2. Registro do movimento do olhar durante a tarefa, utilizando a webcam do seu computador. A pesquisa será realizada por meio de uma plataforma web acessada pelo navegador de internet do participante. Os avaliadores receberão o convite para participar via e-mail, com o link do teste e a avaliação poderá ser realizada das residências ou da universidade, em um lugar sem barulho. O avaliador é aconselhado a usar fones de ouvido.",
+									"fontSize": 15,
+									"align": "left"
+								},
+								"phase": "all"
+							},
+							{
+								"uid": "99d62a2f-3b49-4137-b0bd-0c3f8c37a15e",
+								"name": "ContinueButton",
+								"placement": {
+									"area": "footer",
+									"position": "BC",
+									"order": 1
+								},
+								"kind": "ContinueButton",
+								"props": {
+									"label": "Aceitar"
+								},
+								"phase": "ready"
+							},
+							{
+								"uid": "44e629fa-58d1-47f7-9ff8-d44c9a3d5a31",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 2,
+									"vAlign": "top"
+								},
+								"kind": "Text",
+								"props": {
+									"text": "Esclarecemos que sua participação é totalmente voluntária, podendo recusar-se a participar, ou mesmo desistir a qualquer momento, sem que isto acarrete qualquer ônus ou prejuízo a sua pessoa. Esclarecemos, também, que informações, como o IP de seu computador, não serão armazenadas após o teste. Imagens ou vídeos da sua face durante a captura da webcam também não são armazenados, apenas as coordenadas da fixação ocular na tela. Os dados capturados pela webcam serão utilizados exclusivamente para estimar padrões de movimento e fixação do olhar durante a tarefa experimental. Nenhuma imagem ou gravação de vídeo será armazenada ou divulgada. O processamento ocorre automaticamente durante a realização da tarefa e apenas os dados derivados necessários para análise científica (como coordenadas de fixação na tela e tempos de resposta) são registrados.",
+									"fontSize": 15,
+									"align": "left"
+								},
+								"phase": "all"
+							},
+							{
+								"uid": "6b64522a-a993-4149-82d5-608aa880f19b",
+								"name": "Text",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 3,
+									"vAlign": "top"
+								},
+								"kind": "Text",
+								"props": {
+									"text": "Os pesquisadores tratarão a sua identidade com padrões profissionais de sigilo, atendendo a legislação brasileira (Resolução Nº 466/12 do Conselho Nacional de Saúde), utilizando as informações somente para fins acadêmicos e científicos. Os dados coletados nesta pesquisa serão armazenados em ambiente digital seguro, com acesso restrito aos pesquisadores envolvidos no projeto. As informações que possam identificar o participante serão mantidas por até 1 ano após o término da coleta de dados e, após esse período, serão excluídas ou tornadas anônimas. Os dados anonimizados, que não permitem a identificação dos participantes, poderão ser utilizados para fins acadêmicos e científicos e eventualmente disponibilizados em repositórios públicos (por exemplo, em plataformas como GitHub), com o objetivo de promover a transparência e a reprodutibilidade da pesquisa. O pesquisador responsável pelo estudo será o encarregado pela guarda, pelo controle de acesso e pelo uso adequado dos dados coletados nesta pesquisa",
+									"align": "left",
+									"fontSize": 15
+								},
+								"phase": "all"
+							},
+							{
+								"uid": "7845990e-25ca-4b6f-9ca1-fabdbae7d748",
+								"name": "Text",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 4
+								},
+								"kind": "Text",
+								"props": {
+									"text": "É possível que você sinta leve desconforto por se manter sentado(a) e parcialmente imóvel durante a sessão. No entanto, buscamos minimizar ao máximo esse desconforto, pedindo que realize a tarefa em local tranquilo e confortável e realizaremos o teste com a duração média de 30 minutos. Você encontra-se livre para encerrar a atividade a qualquer momento. Os riscos envolvidos na realização da tarefa são mínimos, similares aos envolvidos em atividades diárias como uso de computador e de televisão. Você não pagará e nem será remunerado(a) por sua participação. Sua participação voluntária irá, contudo, contribuir para as pesquisas em Processamento de Línguas Naturais, sobre avaliação e desenvolvimento de métodos de síntese de fala. Os resultados da pesquisa poderão ser divulgados em artigos científicos e eventos acadêmicos, sempre de forma agregada e sem qualquer identificação dos participantes.",
+									"fontSize": 15,
+									"align": "left"
+								},
+								"phase": "all"
+							},
+							{
+								"uid": "1d31bfb7-b07b-4a9d-9de4-881ffe0ed21d",
+								"name": "Text",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 6
+								},
+								"kind": "Text",
+								"props": {
+									"text": "Informações institucionais e de contato foram omitidas nesta versão."
+								},
+								"phase": "all"
+							},
+							{
+								"uid": "ea010968-ad77-405e-81fc-f9546512279d",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": -1
+								},
+								"kind": "Text",
+								"props": {
+									"text": "Termo de Consentimento Livre e Esclarecido (TCLE)",
+									"fontSize": 28
+								},
+								"phase": "all"
+							},
+							{
+								"uid": "d38fc0f5-a3cb-4313-9573-5c4c5a29a321",
+								"name": "Text",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 5
+								},
+								"kind": "Text",
+								"props": {
+									"text": "Outras informações ",
+									"fontSize": 23
+								},
+								"phase": "all"
+							},
+							{
+								"uid": "4fffae03-8024-439e-9391-1de6a844d936",
+								"name": "Text",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 7
+								},
+								"kind": "Text",
+								"props": {
+									"text": "Declaração de leitura do termo ",
+									"fontSize": 23
+								},
+								"phase": "all"
+							},
+							{
+								"uid": "580ff761-de55-4a95-94be-5294f6d227f3",
+								"name": "Text",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 8
+								},
+								"kind": "Text",
+								"props": {
+									"text": "Para prosseguir para a pesquisa, o participante deverá declarar que leu e compreendeu as informações apresentadas neste Termo de Consentimento Livre e Esclarecido. O prosseguimento para o experimento somente será possível após a confirmação de que o participante leu este documento. "
+								},
+								"phase": "all"
+							},
+							{
+								"uid": "559883f7-6efe-4671-a3ab-83aec469baa3",
+								"name": "Text",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 9
+								},
+								"kind": "Text",
+								"props": {
+									"text": "Consentimento do Participante ",
+									"fontSize": 23
+								},
+								"phase": "all"
+							},
+							{
+								"uid": "a695fcef-87b7-461d-b078-374fd88805e2",
+								"name": "Text",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 10
+								},
+								"kind": "Text",
+								"props": {
+									"text": "Após a leitura deste documento e de ter tido a oportunidade de esclarecer todas as minhas dúvidas, acredito estar suficientemente informado(a), estando ciente também dos objetivos da pesquisa, dos procedimentos aos quais serei submetido(a), dos possíveis danos ou riscos deles provenientes e da garantia de confidencialidade e esclarecimentos sempre que desejar. Diante das informações apresentadas, concordo de forma livre e voluntária em participar deste estudo. O aceite deste Termo de Consentimento Livre e Esclarecido (TCLE) ocorrerá de forma eletrônica, por meio do clique no botão ACEITAR"
+								},
+								"phase": "all"
+							}
+						],
+						"behaviors": [
+							{
+								"uid": "7ceba85a-1f6f-4ec6-805e-53303d7c7c0e",
+								"kind": "AdvanceRule",
+								"name": "Advance Rule",
+								"props": {
+									"when": "continue-click"
+								}
+							}
+						]
+					},
+					{
+						"uid": "c5626127-198b-44ab-991e-09121e89179d",
+						"kind": "Screen",
+						"name": "treinamento_1",
+						"props": {
+							"grid": {
+								"type": "3x3",
+								"subtype": "equal"
+							}
+						},
+						"children": [
+							{
+								"uid": "bf319bb6-b8ce-4623-80c0-20d53da11723",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 0
+								},
+								"phase": "all",
+								"props": {
+									"text": "Treinamento - passo 1 de 1",
+									"fontSize": 23
+								}
+							},
+							{
+								"uid": "1469512d-6c42-4d35-8019-c97a8ed36b33",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 1
+								},
+								"phase": "all",
+								"props": {
+									"text": "Neste experimento, você ouvirá uma referência X (voz natural) e duas amostras, A e B.",
+									"fontSize": 20
+								}
+							},
+							{
+								"uid": "b5ebbe8d-15ed-43db-ac5d-94ab70bee20d",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 2
+								},
+								"phase": "all",
+								"props": {
+									"text": "- Indique qual das amostras, A ou B, é mais semelhante à referência X.",
+									"fontSize": 20
+								}
+							},
+							{
+								"uid": "7bdae310-d8a3-4e09-8f99-32e709389472",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 3
+								},
+								"phase": "all",
+								"props": {
+									"text": "- Ouça os áudios até o final antes de responder. É permitido ouvir cada áudio quantas vezes for necessário.",
+									"fontSize": 20
+								}
+							},
+							{
+								"uid": "a00a7b49-9892-4012-8b39-4b1c9b8f58e3",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 4
+								},
+								"phase": "all",
+								"props": {
+									"text": "- Use fones de ouvido e ajuste o volume do seu computador.",
+									"fontSize": 20
+								}
+							},
+							{
+								"uid": "2a4b3c86-4fdf-4174-b62d-e01be78a219e",
+								"kind": "ContinueButton",
+								"name": "ContinueButton",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 5
+								},
+								"phase": "ready",
+								"props": {
+									"label": "Continuar"
+								}
+							}
+						],
+						"behaviors": [
+							{
+								"uid": "c0fed54e-d888-4326-ad67-4bd00cdea33b",
+								"kind": "AdvanceRule",
+								"name": "Advance Rule",
+								"props": {
+									"when": "continue-click"
+								}
+							}
+						]
+					},
+					{
+						"uid": "67f863e1-57f1-4795-9357-5d6024695da5",
+						"kind": "Screen",
+						"name": "treinamento_concluido",
+						"props": {
+							"grid": {
+								"type": "3x3",
+								"subtype": "equal"
+							}
+						},
+						"children": [
+							{
+								"uid": "14e06624-0a8f-4800-ba64-ea697c41f2c9",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 0
+								},
+								"phase": "all",
+								"props": {
+									"text": "Treinamento - Concluído",
+									"fontSize": 23
+								}
+							},
+							{
+								"uid": "1ac93a53-258c-4034-91c2-e08aa39d488b",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 1
+								},
+								"phase": "all",
+								"props": {
+									"text": "Na próxima etapa o experimento será iniciado.",
+									"fontSize": 20
+								}
+							},
+							{
+								"uid": "47e30734-1e6c-4ad4-a47e-a54c2f6d6bbd",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 2
+								},
+								"phase": "all",
+								"props": {
+									"text": "Escute cada áudio com atenção quantas vezes for necessário.",
+									"fontSize": 20
+								}
+							},
+							{
+								"uid": "16f09d4c-604a-4783-8167-fe31bdf04933",
+								"kind": "ContinueButton",
+								"name": "ContinueButton",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 3
+								},
+								"phase": "ready",
+								"props": {
+									"label": "Continuar"
+								}
+							}
+						],
+						"behaviors": [
+							{
+								"uid": "0e2360bf-afae-4a96-9bb3-872584cdeabb",
+								"kind": "AdvanceRule",
+								"name": "Advance Rule",
+								"props": {
+									"when": "continue-click"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"uid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+				"kind": "Block",
+				"name": "Avaliação",
+				"props": {},
+				"steps": [
+					{
+						"uid": "57835379-59b7-4943-bb3d-9eddcbf24ca6",
+						"kind": "Screen",
+						"name": "xab",
+						"props": {
+							"grid": {
+								"type": "3x3",
+								"subtype": "equal"
+							}
+						},
+						"children": [
+							{
+								"uid": "764f1397-26bf-4cca-a46a-0e69515097ac",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 0
+								},
+								"phase": "all",
+								"props": {
+									"text": "X (referência)",
+									"fontSize": 20
+								}
+							},
+							{
+								"uid": "36892d0a-89ec-4946-a147-620b740eb483",
+								"kind": "AudioPlayer",
+								"name": "AudioPlayer",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 1
+								},
+								"phase": "stimulus",
+								"props": {
+									"audioSrc": {
+										"kind": "binding",
+										"column": "x_src"
+									},
+									"autoplay": false,
+									"hidden": false
+								}
+							},
+							{
+								"uid": "ce3a35bf-1f0b-4b56-b09f-9012ac391193",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 2
+								},
+								"phase": "all",
+								"props": {
+									"text": "A",
+									"fontSize": 20
+								}
+							},
+							{
+								"uid": "ba40ff61-f002-4e6d-a4e6-c8eb4d14ef03",
+								"kind": "AudioPlayer",
+								"name": "AudioPlayer",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 3
+								},
+								"phase": "stimulus",
+								"props": {
+									"audioSrc": {
+										"kind": "binding",
+										"column": "left_src"
+									},
+									"autoplay": false,
+									"hidden": false
+								}
+							},
+							{
+								"uid": "a19360dd-09e3-42eb-a0db-3b7b7092dccb",
+								"kind": "Text",
+								"name": "Text",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 4
+								},
+								"phase": "all",
+								"props": {
+									"text": "B",
+									"fontSize": 20
+								}
+							},
+							{
+								"uid": "79335a33-6e51-459b-b941-fdaf01d9511c",
+								"kind": "AudioPlayer",
+								"name": "AudioPlayer",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 5
+								},
+								"phase": "stimulus",
+								"props": {
+									"audioSrc": {
+										"kind": "binding",
+										"column": "right_src"
+									},
+									"autoplay": false,
+									"hidden": false
+								}
+							},
+							{
+								"uid": "558ac3ff-f046-4c29-b647-263467a7b08f",
+								"kind": "RatingScale",
+								"name": "RatingScale",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 6,
+									"vAlign": "top"
+								},
+								"phase": "response",
+								"props": {
+									"prompt": "Qual amostra é mais semelhante à referência X?",
+									"scale": [
+										{
+											"value": 1,
+											"label": "A"
+										},
+										{
+											"value": 2,
+											"label": "B"
+										}
+									],
+									"confirmLabel": "Confirmar",
+									"lockedHint": "Ouça todos os áudios até o final para responder.",
+									"layout": "horizontal"
+								}
+							}
+						],
+						"behaviors": [
+							{
+								"uid": "0b0a798c-a8c7-4068-8542-99bf8ca5b02a",
+								"kind": "AdvanceRule",
+								"name": "Advance Rule",
+								"props": {
+									"when": "responses-complete"
+								}
+							},
+							{
+								"uid": "238b14d3-9c0d-45b2-b86e-1badcbe93d97",
+								"kind": "AudioProgress",
+								"name": "Audio Progress",
+								"props": {
+									"label": "Avaliação"
+								}
+							},
+							{
+								"uid": "a750a64f-8331-41ad-bbac-eaed43765da4",
+								"kind": "LateralCounterbalance",
+								"name": "Lateral Counterbalance",
+								"props": {
+									"columnA": "model_a_src",
+									"columnB": "model_b_src",
+									"leftColumn": "left_src",
+									"rightColumn": "right_src"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"uid": "d53cf8f3-dc8e-4b1b-81a9-ba441fd8e3ed",
+				"kind": "Block",
+				"name": "Questionário final",
+				"props": {},
+				"steps": [
+					{
+						"uid": "a582eadd-50d0-4176-88f3-7d54e4b3cbd0",
+						"kind": "Screen",
+						"name": "New Screen",
+						"props": {
+							"grid": {
+								"type": "3x3",
+								"subtype": "equal"
+							}
+						},
+						"children": [
+							{
+								"uid": "90a6700f-312f-4589-8ec5-7982c4d3314c",
+								"name": "RatingScale",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 0
+								},
+								"kind": "RatingScale",
+								"props": {
+									"prompt": "A execução desta avaliação foi uma experiência agradável.",
+									"scale": [
+										"1 - Discordo totalmente",
+										"2",
+										"3",
+										"4",
+										"5 - Concordo totalmente"
+									]
+								},
+								"phase": "response"
+							},
+							{
+								"uid": "d6f68cda-7867-448e-a1d1-5baadcc55da8",
+								"name": "RatingScale",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 1
+								},
+								"kind": "RatingScale",
+								"props": {
+									"prompt": "As instruções deste método de avaliação foram claras e fáceis de entender",
+									"scale": [
+										"1 - Discordo totalmente",
+										"2",
+										"3",
+										"4",
+										"5 - Concordo totalmente"
+									]
+								},
+								"phase": "response"
+							},
+							{
+								"uid": "fc94fd46-1429-400e-9168-82af4ace4034",
+								"name": "RatingScale",
+								"placement": {
+									"area": "heading",
+									"position": "UC",
+									"order": 2
+								},
+								"kind": "RatingScale",
+								"props": {
+									"prompt": "Foi fácil realizar este método de avaliação sem cometer erros.",
+									"scale": [
+										"1 - Discordo totalmente",
+										"2",
+										"3",
+										"4",
+										"5 - Concordo totalmente"
+									]
+								},
+								"phase": "response"
+							},
+							{
+								"uid": "06e4da26-36b3-4170-a378-8df0bf221148",
+								"name": "RatingScale",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 3
+								},
+								"kind": "RatingScale",
+								"props": {
+									"prompt": "O tempo necessário para completar este método de avaliação foi adequado.",
+									"scale": [
+										"1 - Discordo totalmente",
+										"2",
+										"3",
+										"4",
+										"5 - Concordo totalmente"
+									]
+								},
+								"phase": "response"
+							},
+							{
+								"uid": "baf10c4f-4a5d-4b71-ad23-756fe23d29ba",
+								"name": "RatingScale",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 4
+								},
+								"kind": "RatingScale",
+								"props": {
+									"prompt": "Este método de avaliação gerou cansaço físico ou mental para ser concluído.",
+									"scale": [
+										"1 - Discordo totalmente",
+										"2",
+										"3",
+										"4",
+										"5 - Concordo totalmente"
+									]
+								},
+								"phase": "response"
+							},
+							{
+								"uid": "f2853325-05f9-4a25-a987-36d565abc228",
+								"name": "ContinueButton",
+								"placement": {
+									"area": "content",
+									"position": "C",
+									"order": 5
+								},
+								"kind": "ContinueButton",
+								"props": {
+									"label": "Continuar"
+								},
+								"phase": "ready"
+							}
+						],
+						"behaviors": [
+							{
+								"uid": "208a9edd-25e5-4ad7-9526-28a0c307ac3c",
+								"kind": "AdvanceRule",
+								"name": "Advance Rule",
+								"props": {
+									"when": "continue-click"
+								}
+							}
+						]
+					}
+				]
+			}
+		],
+		"spreadsheet": {
+			"columns": [
+				{
+					"key": "utterance",
+					"type": "string"
+				},
+				{
+					"key": "subset",
+					"type": "string"
+				},
+				{
+					"key": "x_src",
+					"type": "string"
+				},
+				{
+					"key": "model_a_src",
+					"type": "string"
+				},
+				{
+					"key": "model_b_src",
+					"type": "string"
+				}
+			],
+			"rows": [
+				{
+					"uid": "8337ddf6-b197-4f3f-a652-5f6aae44d48b",
+					"blockUid": "07f5feeb-7991-483f-8f3c-f2e81c5ba10e",
+					"values": {
+						"utterance": "",
+						"subset": "",
+						"x_src": "",
+						"model_a_src": "",
+						"model_b_src": ""
+					},
+					"fixed": true
+				},
+				{
+					"uid": "a1a150ae-98fa-43eb-b892-026bc2c28e66",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0001",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0001_hisqx8.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0001_yljist.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0001_rapslm.flac"
+					}
+				},
+				{
+					"uid": "837d6e99-6d81-4471-b465-69d90ec908e9",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0004",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0004_jewrze.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0004_m9xyf1.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0004_utgadf.flac"
+					}
+				},
+				{
+					"uid": "f1867af5-518a-4e90-8498-6f8038b170b6",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0005",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0005_ow3c1s.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0005_kryebk.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0005_lcrvw5.flac"
+					}
+				},
+				{
+					"uid": "cc2d8434-858f-4c4d-a8d1-e9ede2fe2210",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0007",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0007_zaabln.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0007_o6bicn.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0007_e4azq9.flac"
+					}
+				},
+				{
+					"uid": "49a07e80-af32-4c7b-bc4e-9cc2540e79c4",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0008",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0008_xkkv9m.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0008_ameza1.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0008_jco14b.flac"
+					}
+				},
+				{
+					"uid": "1794fec6-be23-4a1a-be55-a0c470d54305",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0010",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0010_mwj5qg.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0010_f7ddan.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0010_jcebfb.flac"
+					}
+				},
+				{
+					"uid": "9b79e49a-74ce-417c-947d-973880a72403",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0011",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0011_kutpuv.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0011_h0mpxm.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0011_cc1bbh.flac"
+					}
+				},
+				{
+					"uid": "f2fe3beb-c60a-4750-a931-23090f611698",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0013",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0013_b7dtmy.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0013_y1kgaf.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0013_aorwpk.flac"
+					}
+				},
+				{
+					"uid": "0972d081-efc9-411e-a223-a40a30042299",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0014",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0014_bdhudb.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0014_vsfk9j.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0014_qim7gh.flac"
+					}
+				},
+				{
+					"uid": "33ccd49a-743a-454b-9706-04f2ea67a572",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0018",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0018_ioka4a.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0018_rytuj3.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0018_lbwl2p.flac"
+					}
+				},
+				{
+					"uid": "f75b4fff-e3e9-4e25-9ab1-751f32dcbefb",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0019",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0019_m3zg2x.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0019_oe71os.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0019_k7gpct.flac"
+					}
+				},
+				{
+					"uid": "0f4bcec6-4ab0-4df6-9446-0d4ecb3bae1c",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0021",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0021_omndly.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0021_ojtw4d.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0021_rwq36i.flac"
+					}
+				},
+				{
+					"uid": "178de7be-4409-4075-af66-24165a9120f9",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0022",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0022_plycw1.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0022_ug8src.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0022_ifnyni.flac"
+					}
+				},
+				{
+					"uid": "d1a6abdd-8fd0-4f87-9969-8c221ee2f049",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0023",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0023_mxvooi.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0023_uynuzm.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0023_dj7sms.flac"
+					}
+				},
+				{
+					"uid": "43855837-b5fc-473e-886d-471396bf57e1",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0026",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0026_njbcr8.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0026_cm00w5.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0026_ad67gh.flac"
+					}
+				},
+				{
+					"uid": "c8b23bdf-1bf4-4485-b523-2f25deb75868",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0027",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0027_q1upch.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0027_s6wzkm.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0027_xc9um3.flac"
+					}
+				},
+				{
+					"uid": "4e7bf000-5c4a-4577-aff9-960c8fe0c91b",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0028",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0028_commdc.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0028_ndrpnm.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0028_itphnf.flac"
+					}
+				},
+				{
+					"uid": "efa831f0-aaee-4090-b31a-ab567872ba78",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0031",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0031_oi5pvz.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0031_x82dzd.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0031_m54jcw.flac"
+					}
+				},
+				{
+					"uid": "2cb905e1-037a-4f61-ba59-829a4dc0662a",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0033",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0033_ccembd.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0033_estvbv.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0033_sowukt.flac"
+					}
+				},
+				{
+					"uid": "c32681ae-07aa-4857-9cca-7ada0c73745b",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0039",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0039_x8ijh1.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0039_akl3iy.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0039_h0shkl.flac"
+					}
+				},
+				{
+					"uid": "20627075-686c-4677-9156-7890ae820b69",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0041",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0041_bznkhl.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0041_v7shgr.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0041_wcpj5n.flac"
+					}
+				},
+				{
+					"uid": "af497a74-82b1-42f5-80a2-cfcf5f55b62e",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0042",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0042_dyzcun.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0042_yf1s0x.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0042_cnuvpd.flac"
+					}
+				},
+				{
+					"uid": "cde5de79-b2d0-42c3-8e3d-53b0bd2e95f1",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0046",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0046_xp35aw.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0046_imm6h0.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0046_wds6kb.flac"
+					}
+				},
+				{
+					"uid": "f9560d19-61a5-4dc7-81b8-df0d7fb82085",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0048",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0048_kwzpgf.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0048_zw9ffr.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0048_mix5jq.flac"
+					}
+				},
+				{
+					"uid": "b8ebd7da-74ee-42a1-80b3-f536cbb45eaa",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0049",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0049_musf6v.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0049_x96t1l.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0049_k39gmn.flac"
+					}
+				},
+				{
+					"uid": "dc077d90-5729-46a5-8a2d-03525d70a92a",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0050",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0050_uvwfn0.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0050_hvd4eo.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0050_ucjjvd.flac"
+					}
+				},
+				{
+					"uid": "d4c05b48-e8dc-4e61-8047-78c84e099227",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0051",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0051_lshxeo.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0051_d78ihf.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0051_ukaryd.flac"
+					}
+				},
+				{
+					"uid": "a4bb2b71-364c-4ef0-88f9-e0027ee9ea59",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0054",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0054_idapme.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0054_pmxub8.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0054_h3abij.flac"
+					}
+				},
+				{
+					"uid": "eea9e424-63f6-415d-aa39-c9ccbfcd01c7",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0056",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0056_rxt27f.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0056_ynhopk.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0056_d0iguv.flac"
+					}
+				},
+				{
+					"uid": "6ee8fa71-5c4b-4ddd-9105-e0ec4049116b",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0062",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0062_l03lpf.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0062_wfp2qn.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0062_ww1ttb.flac"
+					}
+				},
+				{
+					"uid": "8ab10153-d130-4040-9c91-251452be8e47",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0065",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0065_xfajtg.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0065_zwmdwp.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0065_dfkexz.flac"
+					}
+				},
+				{
+					"uid": "89e15439-581c-4352-b0aa-492a230ae0a5",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0067",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0067_b0vex8.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0067_qebuhy.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0067_xdlswk.flac"
+					}
+				},
+				{
+					"uid": "88842e5a-6492-468a-9338-7e80196f5a18",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0068",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0068_xiwa5f.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0068_qnw5kc.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0068_dh1g1p.flac"
+					}
+				},
+				{
+					"uid": "78a9f0c4-63a3-4b0b-a737-8717f11c4124",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0070",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0070_mn0rdx.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0070_wveicd.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0070_ddga4i.flac"
+					}
+				},
+				{
+					"uid": "91bbc29b-d302-48a5-9989-15f27656cbe8",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0071",
+						"subset": "C1",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0071_ahozft.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0071_psklyb.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0071_joxm3k.flac"
+					}
+				},
+				{
+					"uid": "bade8eca-6f8d-4ce7-b4d3-b5ed8d70caa6",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0072",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0072_v02kpk.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0072_pfonnj.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0072_mazlan.flac"
+					}
+				},
+				{
+					"uid": "02b39697-1e97-4bca-b8f9-fe7bb10e87fe",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0073",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0073_bzplrj.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0073_te1l8p.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0073_w0d4bx.flac"
+					}
+				},
+				{
+					"uid": "9fa46acd-1752-4ba1-93db-67c948373aa3",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0075",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0075_tewfto.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0075_cj4g1n.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0075_qmcivy.flac"
+					}
+				},
+				{
+					"uid": "71f0d90d-ea2b-4f57-9ff8-3a723cd22983",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0076",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0076_kc82rh.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0076_vepgh2.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0076_xzt438.flac"
+					}
+				},
+				{
+					"uid": "8ef45f66-54c9-4b5d-8e36-2a451ee264a1",
+					"blockUid": "765283c8-0e9d-4e1f-8fd3-417b04136720",
+					"values": {
+						"utterance": "0077",
+						"subset": "C2",
+						"x_src": "https://res.cloudinary.com/dksemmwll/video/upload/gt_0077_rja7fv.flac",
+						"model_a_src": "https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0077_q4tw1r.flac",
+						"model_b_src": "https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0077_xuptgb.flac"
+					}
+				},
+				{
+					"uid": "2458386f-010f-447c-8429-a77ea2f41821",
+					"blockUid": "d53cf8f3-dc8e-4b1b-81a9-ba441fd8e3ed",
+					"values": {
+						"utterance": "",
+						"subset": "",
+						"x_src": "",
+						"model_a_src": "",
+						"model_b_src": ""
+					},
+					"fixed": true
+				}
+			],
+			"shuffleMode": "within-group"
+		}
+	}
+}

@@ -1,0 +1,121 @@
+filename,utterance,system,role,subset,duration_s,url
+gt_0001.flac,0001,gt,Natural,C1,6.261,https://res.cloudinary.com/dksemmwll/video/upload/gt_0001_hisqx8.flac
+gt_0004.flac,0004,gt,Natural,C1,9.765,https://res.cloudinary.com/dksemmwll/video/upload/gt_0004_jewrze.flac
+gt_0005.flac,0005,gt,Natural,C1,17.029,https://res.cloudinary.com/dksemmwll/video/upload/gt_0005_ow3c1s.flac
+gt_0007.flac,0007,gt,Natural,C1,15.109,https://res.cloudinary.com/dksemmwll/video/upload/gt_0007_zaabln.flac
+gt_0008.flac,0008,gt,Natural,C2,9.653,https://res.cloudinary.com/dksemmwll/video/upload/gt_0008_xkkv9m.flac
+gt_0010.flac,0010,gt,Natural,C1,19.189,https://res.cloudinary.com/dksemmwll/video/upload/gt_0010_mwj5qg.flac
+gt_0011.flac,0011,gt,Natural,C2,11.589,https://res.cloudinary.com/dksemmwll/video/upload/gt_0011_kutpuv.flac
+gt_0013.flac,0013,gt,Natural,C2,15.403,https://res.cloudinary.com/dksemmwll/video/upload/gt_0013_b7dtmy.flac
+gt_0014.flac,0014,gt,Natural,C2,11.333,https://res.cloudinary.com/dksemmwll/video/upload/gt_0014_bdhudb.flac
+gt_0018.flac,0018,gt,Natural,C1,17.285,https://res.cloudinary.com/dksemmwll/video/upload/gt_0018_ioka4a.flac
+gt_0019.flac,0019,gt,Natural,C2,15.797,https://res.cloudinary.com/dksemmwll/video/upload/gt_0019_m3zg2x.flac
+gt_0021.flac,0021,gt,Natural,C1,19.968,https://res.cloudinary.com/dksemmwll/video/upload/gt_0021_omndly.flac
+gt_0022.flac,0022,gt,Natural,C1,16.069,https://res.cloudinary.com/dksemmwll/video/upload/gt_0022_plycw1.flac
+gt_0023.flac,0023,gt,Natural,C2,18.16,https://res.cloudinary.com/dksemmwll/video/upload/gt_0023_mxvooi.flac
+gt_0026.flac,0026,gt,Natural,C1,8.421,https://res.cloudinary.com/dksemmwll/video/upload/gt_0026_njbcr8.flac
+gt_0027.flac,0027,gt,Natural,C1,11.365,https://res.cloudinary.com/dksemmwll/video/upload/gt_0027_q1upch.flac
+gt_0028.flac,0028,gt,Natural,C1,9.461,https://res.cloudinary.com/dksemmwll/video/upload/gt_0028_commdc.flac
+gt_0031.flac,0031,gt,Natural,C1,18.325,https://res.cloudinary.com/dksemmwll/video/upload/gt_0031_oi5pvz.flac
+gt_0033.flac,0033,gt,Natural,C1,12.752,https://res.cloudinary.com/dksemmwll/video/upload/gt_0033_ccembd.flac
+gt_0039.flac,0039,gt,Natural,C2,8.603,https://res.cloudinary.com/dksemmwll/video/upload/gt_0039_x8ijh1.flac
+gt_0041.flac,0041,gt,Natural,C1,17.925,https://res.cloudinary.com/dksemmwll/video/upload/gt_0041_bznkhl.flac
+gt_0042.flac,0042,gt,Natural,C2,8.453,https://res.cloudinary.com/dksemmwll/video/upload/gt_0042_dyzcun.flac
+gt_0046.flac,0046,gt,Natural,C2,17.109,https://res.cloudinary.com/dksemmwll/video/upload/gt_0046_xp35aw.flac
+gt_0048.flac,0048,gt,Natural,C2,10.197,https://res.cloudinary.com/dksemmwll/video/upload/gt_0048_kwzpgf.flac
+gt_0049.flac,0049,gt,Natural,C1,5.253,https://res.cloudinary.com/dksemmwll/video/upload/gt_0049_musf6v.flac
+gt_0050.flac,0050,gt,Natural,C2,14.128,https://res.cloudinary.com/dksemmwll/video/upload/gt_0050_uvwfn0.flac
+gt_0051.flac,0051,gt,Natural,C1,11.893,https://res.cloudinary.com/dksemmwll/video/upload/gt_0051_lshxeo.flac
+gt_0054.flac,0054,gt,Natural,C1,15.573,https://res.cloudinary.com/dksemmwll/video/upload/gt_0054_idapme.flac
+gt_0056.flac,0056,gt,Natural,C2,5.552,https://res.cloudinary.com/dksemmwll/video/upload/gt_0056_rxt27f.flac
+gt_0062.flac,0062,gt,Natural,C2,16.693,https://res.cloudinary.com/dksemmwll/video/upload/gt_0062_l03lpf.flac
+gt_0065.flac,0065,gt,Natural,C1,14.101,https://res.cloudinary.com/dksemmwll/video/upload/gt_0065_xfajtg.flac
+gt_0067.flac,0067,gt,Natural,C1,10.677,https://res.cloudinary.com/dksemmwll/video/upload/gt_0067_b0vex8.flac
+gt_0068.flac,0068,gt,Natural,C2,19.349,https://res.cloudinary.com/dksemmwll/video/upload/gt_0068_xiwa5f.flac
+gt_0070.flac,0070,gt,Natural,C2,18.469,https://res.cloudinary.com/dksemmwll/video/upload/gt_0070_mn0rdx.flac
+gt_0071.flac,0071,gt,Natural,C1,8.533,https://res.cloudinary.com/dksemmwll/video/upload/gt_0071_ahozft.flac
+gt_0072.flac,0072,gt,Natural,C2,6.261,https://res.cloudinary.com/dksemmwll/video/upload/gt_0072_v02kpk.flac
+gt_0073.flac,0073,gt,Natural,C2,20.133,https://res.cloudinary.com/dksemmwll/video/upload/gt_0073_bzplrj.flac
+gt_0075.flac,0075,gt,Natural,C2,17.477,https://res.cloudinary.com/dksemmwll/video/upload/gt_0075_tewfto.flac
+gt_0076.flac,0076,gt,Natural,C2,13.573,https://res.cloudinary.com/dksemmwll/video/upload/gt_0076_kc82rh.flac
+gt_0077.flac,0077,gt,Natural,C2,11.984,https://res.cloudinary.com/dksemmwll/video/upload/gt_0077_rja7fv.flac
+chatterbox_0001.flac,0001,chatterbox,Modelo A,C1,6.52,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0001_yljist.flac
+chatterbox_0004.flac,0004,chatterbox,Modelo A,C1,9.52,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0004_m9xyf1.flac
+chatterbox_0005.flac,0005,chatterbox,Modelo A,C1,20.0,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0005_kryebk.flac
+chatterbox_0007.flac,0007,chatterbox,Modelo A,C1,11.5,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0007_o6bicn.flac
+chatterbox_0008.flac,0008,chatterbox,Modelo A,C2,6.08,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0008_ameza1.flac
+chatterbox_0010.flac,0010,chatterbox,Modelo A,C1,16.48,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0010_f7ddan.flac
+chatterbox_0011.flac,0011,chatterbox,Modelo A,C2,10.7,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0011_h0mpxm.flac
+chatterbox_0013.flac,0013,chatterbox,Modelo A,C2,13.92,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0013_y1kgaf.flac
+chatterbox_0014.flac,0014,chatterbox,Modelo A,C2,11.08,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0014_vsfk9j.flac
+chatterbox_0018.flac,0018,chatterbox,Modelo A,C1,18.68,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0018_rytuj3.flac
+chatterbox_0019.flac,0019,chatterbox,Modelo A,C2,8.5,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0019_oe71os.flac
+chatterbox_0021.flac,0021,chatterbox,Modelo A,C1,21.52,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0021_ojtw4d.flac
+chatterbox_0022.flac,0022,chatterbox,Modelo A,C1,12.92,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0022_ug8src.flac
+chatterbox_0023.flac,0023,chatterbox,Modelo A,C2,15.28,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0023_uynuzm.flac
+chatterbox_0026.flac,0026,chatterbox,Modelo A,C1,6.8,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0026_cm00w5.flac
+chatterbox_0027.flac,0027,chatterbox,Modelo A,C1,9.46,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0027_s6wzkm.flac
+chatterbox_0028.flac,0028,chatterbox,Modelo A,C1,6.62,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0028_ndrpnm.flac
+chatterbox_0031.flac,0031,chatterbox,Modelo A,C1,14.86,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0031_x82dzd.flac
+chatterbox_0033.flac,0033,chatterbox,Modelo A,C1,11.1,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0033_estvbv.flac
+chatterbox_0039.flac,0039,chatterbox,Modelo A,C2,10.76,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0039_akl3iy.flac
+chatterbox_0041.flac,0041,chatterbox,Modelo A,C1,18.48,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0041_v7shgr.flac
+chatterbox_0042.flac,0042,chatterbox,Modelo A,C2,7.04,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0042_yf1s0x.flac
+chatterbox_0046.flac,0046,chatterbox,Modelo A,C2,12.48,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0046_imm6h0.flac
+chatterbox_0048.flac,0048,chatterbox,Modelo A,C2,8.64,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0048_zw9ffr.flac
+chatterbox_0049.flac,0049,chatterbox,Modelo A,C1,7.04,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0049_x96t1l.flac
+chatterbox_0050.flac,0050,chatterbox,Modelo A,C2,14.74,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0050_hvd4eo.flac
+chatterbox_0051.flac,0051,chatterbox,Modelo A,C1,11.24,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0051_d78ihf.flac
+chatterbox_0054.flac,0054,chatterbox,Modelo A,C1,9.26,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0054_pmxub8.flac
+chatterbox_0056.flac,0056,chatterbox,Modelo A,C2,5.88,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0056_ynhopk.flac
+chatterbox_0062.flac,0062,chatterbox,Modelo A,C2,15.2,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0062_wfp2qn.flac
+chatterbox_0065.flac,0065,chatterbox,Modelo A,C1,13.18,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0065_zwmdwp.flac
+chatterbox_0067.flac,0067,chatterbox,Modelo A,C1,8.68,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0067_qebuhy.flac
+chatterbox_0068.flac,0068,chatterbox,Modelo A,C2,15.88,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0068_qnw5kc.flac
+chatterbox_0070.flac,0070,chatterbox,Modelo A,C2,16.36,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0070_wveicd.flac
+chatterbox_0071.flac,0071,chatterbox,Modelo A,C1,9.24,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0071_psklyb.flac
+chatterbox_0072.flac,0072,chatterbox,Modelo A,C2,9.12,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0072_pfonnj.flac
+chatterbox_0073.flac,0073,chatterbox,Modelo A,C2,16.76,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0073_te1l8p.flac
+chatterbox_0075.flac,0075,chatterbox,Modelo A,C2,13.02,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0075_cj4g1n.flac
+chatterbox_0076.flac,0076,chatterbox,Modelo A,C2,13.04,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0076_vepgh2.flac
+chatterbox_0077.flac,0077,chatterbox,Modelo A,C2,7.54,https://res.cloudinary.com/dksemmwll/video/upload/chatterbox_0077_q4tw1r.flac
+orpheus_random_0001.flac,0001,orpheus_random,Modelo B,C1,6.315,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0001_rapslm.flac
+orpheus_random_0004.flac,0004,orpheus_random,Modelo B,C1,11.776,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0004_utgadf.flac
+orpheus_random_0005.flac,0005,orpheus_random,Modelo B,C1,15.701,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0005_lcrvw5.flac
+orpheus_random_0007.flac,0007,orpheus_random,Modelo B,C1,15.36,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0007_e4azq9.flac
+orpheus_random_0008.flac,0008,orpheus_random,Modelo B,C2,5.205,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0008_jco14b.flac
+orpheus_random_0010.flac,0010,orpheus_random,Modelo B,C1,15.019,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0010_jcebfb.flac
+orpheus_random_0011.flac,0011,orpheus_random,Modelo B,C2,14.165,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0011_cc1bbh.flac
+orpheus_random_0013.flac,0013,orpheus_random,Modelo B,C2,11.776,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0013_aorwpk.flac
+orpheus_random_0014.flac,0014,orpheus_random,Modelo B,C2,11.947,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0014_qim7gh.flac
+orpheus_random_0018.flac,0018,orpheus_random,Modelo B,C1,14.251,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0018_lbwl2p.flac
+orpheus_random_0019.flac,0019,orpheus_random,Modelo B,C2,12.459,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0019_k7gpct.flac
+orpheus_random_0021.flac,0021,orpheus_random,Modelo B,C1,16.896,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0021_rwq36i.flac
+orpheus_random_0022.flac,0022,orpheus_random,Modelo B,C1,16.043,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0022_ifnyni.flac
+orpheus_random_0023.flac,0023,orpheus_random,Modelo B,C2,15.275,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0023_dj7sms.flac
+orpheus_random_0026.flac,0026,orpheus_random,Modelo B,C1,11.605,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0026_ad67gh.flac
+orpheus_random_0027.flac,0027,orpheus_random,Modelo B,C1,11.947,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0027_xc9um3.flac
+orpheus_random_0028.flac,0028,orpheus_random,Modelo B,C1,7.339,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0028_itphnf.flac
+orpheus_random_0031.flac,0031,orpheus_random,Modelo B,C1,14.848,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0031_m54jcw.flac
+orpheus_random_0033.flac,0033,orpheus_random,Modelo B,C1,13.568,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0033_sowukt.flac
+orpheus_random_0039.flac,0039,orpheus_random,Modelo B,C2,12.544,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0039_h0shkl.flac
+orpheus_random_0041.flac,0041,orpheus_random,Modelo B,C1,16.384,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0041_wcpj5n.flac
+orpheus_random_0042.flac,0042,orpheus_random,Modelo B,C2,10.24,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0042_cnuvpd.flac
+orpheus_random_0046.flac,0046,orpheus_random,Modelo B,C2,13.909,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0046_wds6kb.flac
+orpheus_random_0048.flac,0048,orpheus_random,Modelo B,C2,9.813,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0048_mix5jq.flac
+orpheus_random_0049.flac,0049,orpheus_random,Modelo B,C1,7.509,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0049_k39gmn.flac
+orpheus_random_0050.flac,0050,orpheus_random,Modelo B,C2,12.288,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0050_ucjjvd.flac
+orpheus_random_0051.flac,0051,orpheus_random,Modelo B,C1,11.52,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0051_ukaryd.flac
+orpheus_random_0054.flac,0054,orpheus_random,Modelo B,C1,12.117,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0054_h3abij.flac
+orpheus_random_0056.flac,0056,orpheus_random,Modelo B,C2,5.888,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0056_d0iguv.flac
+orpheus_random_0062.flac,0062,orpheus_random,Modelo B,C2,14.165,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0062_ww1ttb.flac
+orpheus_random_0065.flac,0065,orpheus_random,Modelo B,C1,18.261,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0065_dfkexz.flac
+orpheus_random_0067.flac,0067,orpheus_random,Modelo B,C1,9.387,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0067_xdlswk.flac
+orpheus_random_0068.flac,0068,orpheus_random,Modelo B,C2,13.397,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0068_dh1g1p.flac
+orpheus_random_0070.flac,0070,orpheus_random,Modelo B,C2,17.067,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0070_ddga4i.flac
+orpheus_random_0071.flac,0071,orpheus_random,Modelo B,C1,11.349,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0071_joxm3k.flac
+orpheus_random_0072.flac,0072,orpheus_random,Modelo B,C2,9.301,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0072_mazlan.flac
+orpheus_random_0073.flac,0073,orpheus_random,Modelo B,C2,15.019,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0073_w0d4bx.flac
+orpheus_random_0075.flac,0075,orpheus_random,Modelo B,C2,14.933,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0075_qmcivy.flac
+orpheus_random_0076.flac,0076,orpheus_random,Modelo B,C2,13.312,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0076_xzt438.flac
+orpheus_random_0077.flac,0077,orpheus_random,Modelo B,C2,11.861,https://res.cloudinary.com/dksemmwll/video/upload/orpheus_random_0077_xuptgb.flac
