@@ -369,7 +369,10 @@ export interface ScreenCompletionData {
 	responseTelemetry?: Record<string, ResponseTelemetry>;
 	presentation?: LateralCounterbalancePresentation;
 	extras?: {
+		/** Per-frame gaze samples (`GazeSample[]`), each with its frame time and audio position. */
 		gazeData?: unknown;
+		/** Capture metadata (`GazeCaptureMeta`): clock anchors, audio timelines, skipped frames. */
+		gazeCapture?: unknown;
 		targetBoundingBoxes?: unknown;
 	};
 }

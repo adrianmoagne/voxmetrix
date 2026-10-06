@@ -1,5 +1,13 @@
 import { useCallback, useRef, useState } from "react";
-import type { WebAudioTrack } from "@/utils/webAudioPlayback";
+import {
+	FrameDrivenGazeCapture,
+	emptyCaptureResult,
+	patchTrackerToReadCanvas,
+	type ActiveAudio,
+	type GazeCaptureResult,
+} from "@/utils/gazeCapture";
+
+export type { ActiveAudio, GazeCaptureResult, GazeSample } from "@/utils/gazeCapture";
 
 const WEBGAZER_SCRIPT_SRC = `${import.meta.env.BASE_URL}webgazer.js`;
 const WEBGAZER_SCRIPT_SELECTOR = 'script[data-webgazer-script="true"]';
@@ -14,18 +22,13 @@ let loadPromise: Promise<void> | null = null;
 let initPromise: Promise<void> | null = null;
 let scriptLoaded = false;
 let cameraInitialized = false;
+/** `performance.now()` origin of the elapsed time WebGazer passes to gaze listeners. */
+let webgazerBeginTime: number | null = null;
 
 export interface GazePoint {
 	x: number;
 	y: number;
 	t: number;
-	audioUid?: string;
-	audioTime?: number;
-}
-
-export interface ActiveAudio {
-	uid: string;
-	track: WebAudioTrack;
 }
 
 export interface UseWebGazerOptions {
@@ -38,7 +41,8 @@ export interface UseWebGazerReturn {
 	loadWebGazer: () => Promise<void>;
 	initCamera: () => Promise<void>;
 	startTracking: () => void;
-	stopTracking: () => GazePoint[];
+	stopTracking: () => GazeCaptureResult;
+	finishTracking: () => Promise<GazeCaptureResult>;
 	clearData: () => void;
 	recordScreenPosition: (x: number, y: number) => void;
 	getCurrentPrediction: () => Promise<GazePoint | null>;
@@ -70,8 +74,7 @@ const configureWebGazer = (webgazer: WebGazer): void => {
 export const useWebGazer = (options?: UseWebGazerOptions): UseWebGazerReturn => {
 	const [isLoaded, setIsLoaded] = useState(scriptLoaded || !!getWebGazer());
 	const [isTracking, setIsTracking] = useState(false);
-	const gazeDataRef = useRef<GazePoint[]>([]);
-	const trackingRef = useRef(false);
+	const captureRef = useRef<FrameDrivenGazeCapture | null>(null);
 	const getActiveAudioRef = useRef(options?.getActiveAudio);
 	getActiveAudioRef.current = options?.getActiveAudio;
 
@@ -160,12 +163,15 @@ export const useWebGazer = (options?: UseWebGazerOptions): UseWebGazerReturn => 
 			existingWebGazer.showFaceFeedbackBox(false);
 
 			await existingWebGazer
+				.setInitFinishListener((_stream, beginTime) => {
+					webgazerBeginTime = typeof beginTime === "number" ? beginTime : null;
+				})
 				.setGazeListener(() => {
 					// Gaze collection is set when tracking starts.
 				})
 				.begin();
 
-		
+			patchTrackerToReadCanvas(existingWebGazer);
 			cameraInitialized = true;
 		})();
 
@@ -186,50 +192,53 @@ export const useWebGazer = (options?: UseWebGazerOptions): UseWebGazerReturn => 
 		webgazer.showFaceOverlay(false);
 		webgazer.showFaceFeedbackBox(false);
 
-		gazeDataRef.current = [];
-		trackingRef.current = true;
-		setIsTracking(true);
+		if (captureRef.current?.isRunning) {
+			captureRef.current.stop();
+		}
 
-		webgazer.resume();
-		webgazer.setGazeListener((data: { x: number; y: number } | null) => {
-			if (!data || !trackingRef.current) return;
-
-			const point: GazePoint = {
-				x: data.x,
-				y: data.y,
-				t: performance.now(),
-			};
-
-			const activeAudio = getActiveAudioRef.current?.();
-			if (activeAudio) {
-				const audioTime = activeAudio.track.getPlaybackTime();
-				if (audioTime !== null) {
-					point.audioUid = activeAudio.uid;
-					point.audioTime = audioTime;
-				}
-			}
-
-			gazeDataRef.current.push(point);
+		const video = document.getElementById(
+			webgazer.params.videoElementId
+		) as HTMLVideoElement | null;
+		const capture = new FrameDrivenGazeCapture({
+			webgazer,
+			video,
+			getActiveAudio: () => getActiveAudioRef.current?.() ?? null,
+			beginTime: webgazerBeginTime,
 		});
+		captureRef.current = capture;
+		capture.start();
+		setIsTracking(true);
 	}, []);
 
-	const stopTracking = useCallback((): GazePoint[] => {
-		trackingRef.current = false;
+	const stopTracking = useCallback((): GazeCaptureResult => {
 		setIsTracking(false);
+
+		const capture = captureRef.current;
+		captureRef.current = null;
+		if (capture) {
+			return capture.stop();
+		}
 
 		const webgazer = getWebGazer();
 		if (webgazer) {
 			webgazer.pause();
 		}
-
-		const data = [...gazeDataRef.current];
-		gazeDataRef.current = [];
-		return data;
+		return emptyCaptureResult();
 	}, []);
 
-	const clearData = useCallback(() => {
-		gazeDataRef.current = [];
+	const finishTracking = useCallback(async (): Promise<GazeCaptureResult> => {
+		const capture = captureRef.current;
+		if (!capture) return stopTracking();
 
+		const result = await capture.finish();
+		if (captureRef.current === capture) {
+			captureRef.current = null;
+			setIsTracking(false);
+		}
+		return result;
+	}, [stopTracking]);
+
+	const clearData = useCallback(() => {
 		const webgazer = getWebGazer();
 		if (webgazer) {
 			clearWebGazerData(webgazer);
@@ -317,8 +326,14 @@ export const useWebGazer = (options?: UseWebGazerOptions): UseWebGazerReturn => 
 	}, []);
 
 	const cleanup = useCallback(() => {
-		trackingRef.current = false;
-		gazeDataRef.current = [];
+		if (captureRef.current?.isRunning) {
+			try {
+				captureRef.current.stop();
+			} catch {
+				// The library may already be torn down.
+			}
+		}
+		captureRef.current = null;
 		setIsTracking(false);
 		setIsLoaded(scriptLoaded);
 
@@ -361,6 +376,7 @@ export const useWebGazer = (options?: UseWebGazerOptions): UseWebGazerReturn => 
 		initCamera,
 		startTracking,
 		stopTracking,
+		finishTracking,
 		clearData,
 		recordScreenPosition,
 		getCurrentPrediction,
