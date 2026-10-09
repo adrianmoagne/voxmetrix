@@ -27,6 +27,7 @@ import {
 	writeSessionPointer,
 } from "@/utils/resultSessionRecorder";
 import { createSeededRandom, randomSeed } from "@/utils/seededRandom";
+import { isSupportedEyeTrackingBrowser } from "@/utils/browserSupport";
 import {
 	isParticipantAssignmentEnabled,
 	resolveAssignmentGroups,
@@ -186,8 +187,11 @@ const ExperimentEngineRuntime: React.FC<ExperimentEngineRuntimeProps> = ({
 	const assignmentEnabled = isParticipantAssignmentEnabled(definition);
 	const assignmentGroups = resolveAssignmentGroups(definition);
 	const experimentNeedsEyeTracking = definitionNeedsEyeTracking(definition);
+	const unsupportedBrowser =
+		!isPreview && experimentNeedsEyeTracking && !isSupportedEyeTrackingBrowser();
 
 	const [step, setStep] = useState<Step>(isPreview ? "welcome" : "loading");
+	const [linkCopied, setLinkCopied] = useState(false);
 	const [participant, setParticipant] = useState({ name: "", email: "" });
 	const [previewCondition, setPreviewCondition] = useState(assignmentGroups[0] ?? "");
 	const [participantCondition, setParticipantCondition] = useState<string | undefined>();
@@ -549,6 +553,34 @@ const ExperimentEngineRuntime: React.FC<ExperimentEngineRuntimeProps> = ({
 						</Button>
 					</S.ButtonGroup>
 				</S.CompletionContainer>
+			</S.Container>
+		);
+	}
+
+	if (step === "welcome" && unsupportedBrowser) {
+		const copyLink = () => {
+			void navigator.clipboard
+				?.writeText(window.location.href)
+				.then(() => setLinkCopied(true))
+				.catch(() => setLinkCopied(false));
+		};
+		return (
+			<S.Container>
+				<S.WelcomeContainer>
+					<Typography variant="h2">Navegador não compatível</Typography>
+					<Typography>
+						Este teste usa rastreamento ocular e funciona apenas no Google Chrome ou no
+						Microsoft Edge, em um computador com webcam.
+					</Typography>
+					<Typography>
+						Copie este link e abra-o no Chrome ou no Edge para participar.
+					</Typography>
+					<S.ButtonGroup>
+						<Button colorScheme="primary" onClick={copyLink}>
+							{linkCopied ? "Link copiado!" : "Copiar link"}
+						</Button>
+					</S.ButtonGroup>
+				</S.WelcomeContainer>
 			</S.Container>
 		);
 	}
