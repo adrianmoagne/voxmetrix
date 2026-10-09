@@ -8,6 +8,7 @@ import { BaseRepository } from "@core/base_repository";
 import { HttpException } from "@core/server";
 import { ProjectModel } from "@modules/project/project.model";
 import { ResultModel } from "@modules/result/result.model";
+import { GazeCaptureModel } from "@modules/result/gaze-capture.model";
 
 class ExperimentRepository extends BaseRepository<TExperiment> {
 	constructor() {
@@ -408,6 +409,57 @@ class ExperimentRepository extends BaseRepository<TExperiment> {
 		}
 	}
 
+	/**
+	 * Adds or updates a participant's entry with single atomic updates rather than saving
+	 * the whole experiment, which fails when another participant starts at the same moment.
+	 * `condition: null` clears an assigned condition; `undefined` leaves it as it is.
+	 */
+	private async recordParticipantStart(
+		experimentId: string,
+		email: string,
+		{ condition, started }: { condition: string | null | undefined; started: boolean }
+	): Promise<void> {
+		const now = new Date();
+		const added = await ExperimentModel.updateOne(
+			{ _id: experimentId, "participants.email": { $ne: email } },
+			{
+				$push: {
+					participants: {
+						email,
+						status: started ? "started" : "invited",
+						invitedAt: now,
+						...(started ? { startedAt: now } : {}),
+						...(condition ? { assignedCondition: condition, assignedAt: now } : {}),
+					},
+				},
+			}
+		);
+		if (added.modifiedCount > 0) return;
+
+		// Already listed: update the entry in place.
+		const entry = (match: Record<string, unknown>) => ({
+			_id: experimentId,
+			participants: { $elemMatch: { email, ...match } },
+		});
+		if (condition === null) {
+			await ExperimentModel.updateOne(entry({}), {
+				$unset: { "participants.$.assignedCondition": "", "participants.$.assignedAt": "" },
+			});
+		} else if (condition) {
+			await ExperimentModel.updateOne(entry({ assignedCondition: { $ne: condition } }), {
+				$set: { "participants.$.assignedCondition": condition, "participants.$.assignedAt": now },
+			});
+			await ExperimentModel.updateOne(entry({ assignedAt: { $exists: false } }), {
+				$set: { "participants.$.assignedAt": now },
+			});
+		}
+		if (started) {
+			await ExperimentModel.updateOne(entry({ status: "invited" }), {
+				$set: { "participants.$.status": "started", "participants.$.startedAt": now },
+			});
+		}
+	}
+
 	// Public endpoint for participants - no auth required.
 	async getExperimentForParticipant(req: Request, res: Response) {
 		try {
@@ -432,54 +484,28 @@ class ExperimentRepository extends BaseRepository<TExperiment> {
 			let participantCondition: string | undefined;
 
 			if (email) {
-				let participant = experiment.participants?.find(
+				const participant = experiment.participants?.find(
 					(p) => (p.email || "").trim().toLowerCase() === email
 				);
 
-				if (!participant) {
-					participant = {
-						email,
-						status: "invited",
-						invitedAt: new Date(),
-					};
-					if (!experiment.participants) {
-						experiment.participants = [];
-					}
-					experiment.participants.push(participant);
-				}
-
 				try {
-					const resolvedCondition = resolveParticipantCondition(experiment.definition, {
-						existingCondition: participant.assignedCondition,
+					participantCondition = resolveParticipantCondition(experiment.definition, {
+						existingCondition: participant?.assignedCondition ?? undefined,
 						urlCondition,
 					});
-
-					if (resolvedCondition) {
-						if (participant.assignedCondition !== resolvedCondition) {
-							participant.assignedCondition = resolvedCondition;
-							participant.assignedAt = new Date();
-						} else if (!participant.assignedAt) {
-							participant.assignedAt = new Date();
-						}
-						participantCondition = resolvedCondition;
-					}
 				} catch (error) {
 					if (isParticipantConditionError(error)) {
-						participant.assignedCondition = undefined;
-						participant.assignedAt = undefined;
-						await experiment.save();
+						await this.recordParticipantStart(String(id), email, { condition: null, started: false });
 						throw new HttpException(400, error.code);
 					}
 
 					throw error;
 				}
 
-				if (participant.status === "invited") {
-					participant.status = "started";
-					participant.startedAt = new Date();
-				}
-
-				await experiment.save();
+				await this.recordParticipantStart(String(id), email, {
+					condition: participantCondition,
+					started: true,
+				});
 			}
 
 			res.status(200).json({
@@ -536,6 +562,7 @@ class ExperimentRepository extends BaseRepository<TExperiment> {
 				throw new HttpException(403, "UNAUTHORIZED");
 			}
 
+			await GazeCaptureModel.deleteMany({ experiment: id });
 			await ResultModel.deleteMany({ experiment: id });
 
 			await ProjectModel.updateOne(

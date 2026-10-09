@@ -84,7 +84,15 @@ const AudioPlayerEntity: React.FC<AudioPlayerEntityProps> = ({
 	return (
 		<div data-entity-uid={uid}>
 			{label && (
-				<div style={{ fontSize: 12, color: "#666", marginBottom: 4, textAlign: "center" }}>
+				<div
+					style={{
+						fontSize: 16,
+						fontWeight: 500,
+						color: "#333",
+						marginBottom: 6,
+						textAlign: "center",
+					}}
+				>
 					{label}
 				</div>
 			)}

@@ -35,6 +35,7 @@ export interface Placement {
 	order: number;
 	hAlign?: HAlign;
 	vAlign?: VAlign;
+	spaceBefore?: number;
 }
 
 export interface BaseEntity<K extends string, P> {

@@ -30,6 +30,8 @@ export interface Placement {
 	order: number;
 	hAlign?: HAlign;
 	vAlign?: VAlign;
+	/** Extra space above the entity, in px, on top of the cell's gap. */
+	spaceBefore?: number;
 }
 
 // --- Base entity generic ---
@@ -386,6 +388,12 @@ export interface StimulusShufflePresentation {
 export interface ScreenCompletionData {
 	screenUid: string;
 	rowUid?: string; // which spreadsheet row produced this screen
+	/** Position in the session plan; unset for inserted steps (recalibration). */
+	planIndex?: number;
+	/** Epoch ms of `performance.now()` = 0 in the page that ran this step. */
+	timeOrigin?: number;
+	/** First step after the participant resumed: it was interrupted and is presented again. */
+	resumedAfterInterruption?: boolean;
 	advanceReason: AdvanceReason;
 	startedAt: number;
 	completedAt: number;
@@ -400,6 +408,8 @@ export interface ScreenCompletionData {
 		/** Capture metadata (`GazeCaptureMeta`): clock anchors, audio timelines, skipped frames. */
 		gazeCapture?: unknown;
 		targetBoundingBoxes?: unknown;
+		/** Screen geometry, targets at the start, interruptions and calibration (`GazeContext`). */
+		gazeContext?: unknown;
 	};
 }
 

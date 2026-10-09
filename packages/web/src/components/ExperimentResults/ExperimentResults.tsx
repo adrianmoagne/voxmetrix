@@ -119,14 +119,20 @@ const ExperimentResults: React.FC<ExperimentResultsProps> = ({
 
   const dominantType = inferDominantType(results);
 
-  const exportToJSON = () => {
-    const blob = new Blob([JSON.stringify(results, null, 2)], {
-      type: "application/json",
-    });
+  // Listed results leave gaze data out; the export has it.
+  const exportToJSON = async () => {
+    let blob: Blob;
+    try {
+      blob = (await ExperimentService.exportResults(experimentId)).data;
+    } catch (err) {
+      console.error("Failed to export results:", err);
+      setError("Failed to export results");
+      return;
+    }
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `experiment_${experimentId}_results.json`;
+    link.download = `experiment_${experimentId}_results.json.gz`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

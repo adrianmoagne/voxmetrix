@@ -10,6 +10,7 @@ import BoundField from "./BoundField";
 import RatingOptionsField from "./RatingOptionsField";
 import ShuffleStimuliField from "./ShuffleStimuliField";
 import PlacementEditor from "./PlacementEditor";
+import { getCellKey } from "../ScreenEntityRenderer/gridCells";
 import S from "./ScreenEntityEditor.styles";
 import { DEFAULT_TEXT_FONT_SIZE } from "../ScreenEntityRenderer/children/TextEntity";
 import {
@@ -49,6 +50,18 @@ const PropertiesTab: React.FC<PropertiesTabProps> = ({
 		);
 	}
 
+	const handlePlacementChange = (child: ScreenChildEntity, update: Partial<Placement>) => {
+		onUpdateChildPlacement(child.uid, update);
+		// V-Align positions the whole cell, so every entity in it is kept in step.
+		if (update.vAlign === undefined) return;
+		const cellKey = getCellKey(child.placement, gridType);
+		for (const sibling of screenChildren) {
+			if (sibling.uid !== child.uid && getCellKey(sibling.placement, gridType) === cellKey) {
+				onUpdateChildPlacement(sibling.uid, { vAlign: update.vAlign });
+			}
+		}
+	};
+
 	const handlePropChange = (uid: string, key: string, value: Bound<unknown>) => {
 		if ("placement" in entity) {
 			onUpdateChildProps(uid, { [key]: value });
@@ -87,7 +100,7 @@ const PropertiesTab: React.FC<PropertiesTabProps> = ({
 				<PlacementEditor
 					placement={entity.placement}
 					gridType={gridType}
-					onChange={(update) => onUpdateChildPlacement(entity.uid, update)}
+					onChange={(update) => handlePlacementChange(entity, update)}
 				/>
 			)}
 		</>

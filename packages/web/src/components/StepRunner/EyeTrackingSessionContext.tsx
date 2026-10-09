@@ -5,6 +5,7 @@ import useWebGazer, {
 	type GazePoint,
 } from "@/hooks/useWebGazer";
 import type { WebAudioTrack } from "@/utils/webAudioPlayback";
+import type { ViewportSnapshot } from "@/utils/gazeContext";
 
 export interface CalibrationResult {
 	points_calibrated: number;
@@ -15,6 +16,8 @@ export interface ValidationResult {
 	raw_gaze: { x: number; y: number }[][];
 	percent_in_roi: number[];
 	average_offset: { x: number; y: number }[];
+	target_px?: { x: number; y: number }[];
+	viewport?: ViewportSnapshot;
 }
 
 export type EyeTrackingStatus = "idle" | "loading" | "ready" | "tracking" | "error";
@@ -26,6 +29,8 @@ export interface EyeTrackingSession {
 	hasCalibration: boolean;
 	lastCalibration: CalibrationResult | null;
 	lastValidation: ValidationResult | null;
+	/** Number of the calibration in force (1 for the first); null before one or after invalidation. */
+	calibrationIndex: number | null;
 	error: string | null;
 
 	ensureReady: () => Promise<void>;
@@ -47,7 +52,8 @@ export interface EyeTrackingSession {
 	hidePreview: () => void;
 	showPositioningPreview: (size?: { width: number; height: number }) => void;
 
-	completeCalibration: (result: CalibrationResult) => void;
+	/** Returns the index the new calibration was given. */
+	completeCalibration: (result: CalibrationResult) => number;
 	completeValidation: (result: ValidationResult) => void;
 	invalidateCalibration: () => void;
 	cleanup: () => void;
@@ -108,6 +114,8 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 	const [hasCalibration, setHasCalibration] = useState(false);
 	const [lastCalibration, setLastCalibration] = useState<CalibrationResult | null>(null);
 	const [lastValidation, setLastValidation] = useState<ValidationResult | null>(null);
+	const [calibrationIndex, setCalibrationIndex] = useState<number | null>(null);
+	const calibrationCountRef = useRef(0);
 	const [error, setError] = useState<string | null>(null);
 
 	const readyPromiseRef = useRef<Promise<void> | null>(null);
@@ -163,8 +171,11 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 	}, [clearData]);
 
 	const completeCalibration = useCallback((result: CalibrationResult) => {
+		const index = ++calibrationCountRef.current;
 		setHasCalibration(true);
 		setLastCalibration(result);
+		setCalibrationIndex(index);
+		return index;
 	}, []);
 
 	const completeValidation = useCallback((result: ValidationResult) => {
@@ -175,6 +186,7 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 		setHasCalibration(false);
 		setLastCalibration(null);
 		setLastValidation(null);
+		setCalibrationIndex(null);
 		resetCalibration();
 	}, [resetCalibration]);
 
@@ -185,6 +197,7 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 		setHasCalibration(false);
 		setLastCalibration(null);
 		setLastValidation(null);
+		setCalibrationIndex(null);
 		setError(null);
 	}, [cleanupWebGazer]);
 
@@ -200,6 +213,7 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 			hasCalibration,
 			lastCalibration,
 			lastValidation,
+			calibrationIndex,
 			error,
 			ensureReady,
 			startCapture,
@@ -227,6 +241,7 @@ export const EyeTrackingSessionProvider: React.FC<EyeTrackingSessionProviderProp
 			hasCalibration,
 			lastCalibration,
 			lastValidation,
+			calibrationIndex,
 			error,
 			ensureReady,
 			startCapture,

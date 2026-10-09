@@ -26,6 +26,13 @@ export const Endpoints = {
 	ExperimentPublicRun: "/api/experiments/:id/run",
 	ExperimentSubmitResult: "/api/experiments/:id/results",
 	ExperimentGetResults: "/api/experiments/:id/results",
+	ExperimentExportResults: "/api/experiments/:id/results/export",
+	// Participant sessions, saved step by step
+	ExperimentSessionStart: "/api/experiments/:id/sessions",
+	ExperimentSession: "/api/experiments/:id/sessions/:resultId",
+	ExperimentSessionStep: "/api/experiments/:id/sessions/:resultId/steps/:seq",
+	ExperimentSessionResume: "/api/experiments/:id/sessions/:resultId/resumes",
+	ExperimentSessionComplete: "/api/experiments/:id/sessions/:resultId/complete",
 } as const;
 
 export type Endpoint = (typeof Endpoints)[keyof typeof Endpoints];

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { snapshotViewport, type ViewportSnapshot } from "@/utils/gazeContext";
 
 interface ValidationTracker {
 	getCurrentPrediction: () => Promise<{ x: number; y: number; t: number } | null>;
@@ -21,6 +22,9 @@ interface ValidationTrialProps {
 		raw_gaze: { x: number; y: number }[][];
 		percent_in_roi: number[];
 		average_offset: { x: number; y: number }[];
+		/** Target centre in CSS pixels, in the order of `raw_gaze`. */
+		target_px: { x: number; y: number }[];
+		viewport: ViewportSnapshot;
 	}) => void;
 }
 
@@ -58,6 +62,7 @@ const ValidationTrial: React.FC<ValidationTrialProps> = ({
 		const rawGaze: { x: number; y: number }[][] = [];
 		const percentInRoi: number[] = [];
 		const averageOffset: { x: number; y: number }[] = [];
+		const targetPx: { x: number; y: number }[] = [];
 
 		const runValidation = async () => {
 			webgazer.resume();
@@ -122,6 +127,7 @@ const ValidationTrial: React.FC<ValidationTrialProps> = ({
 
 				// Calculate metrics for this point
 				rawGaze.push(pointGaze);
+				targetPx.push({ x: targetX, y: targetY });
 
 				const inRoi = pointGaze.filter((g) => {
 					const dist = Math.sqrt(
@@ -149,6 +155,8 @@ const ValidationTrial: React.FC<ValidationTrialProps> = ({
 				raw_gaze: rawGaze,
 				percent_in_roi: percentInRoi,
 				average_offset: averageOffset,
+				target_px: targetPx,
+				viewport: snapshotViewport(),
 			});
 		};
 

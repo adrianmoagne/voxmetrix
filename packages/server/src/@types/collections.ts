@@ -6,4 +6,5 @@ export enum Collections {
 	Experiment = "Experiment",
 	Project = "Project",
 	Result = "Result",
+	GazeCapture = "GazeCapture",
 }

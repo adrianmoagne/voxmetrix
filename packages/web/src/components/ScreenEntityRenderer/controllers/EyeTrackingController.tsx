@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useEyeTrackingSession } from "@/components/StepRunner/EyeTrackingSessionContext";
+import { GazeContextRecorder, measureTargetBoundingBoxes } from "@/utils/gazeContext";
 import { useScreenRuntime } from "../ScreenRuntimeContext";
 
 interface EyeTrackingControllerProps {
@@ -25,8 +26,12 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 		setCompletionExtras,
 		finalizeAdvance,
 	} = useScreenRuntime();
-	const { isTracking, startCapture, stopCapture, finishCapture } = useEyeTrackingSession();
+	const { isTracking, calibrationIndex, startCapture, stopCapture, finishCapture } =
+		useEyeTrackingSession();
 	const trackingRef = useRef(false);
+	const contextRecorderRef = useRef<GazeContextRecorder | null>(null);
+	const calibrationIndexRef = useRef(calibrationIndex);
+	calibrationIndexRef.current = calibrationIndex;
 	const startingRef = useRef(false);
 	const finishingRef = useRef<Promise<void> | null>(null);
 	const finalizeAdvanceRef = useRef(finalizeAdvance);
@@ -41,30 +46,17 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 		() => (targets === "all-trackable" ? trackableEntityUids : targets.entityUids),
 		[targets, trackableEntityUids]
 	);
+	// Read at capture start without making the start effect depend on (and cancel over) it.
+	const targetEntityUidsRef = useRef(targetEntityUids);
+	targetEntityUidsRef.current = targetEntityUids;
 
 	const stopAndStoreCapture = useCallback((): Promise<void> => {
 		if (!trackingRef.current) return finishingRef.current ?? Promise.resolve();
 		trackingRef.current = false;
 
-		const targetBoundingBoxes = targetEntityUids
-			.map((entityUid) => {
-				const element = document.querySelector<HTMLElement>(`[data-entity-uid="${entityUid}"]`);
-				if (!element) return null;
-
-				const rect = element.getBoundingClientRect();
-				return {
-					entityUid,
-					boundingBox: {
-						left: rect.left,
-						right: rect.right,
-						top: rect.top,
-						bottom: rect.bottom,
-						width: rect.width,
-						height: rect.height,
-					},
-				};
-			})
-			.filter(Boolean);
+		const targetBoundingBoxes = measureTargetBoundingBoxes(targetEntityUids);
+		const contextRecorder = contextRecorderRef.current;
+		contextRecorderRef.current = null;
 
 		const finishing: Promise<void> = finishCapture()
 			.then(({ samples: gazeData, capture: gazeCapture }) => {
@@ -72,10 +64,13 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 					gazeData,
 					gazeCapture,
 					targetBoundingBoxes,
+					// Stopped after the drain, so it covers every frame that was analyzed.
+					gazeContext: contextRecorder?.stop() ?? undefined,
 				});
 			})
 			.catch(() => undefined)
 			.finally(() => {
+				contextRecorder?.stop();
 				if (finishingRef.current === finishing) finishingRef.current = null;
 			});
 		finishingRef.current = finishing;
@@ -111,6 +106,12 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 					}
 					return;
 				}
+				const contextRecorder = new GazeContextRecorder(
+					targetEntityUidsRef.current,
+					calibrationIndexRef.current
+				);
+				contextRecorder.start();
+				contextRecorderRef.current = contextRecorder;
 				trackingRef.current = true;
 			})
 			.catch(() => {
@@ -175,6 +176,8 @@ const EyeTrackingController: React.FC<EyeTrackingControllerProps> = ({
 		return () => {
 			// Stopping resolves a pending drain; the advance waiting on it must not run.
 			mountedRef.current = false;
+			contextRecorderRef.current?.stop();
+			contextRecorderRef.current = null;
 			if (trackingRef.current || finishingRef.current) {
 				stopCapture();
 				trackingRef.current = false;

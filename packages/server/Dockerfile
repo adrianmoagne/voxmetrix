@@ -1,9 +1,10 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
-COPY package.json ./
+# The lockfile pins every dependency, so each deploy installs the same versions.
+COPY package.json package-lock.json ./
 COPY packages/server/package.json packages/server/package.json
 COPY packages/web/package.json packages/web/package.json
-RUN npm install
+RUN npm ci
 
 FROM node:22-alpine AS build
 WORKDIR /app

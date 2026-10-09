@@ -41,11 +41,12 @@ export const getLateralCounterbalanceConfig = (
 
 export const applyLateralCounterbalance = (
 	row: SpreadsheetRow,
-	config: LateralCounterbalanceConfig
+	config: LateralCounterbalanceConfig,
+	random: () => number = Math.random
 ): { row: SpreadsheetRow; presentation: LateralCounterbalancePresentation } => {
 	const valueA = row.values[config.columnA] ?? "";
 	const valueB = row.values[config.columnB] ?? "";
-	const swapped = Math.random() < 0.5;
+	const swapped = random() < 0.5;
 	const presentedLeft = swapped ? valueB : valueA;
 	const presentedRight = swapped ? valueA : valueB;
 
@@ -74,12 +75,13 @@ export const applyLateralCounterbalance = (
 
 export const applyRowPresentationForStep = (
 	row: SpreadsheetRow,
-	step: ScreenEntity
+	step: ScreenEntity,
+	random: () => number = Math.random
 ): { row: SpreadsheetRow; presentation?: LateralCounterbalancePresentation } => {
 	const config = getLateralCounterbalanceConfig(step);
 	if (!config) {
 		return { row };
 	}
 
-	return applyLateralCounterbalance(row, config);
+	return applyLateralCounterbalance(row, config, random);
 };

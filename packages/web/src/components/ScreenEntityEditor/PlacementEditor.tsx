@@ -79,6 +79,17 @@ const PlacementEditor: React.FC<PlacementEditorProps> = ({
 							<option value="center">Center</option>
 							<option value="bottom">Bottom</option>
 						</S.FieldSelect>
+						<S.FieldHint>Applies to every entity in this cell.</S.FieldHint>
+					</div>
+					<div>
+						<S.PropertyLabel>Space above (px)</S.PropertyLabel>
+						<S.FieldInput
+							type="number"
+							min={0}
+							value={placement.spaceBefore ?? 0}
+							onChange={(e) => onChange({ spaceBefore: Math.max(0, Number(e.target.value) || 0) })}
+							style={{ width: 60 }}
+						/>
 					</div>
 				</div>
 			</div>

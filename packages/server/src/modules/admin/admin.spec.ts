@@ -27,6 +27,14 @@ describe("Auth & Admin routes", () => {
 	});
 
 	describe(`POST ${Endpoints.Register}`, () => {
+		beforeEach(() => {
+			process.env.ALLOW_REGISTRATION = "true";
+		});
+
+		afterEach(() => {
+			delete process.env.ALLOW_REGISTRATION;
+		});
+
 		it("registers a new admin", async () => {
 			const res = await st(server.app).post(`/api${Endpoints.Register}`).send({
 				username: "new_user",
@@ -47,6 +55,37 @@ describe("Auth & Admin routes", () => {
 			});
 
 			expect(res.statusCode).toBe(409);
+		});
+
+		it("is closed once an account exists", async () => {
+			delete process.env.ALLOW_REGISTRATION;
+			const res = await st(server.app).post(`/api${Endpoints.Register}`).send({
+				username: "late_user",
+				password: "anotherpassword",
+				name: "Late",
+				mail: "late_user@example.com",
+			});
+
+			expect(res.statusCode).toBe(403);
+			expect(await AdminModel.exists({ mail: "late_user@example.com" })).toBeNull();
+		});
+
+		it("lets the first account register without the setting", async () => {
+			delete process.env.ALLOW_REGISTRATION;
+			const existing = await AdminModel.find({}).lean();
+			await AdminModel.deleteMany({});
+			try {
+				const res = await st(server.app).post(`/api${Endpoints.Register}`).send({
+					username: "first_user",
+					password: "anotherpassword",
+					name: "First",
+					mail: "first_user@example.com",
+				});
+				expect(res.statusCode).toBe(201);
+			} finally {
+				await AdminModel.deleteMany({});
+				await AdminModel.collection.insertMany(existing);
+			}
 		});
 	});
 

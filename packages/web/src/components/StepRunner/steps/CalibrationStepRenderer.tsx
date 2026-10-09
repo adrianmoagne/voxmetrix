@@ -6,6 +6,7 @@ import { defaultCalibrationConfig } from "@/@types/screen.model";
 import CalibrationTrial from "@/components/trials/CalibrationTrial";
 import { useEyeTrackingSession } from "../EyeTrackingSessionContext";
 import { buildStepResult } from "../buildStepResult";
+import { snapshotViewport } from "@/utils/gazeContext";
 
 type CalibrationStepEntity = BaseEntity<
 	"CalibrationStep",
@@ -26,7 +27,7 @@ const CalibrationStepRenderer: React.FC<CalibrationStepRendererProps> = ({
 	// const _preset = step.props.preset ? resolveBound(step.props.preset, row) : undefined;
 	const config = defaultCalibrationConfig; // TODO: resolve preset to config
 	const eyeTracking = useEyeTrackingSession();
-	const startedAtRef = useRef(Date.now());
+	const startedAtRef = useRef(performance.now());
 
 	useEffect(() => {
 		if (!eyeTracking.isReady) {
@@ -82,14 +83,16 @@ const CalibrationStepRenderer: React.FC<CalibrationStepRendererProps> = ({
 			repetitionsPerPoint={config.repetitionsPerPoint}
 			webgazer={eyeTracking}
 			onComplete={(result) => {
-				eyeTracking.completeCalibration(result);
+				const calibrationIndex = eyeTracking.completeCalibration(result);
 				onComplete(
 					buildStepResult({
 						stepUid: step.uid,
 						row,
 						startedAt: startedAtRef.current,
 						advanceReason: "continue-click",
-						responses: { calibration: result },
+						responses: {
+							calibration: { ...result, calibrationIndex, viewport: snapshotViewport() },
+						},
 					})
 				);
 			}}

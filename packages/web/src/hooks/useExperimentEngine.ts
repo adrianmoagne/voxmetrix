@@ -49,13 +49,19 @@ export function definitionNeedsEyeTracking(definition: ExperimentDefinition): bo
 
 export interface ExecutionStep {
 	index: number;
+	/** Position in the queue as first built; unset for steps inserted later (recalibration). */
+	planIndex?: number;
 	step: StepEntity;
 	row: SpreadsheetRow;
 	presentation?: LateralCounterbalancePresentation;
 	shuffle?: StimulusShufflePresentation;
 }
 
-function shuffleRows(rows: SpreadsheetRow[], mode: string | undefined): SpreadsheetRow[] {
+function shuffleRows(
+	rows: SpreadsheetRow[],
+	mode: string | undefined,
+	random: () => number
+): SpreadsheetRow[] {
 	if (!mode || mode === "none") return rows;
 
 	const result = [...rows];
@@ -73,7 +79,7 @@ function shuffleRows(rows: SpreadsheetRow[], mode: string | undefined): Spreadsh
 	// Fisher-Yates shuffle within each group
 	for (const indices of groups.values()) {
 		for (let i = indices.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
+			const j = Math.floor(random() * (i + 1));
 			const a = indices[i];
 			const b = indices[j];
 			[result[a], result[b]] = [result[b], result[a]];
@@ -106,10 +112,17 @@ function filterRowsByCondition(
 	});
 }
 
+export interface BuildExecutionQueueOptions {
+	participantCondition?: string;
+	/** Source of every random choice; a seeded one makes the queue reproducible. */
+	random?: () => number;
+}
+
 export function buildExecutionQueue(
 	definition: ExperimentDefinition,
-	options: { participantCondition?: string } = {}
+	options: BuildExecutionQueueOptions = {}
 ): ExecutionStep[] {
+	const random = options.random ?? Math.random;
 	const blockMap = new Map(definition.blocks.map((b) => [b.uid, b]));
 	const assignmentEnabled = definition.participantAssignment?.enabled === true;
 	const filteredRows = filterRowsByCondition(
@@ -117,7 +130,7 @@ export function buildExecutionQueue(
 		options.participantCondition,
 		assignmentEnabled
 	);
-	const rows = shuffleRows(filteredRows, definition.spreadsheet.shuffleMode);
+	const rows = shuffleRows(filteredRows, definition.spreadsheet.shuffleMode, random);
 	const queue: ExecutionStep[] = [];
 
 	let index = 0;
@@ -132,11 +145,17 @@ export function buildExecutionQueue(
 			if (step.kind === "Screen") {
 				const { row: presentationRow, presentation } = applyRowPresentationForStep(
 					row,
-					step
+					step,
+					random
 				);
-				const { screen: trialStep, shuffle } = applyStimulusShuffle(step, presentationRow);
+				const { screen: trialStep, shuffle } = applyStimulusShuffle(
+					step,
+					presentationRow,
+					random
+				);
 				queue.push({
-					index: index++,
+					index,
+					planIndex: index++,
 					step: trialStep,
 					row: presentationRow,
 					presentation,
@@ -145,18 +164,18 @@ export function buildExecutionQueue(
 				continue;
 			}
 
-			queue.push({ index: index++, step, row });
+			queue.push({ index, planIndex: index++, step, row });
 		}
 	}
 
 	return queue;
 }
 
-function reindexQueue(steps: ExecutionStep[]): ExecutionStep[] {
+export function reindexQueue(steps: ExecutionStep[]): ExecutionStep[] {
 	return steps.map((entry, index) => ({ ...entry, index }));
 }
 
-function buildRecalibrationSteps(row: SpreadsheetRow): ExecutionStep[] {
+export function buildRecalibrationSteps(row: SpreadsheetRow): ExecutionStep[] {
 	const timestamp = Date.now();
 	const steps: StepEntity[] = [
 		{
@@ -180,6 +199,31 @@ function buildRecalibrationSteps(row: SpreadsheetRow): ExecutionStep[] {
 	}));
 }
 
+/**
+ * Queue for a session resumed at `resumeIndex`. A reload loses the camera calibration,
+ * so one is inserted before the resumed step unless the next eye-tracking step is itself
+ * a calibration.
+ */
+export function withResumeRecalibration(
+	definition: ExperimentDefinition,
+	queue: ExecutionStep[],
+	resumeIndex: number
+): ExecutionStep[] {
+	const resumeStep = queue[resumeIndex];
+	if (!resumeStep || !definitionNeedsEyeTracking(definition)) return queue;
+
+	const nextEyeTrackingStep = queue
+		.slice(resumeIndex)
+		.find((entry) => stepNeedsEyeTracking(entry.step));
+	if (!nextEyeTrackingStep || nextEyeTrackingStep.step.kind === "CalibrationStep") return queue;
+
+	return reindexQueue([
+		...queue.slice(0, resumeIndex),
+		...buildRecalibrationSteps(resumeStep.row),
+		...queue.slice(resumeIndex),
+	]);
+}
+
 // --- Engine hook ---
 
 export interface ExperimentEngineReturn {
@@ -197,19 +241,31 @@ export interface ExperimentEngineReturn {
 interface UseExperimentEngineOptions {
 	definition: ExperimentDefinition;
 	participantCondition?: string;
+	/** Prebuilt queue (e.g. from a session seed); built from the definition otherwise. */
+	initialQueue?: ExecutionStep[];
+	/** Queue index to start at, for a resumed session. */
+	startIndex?: number;
+	/** Called once per completed step, in order, as soon as it completes. */
+	onStepComplete?: (data: ScreenCompletionData) => void;
+	/** Called after the last step with the steps completed in this run. */
 	onFinish?: (results: ScreenCompletionData[]) => void;
 }
 
 export function useExperimentEngine({
 	definition,
 	participantCondition,
+	initialQueue,
+	startIndex = 0,
+	onStepComplete,
 	onFinish,
 }: UseExperimentEngineOptions): ExperimentEngineReturn {
-	const [queue, setQueue] = useState(() =>
-		buildExecutionQueue(definition, { participantCondition })
+	const [queue, setQueue] = useState(
+		() => initialQueue ?? buildExecutionQueue(definition, { participantCondition })
 	);
-	const [currentIndex, setCurrentIndex] = useState(0);
+	const [currentIndex, setCurrentIndex] = useState(startIndex);
+	const currentIndexRef = useRef(startIndex);
 	const [results, setResults] = useState<ScreenCompletionData[]>([]);
+	const resultsRef = useRef<ScreenCompletionData[]>([]);
 	const [isComplete, setIsComplete] = useState(false);
 	const [needsRecalibration, setNeedsRecalibration] = useState(false);
 	const pendingValidationResultRef = useRef<ScreenCompletionData | null>(null);
@@ -217,6 +273,8 @@ export function useExperimentEngine({
 	queueLengthRef.current = queue.length;
 	const onFinishRef = useRef(onFinish);
 	onFinishRef.current = onFinish;
+	const onStepCompleteRef = useRef(onStepComplete);
+	onStepCompleteRef.current = onStepComplete;
 
 	const currentStep = currentIndex < queue.length ? queue[currentIndex] : null;
 	const audioProgress = useMemo(
@@ -224,20 +282,24 @@ export function useExperimentEngine({
 		[queue, currentIndex]
 	);
 
+	// Callbacks run here, not inside state updaters, so they fire exactly once per step.
 	const advanceStep = useCallback(
 		(data: ScreenCompletionData, completionQueueLength?: number) => {
 			const targetLength = completionQueueLength ?? queueLengthRef.current;
+			const nextIndex = currentIndexRef.current + 1;
+			currentIndexRef.current = nextIndex;
 
-			setResults((prev) => {
-				const newResults = [...prev, data];
-				if (newResults.length >= targetLength) {
-					setIsComplete(true);
-					onFinishRef.current?.(newResults);
-				}
-				return newResults;
-			});
+			const newResults = [...resultsRef.current, data];
+			resultsRef.current = newResults;
+			setResults(newResults);
+			onStepCompleteRef.current?.(data);
 
-			setCurrentIndex((prev) => prev + 1);
+			if (nextIndex >= targetLength) {
+				setIsComplete(true);
+				onFinishRef.current?.(newResults);
+			}
+
+			setCurrentIndex(nextIndex);
 		},
 		[]
 	);
@@ -248,6 +310,7 @@ export function useExperimentEngine({
 			const step = executionStep?.step;
 			const mergedData: ScreenCompletionData = {
 				...data,
+				planIndex: executionStep?.planIndex,
 				presentation: data.presentation ?? executionStep?.presentation,
 				shuffle: data.shuffle ?? executionStep?.shuffle,
 			};

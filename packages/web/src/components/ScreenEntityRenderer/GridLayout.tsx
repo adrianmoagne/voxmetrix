@@ -1,38 +1,5 @@
-import type { GridType, ScreenChildEntity, ItemPosition } from "@/@types/screen.model";
-
-const getGridSize = (type: GridType): number => {
-	switch (type) {
-		case "1x1":
-			return 1;
-		case "2x2":
-			return 2;
-		case "3x3":
-			return 3;
-		default:
-			return 3;
-	}
-};
-
-const getRowFromArea = (area: string): number => {
-	switch (area) {
-		case "heading":
-			return 1;
-		case "content":
-			return 2;
-		case "footer":
-			return 3;
-		default:
-			return 2;
-	}
-};
-
-const getColFromPosition = (position: ItemPosition): number => {
-	if (position.endsWith("L") || position === "CL" || position === "UL" || position === "BL")
-		return 1;
-	if (position.endsWith("R") || position === "CR" || position === "UR" || position === "BR")
-		return 3;
-	return 2; // C, UC, BC
-};
+import type { GridType, ScreenChildEntity, Placement } from "@/@types/screen.model";
+import { getCellPosition, getGridSize } from "./gridCells";
 
 const getJustifyContent = (h?: string): string => {
 	switch (h) {
@@ -80,25 +47,19 @@ export interface GridCell {
 }
 
 export function buildGridCells(children: ScreenChildEntity[], gridType: GridType): GridCell[] {
-	const gridSize = getGridSize(gridType);
 	const cellMap = new Map<string, GridCell>();
 
 	for (const child of children) {
-		const row = Math.min(getRowFromArea(child.placement.area), gridSize);
-		const col = Math.min(getColFromPosition(child.placement.position), gridSize);
-		const key = `${row}-${col}`;
+		const { row, col, key } = getCellPosition(child.placement, gridType);
 
 		if (!cellMap.has(key)) {
-			cellMap.set(key, {
-				key,
-				row,
-				col,
-				children: [],
-				hAlign: child.placement.hAlign,
-				vAlign: child.placement.vAlign,
-			});
+			cellMap.set(key, { key, row, col, children: [] });
 		}
-		cellMap.get(key)!.children.push(child);
+		const cell = cellMap.get(key)!;
+		cell.children.push(child);
+		// The cell takes the first alignment any of its entities sets.
+		cell.hAlign ??= child.placement.hAlign;
+		cell.vAlign ??= child.placement.vAlign;
 	}
 
 	// Sort children within each cell by order
@@ -108,6 +69,16 @@ export function buildGridCells(children: ScreenChildEntity[], gridType: GridType
 
 	return Array.from(cellMap.values());
 }
+
+/** Per-entity horizontal alignment and extra space; undefined when neither is set. */
+const getChildWrapperStyle = (placement: Placement): React.CSSProperties | undefined => {
+	const spaceBefore = placement.spaceBefore ?? 0;
+	if (!placement.hAlign && spaceBefore <= 0) return undefined;
+	return {
+		alignSelf: placement.hAlign ? getJustifyContent(placement.hAlign) : undefined,
+		marginTop: spaceBefore > 0 ? spaceBefore : undefined,
+	};
+};
 
 interface GridLayoutProps {
 	gridType: GridType;
@@ -147,7 +118,9 @@ const GridLayout: React.FC<GridLayoutProps> = ({ gridType, cells, renderChild })
 					}}
 				>
 					{cell.children.map((child) => (
-						<div key={child.uid}>{renderChild(child)}</div>
+						<div key={child.uid} style={getChildWrapperStyle(child.placement)}>
+							{renderChild(child)}
+						</div>
 					))}
 				</div>
 			))}

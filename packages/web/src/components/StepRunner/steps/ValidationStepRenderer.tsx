@@ -4,6 +4,7 @@ import type { BaseEntity, Bound, SpreadsheetRow, ScreenCompletionData } from "@/
 import { defaultCalibrationConfig } from "@/@types/screen.model";
 // import { resolveBound } from "@/components/ScreenEntityRenderer/resolveBound";
 import ValidationTrial from "@/components/trials/ValidationTrial";
+import { PREDICTION_FILTER } from "@/hooks/useWebGazer";
 import { useEyeTrackingSession } from "../EyeTrackingSessionContext";
 import { buildStepResult } from "../buildStepResult";
 
@@ -26,7 +27,7 @@ const ValidationStepRenderer: React.FC<ValidationStepRendererProps> = ({
 	// const _preset = step.props.preset ? resolveBound(step.props.preset, row) : undefined;
 	const config = defaultCalibrationConfig; // TODO: resolve preset to config
 	const eyeTracking = useEyeTrackingSession();
-	const startedAtRef = useRef(Date.now());
+	const startedAtRef = useRef(performance.now());
 
 	useEffect(() => {
 		if (!eyeTracking.isReady) {
@@ -88,7 +89,13 @@ const ValidationStepRenderer: React.FC<ValidationStepRendererProps> = ({
 						row,
 						advanceReason: "continue-click",
 						startedAt: startedAtRef.current,
-						responses: { validation: result },
+						responses: {
+							validation: {
+								...result,
+								calibrationIndex: eyeTracking.calibrationIndex,
+								gazeFilter: PREDICTION_FILTER,
+							},
+						},
 					})
 				);
 			}}

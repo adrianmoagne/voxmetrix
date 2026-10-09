@@ -65,10 +65,16 @@ const clearWebGazerData = (webgazer: WebGazer): void => {
 	}
 };
 
+/**
+ * Predictions are never smoothed, so validation accuracy is measured on the same
+ * raw output the trials record (`GazeCaptureMeta.gazeFilter`).
+ */
+export const PREDICTION_FILTER = "none" as const;
+
 const configureWebGazer = (webgazer: WebGazer): void => {
 	clearWebGazerData(webgazer);
 	webgazer.setRegression("ridge");
-	webgazer.applyKalmanFilter(true);
+	webgazer.applyKalmanFilter(false);
 };
 
 export const useWebGazer = (options?: UseWebGazerOptions): UseWebGazerReturn => {

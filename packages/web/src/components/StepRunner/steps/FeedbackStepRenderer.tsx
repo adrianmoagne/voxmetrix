@@ -22,7 +22,7 @@ const FeedbackStepRenderer: React.FC<FeedbackStepRendererProps> = ({
 	// const _questionSetId = step.props.questionSetId
 	// 	? resolveBound(step.props.questionSetId, row)
 	// 	: undefined;
-	const startedAtRef = useRef(Date.now());
+	const startedAtRef = useRef(performance.now());
 
 	// TODO: resolve questionSetId to actual questions
 	const questions: { prompt: string; name: string; labels: string[] }[] = [];

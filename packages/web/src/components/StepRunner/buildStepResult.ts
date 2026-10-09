@@ -20,7 +20,7 @@ export const buildStepResult = ({
 		rowUid: row.uid,
 		advanceReason,
 		startedAt,
-		completedAt: Date.now(),
+		completedAt: performance.now(),
 		responses,
 	};
 };

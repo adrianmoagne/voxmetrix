@@ -103,6 +103,13 @@ const fetchResults = async (
 	return res;
 };
 
+// Authenticated endpoint: every result with its gaze data, as gzipped JSON
+const exportResults = async (experimentId: string): Promise<AxiosResponse<Blob>> => {
+	const url = Endpoints.ExperimentExportResults.replace(":id", experimentId);
+	const res = await api.get(url, { responseType: "blob" });
+	return res;
+};
+
 export interface ExperimentResult {
 	_id: string;
 	experiment: string;
@@ -114,6 +121,7 @@ export interface ExperimentResult {
 		userAgent?: string;
 		windowWidth?: number;
 		windowHeight?: number;
+		timeOrigin?: number;
 	};
 	schemaVersion?: number;
 	steps?: ExperimentStep[];
@@ -180,4 +188,5 @@ export const ExperimentService = {
 	fetchExperimentForParticipant,
 	submitResult,
 	fetchResults,
+	exportResults,
 };

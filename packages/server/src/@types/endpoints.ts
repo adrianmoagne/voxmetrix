@@ -44,6 +44,13 @@ export enum Endpoints {
 	// Results endpoints
 	ExperimentSubmitResult = "/experiments/:id/results",
 	ExperimentGetResults = "/experiments/:id/results",
+	ExperimentExportResults = "/experiments/:id/results/export",
+	// Participant sessions: results saved step by step
+	ExperimentSessionStart = "/experiments/:id/sessions",
+	ExperimentSessionGet = "/experiments/:id/sessions/:resultId",
+	ExperimentSessionStep = "/experiments/:id/sessions/:resultId/steps/:seq",
+	ExperimentSessionResume = "/experiments/:id/sessions/:resultId/resumes",
+	ExperimentSessionComplete = "/experiments/:id/sessions/:resultId/complete",
 
 	//Project
 	ProjectCreate = "/projects",

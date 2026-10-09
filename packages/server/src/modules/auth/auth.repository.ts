@@ -24,6 +24,13 @@ const clearAuthCookieOptions = {
 	signed: true,
 };
 
+/**
+ * Sign-up only creates the first account (the researcher's); after that it is closed
+ * unless ALLOW_REGISTRATION=true.
+ */
+const isRegistrationOpen = async (): Promise<boolean> =>
+	process.env.ALLOW_REGISTRATION === "true" || !(await AdminModel.exists({}));
+
 class AuthRepository {
 	async login(req: Request, res: Response) {
 		try {
@@ -77,6 +84,10 @@ class AuthRepository {
 				phone,
 				description,
 			} = req.body;
+
+			if (!(await isRegistrationOpen())) {
+				throw new HttpException(403, "REGISTRATION_CLOSED");
+			}
 
 			const existingUser = await AdminModel.findOne({ mail });
 			if (existingUser) {

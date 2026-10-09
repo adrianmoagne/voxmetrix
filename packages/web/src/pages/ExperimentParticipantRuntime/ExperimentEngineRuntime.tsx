@@ -1,15 +1,32 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { isAxiosError } from "axios";
 import { Button, Spinner, Typography } from "@leux/ui";
 import type { ExperimentDefinition, ScreenCompletionData } from "@/@types/screen.model";
 import {
+	buildExecutionQueue,
 	definitionNeedsEyeTracking,
 	stepNeedsEyeTracking,
 	useExperimentEngine,
+	withResumeRecalibration,
+	type ExecutionStep,
 	type ExperimentEngineReturn,
 } from "@/hooks/useExperimentEngine";
 import { StepRunner } from "@/components/StepRunner";
 import CameraInitGate from "@/components/StepRunner/CameraInitGate";
 import { ExperimentService } from "@/api/services";
+import {
+	SessionService,
+	currentBrowserInfo,
+	type SessionRef,
+	type SessionState,
+} from "@/api/services/SessionService";
+import {
+	ResultSessionRecorder,
+	clearSessionPointer,
+	readSessionPointer,
+	writeSessionPointer,
+} from "@/utils/resultSessionRecorder";
+import { createSeededRandom, randomSeed } from "@/utils/seededRandom";
 import {
 	isParticipantAssignmentEnabled,
 	resolveAssignmentGroups,
@@ -48,8 +65,24 @@ interface ExperimentEngineExperimentViewProps {
 interface ExperimentSessionProps {
 	definition: ExperimentDefinition;
 	participantCondition?: string;
+	runPlan: RunPlan | null;
+	onStepComplete: (data: ScreenCompletionData) => void;
 	onFinish: (results: ScreenCompletionData[]) => void;
 }
+
+/** Steps of a participant session and where to start (after the saved ones when resuming). */
+interface RunPlan {
+	queue: ExecutionStep[];
+	startIndex: number;
+}
+
+interface ResumeInfo {
+	session: SessionRef;
+	state: SessionState;
+}
+
+/** How long the final screen waits for the last responses to reach the server. */
+const SAVE_TIMEOUT_MS = 60_000;
 
 const ExperimentEngineExperimentView: React.FC<ExperimentEngineExperimentViewProps> = ({
 	engine,
@@ -110,12 +143,17 @@ const ExperimentEngineExperimentView: React.FC<ExperimentEngineExperimentViewPro
 const ExperimentSession: React.FC<ExperimentSessionProps> = ({
 	definition,
 	participantCondition,
+	runPlan,
+	onStepComplete,
 	onFinish,
 }) => {
 	const [cameraSetupComplete, setCameraSetupComplete] = useState(false);
 	const engine = useExperimentEngine({
 		definition,
 		participantCondition,
+		initialQueue: runPlan?.queue,
+		startIndex: runPlan?.startIndex,
+		onStepComplete,
 		onFinish,
 	});
 
@@ -143,67 +181,164 @@ const ExperimentEngineRuntime: React.FC<ExperimentEngineRuntimeProps> = ({
 	isPreview = false,
 	onExit,
 }) => {
-	type Step = "welcome" | "form" | "experiment" | "completed";
+	type Step = "loading" | "resume" | "welcome" | "form" | "experiment" | "saving" | "completed";
 
 	const assignmentEnabled = isParticipantAssignmentEnabled(definition);
 	const assignmentGroups = resolveAssignmentGroups(definition);
+	const experimentNeedsEyeTracking = definitionNeedsEyeTracking(definition);
 
-	const [step, setStep] = useState<Step>("welcome");
+	const [step, setStep] = useState<Step>(isPreview ? "welcome" : "loading");
 	const [participant, setParticipant] = useState({ name: "", email: "" });
 	const [previewCondition, setPreviewCondition] = useState(assignmentGroups[0] ?? "");
 	const [participantCondition, setParticipantCondition] = useState<string | undefined>();
 	const [sessionStarted, setSessionStarted] = useState(false);
-	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [runPlan, setRunPlan] = useState<RunPlan | null>(null);
+	const [resumeInfo, setResumeInfo] = useState<ResumeInfo | null>(null);
 	const [isStarting, setIsStarting] = useState(false);
+	const [saveError, setSaveError] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [previewResults, setPreviewResults] = useState<ScreenCompletionData[]>([]);
 
+	const recorderRef = useRef<ResultSessionRecorder | null>(null);
+	/** Index in the result's `steps` the next completed step is saved at. */
+	const nextSeqRef = useRef(0);
+	/** Plan index of the step interrupted before a resume; flagged when it completes again. */
+	const interruptedPlanIndexRef = useRef<number | null>(null);
+
+	// A session this browser left unfinished is offered for resuming.
+	useEffect(() => {
+		if (isPreview) return;
+		const session = readSessionPointer(experimentId);
+		if (!session) {
+			setStep("welcome");
+			return;
+		}
+
+		let cancelled = false;
+		SessionService.getSession(session)
+			.then((response) => {
+				if (cancelled) return;
+				const state = response.data.data;
+				if (state.status === "in_progress") {
+					setResumeInfo({ session, state });
+					setStep("resume");
+					return;
+				}
+				clearSessionPointer(experimentId);
+				setStep("welcome");
+			})
+			.catch((err) => {
+				if (cancelled) return;
+				if (isAxiosError(err) && err.response?.status === 404) {
+					clearSessionPointer(experimentId);
+					setStep("welcome");
+					return;
+				}
+				setError("Could not connect to the server. Check your internet connection and reload the page.");
+			});
+
+		return () => {
+			cancelled = true;
+		};
+	}, [experimentId, isPreview]);
+
+	// Leaving mid-session would interrupt it; the browser asks the participant to confirm.
+	useEffect(() => {
+		if (isPreview || (step !== "experiment" && step !== "saving")) return;
+		const warn = (event: BeforeUnloadEvent) => event.preventDefault();
+		window.addEventListener("beforeunload", warn);
+		return () => window.removeEventListener("beforeunload", warn);
+	}, [isPreview, step]);
+
+	const finishSession = useCallback(async () => {
+		const recorder = recorderRef.current;
+		if (!recorder) return;
+
+		setStep("saving");
+		setSaveError(null);
+		try {
+			await recorder.complete(nextSeqRef.current, SAVE_TIMEOUT_MS);
+			clearSessionPointer(experimentId);
+			setStep("completed");
+		} catch {
+			setSaveError("Some of your responses have not reached the server yet.");
+		}
+	}, [experimentId]);
+
+	const handleStepComplete = useCallback((data: ScreenCompletionData) => {
+		const recorder = recorderRef.current;
+		if (!recorder) return;
+
+		const resumed =
+			data.planIndex !== undefined && data.planIndex === interruptedPlanIndexRef.current;
+		if (resumed) interruptedPlanIndexRef.current = null;
+
+		recorder.save(nextSeqRef.current++, {
+			...data,
+			timeOrigin: performance.timeOrigin,
+			...(resumed ? { resumedAfterInterruption: true } : {}),
+		});
+	}, []);
+
 	const handleFinish = useCallback(
-		async (results: ScreenCompletionData[]) => {
+		(results: ScreenCompletionData[]) => {
 			if (isPreview) {
 				setPreviewResults(results);
 				setStep("completed");
 				return;
 			}
-
-			setIsSubmitting(true);
-			try {
-				await ExperimentService.submitResult(experimentId, {
-					experiment_id: experimentId,
-					participant,
-					participantCondition,
-					timestamp: new Date().toISOString(),
-					browser_info: {
-						userAgent: navigator.userAgent,
-						windowWidth: window.innerWidth,
-						windowHeight: window.innerHeight,
-					},
-					schema_version: 2,
-					steps: results,
-				});
-				setStep("completed");
-			} catch {
-				setError("Failed to submit results. Please contact the researcher.");
-			} finally {
-				setIsSubmitting(false);
-			}
+			void finishSession();
 		},
-		[experimentId, participant, participantCondition, isPreview]
+		[finishSession, isPreview]
 	);
 
-	const startExperiment = useCallback(async () => {
+	const downloadResponses = () => {
+		const recorder = recorderRef.current;
+		if (!recorder) return;
+		const blob = new Blob(
+			[
+				JSON.stringify(
+					{
+						experimentId,
+						resultId: recorder.session.resultId,
+						participant,
+						participantCondition,
+						steps: recorder.allSteps(),
+					},
+					null,
+					2
+				),
+			],
+			{ type: "application/json" }
+		);
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = `responses_${recorder.session.resultId}.json`;
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		URL.revokeObjectURL(url);
+	};
+
+	const resolveCondition = async (): Promise<string | undefined> => {
+		const urlCondition = new URLSearchParams(window.location.search).get("condition") ?? undefined;
+		const response = await ExperimentService.fetchExperimentForParticipant<ExperimentRunResponse>(
+			experimentId,
+			{ email: participant.email, condition: urlCondition }
+		);
+		const runData = response.data.data ?? response.data;
+		return runData.participantCondition;
+	};
+
+	const startExperiment = async () => {
 		setError(null);
 
-		if (!assignmentEnabled) {
-			setParticipantCondition(undefined);
-			setSessionStarted(true);
-			setStep("experiment");
-			return;
-		}
-
 		if (isPreview) {
-			const condition = previewCondition.trim() || assignmentGroups[0];
-			if (!condition) {
+			const condition = assignmentEnabled
+				? previewCondition.trim() || assignmentGroups[0]
+				: undefined;
+			if (assignmentEnabled && !condition) {
 				setError("Select a preview condition before starting.");
 				return;
 			}
@@ -215,49 +350,119 @@ const ExperimentEngineRuntime: React.FC<ExperimentEngineRuntimeProps> = ({
 
 		setIsStarting(true);
 		try {
-			const urlParams = new URLSearchParams(window.location.search);
-			const urlCondition = urlParams.get("condition") ?? undefined;
-			const response = await ExperimentService.fetchExperimentForParticipant<ExperimentRunResponse>(
-				experimentId,
-				{
-					email: participant.email,
-					condition: urlCondition,
-				}
-			);
-			const runData = response.data.data ?? response.data;
-			const resolvedCondition = runData.participantCondition;
-
-			if (!resolvedCondition) {
+			const condition = assignmentEnabled ? await resolveCondition() : undefined;
+			if (assignmentEnabled && !condition) {
 				setError(
 					"Could not assign a participant condition. Check the experiment link and try again."
 				);
 				return;
 			}
 
-			setParticipantCondition(resolvedCondition);
+			const seed = randomSeed();
+			const queue = buildExecutionQueue(definition, {
+				participantCondition: condition,
+				random: createSeededRandom(seed),
+			});
+			const response = await SessionService.startSession(experimentId, {
+				participant,
+				participantCondition: condition,
+				browser_info: currentBrowserInfo(),
+				seed,
+				plan: queue.map((entry) => ({
+					planIndex: entry.planIndex ?? entry.index,
+					stepUid: entry.step.uid,
+					rowUid: entry.row.uid,
+				})),
+			});
+			const session = { experimentId, ...response.data.data };
+			writeSessionPointer(session);
+			recorderRef.current = new ResultSessionRecorder(session);
+			nextSeqRef.current = 0;
+			interruptedPlanIndexRef.current = null;
+
+			setParticipantCondition(condition);
+			setRunPlan({ queue, startIndex: 0 });
 			setSessionStarted(true);
 			setStep("experiment");
 		} catch (err) {
 			const message =
-				typeof err === "object" &&
-				err !== null &&
-				"response" in err &&
-				typeof (err as { response?: { data?: { message?: string } } }).response?.data
-					?.message === "string"
-					? (err as { response: { data: { message: string } } }).response.data.message
+				isAxiosError(err) && typeof err.response?.data?.message === "string"
+					? err.response.data.message
 					: "Failed to start experiment. Please contact the researcher.";
 			setError(message);
 		} finally {
 			setIsStarting(false);
 		}
-	}, [
-		assignmentEnabled,
-		assignmentGroups,
-		experimentId,
-		isPreview,
-		participant.email,
-		previewCondition,
-	]);
+	};
+
+	const resumeExperiment = async () => {
+		if (!resumeInfo) return;
+		const { session } = resumeInfo;
+
+		setIsStarting(true);
+		try {
+			// Steps this browser holds but the server lacks go first, so the resume point is right.
+			const recorder = new ResultSessionRecorder(session);
+			const before = (await SessionService.getSession(session)).data.data;
+			await recorder.restoreBackup(before.savedStepCount);
+			await recorder.whenSaved(SAVE_TIMEOUT_MS);
+			const state = (await SessionService.getSession(session)).data.data;
+
+			const queue = buildExecutionQueue(definition, {
+				participantCondition: state.participantCondition,
+				random: createSeededRandom(state.seed),
+			});
+			const planMatches =
+				queue.length === state.plan.length &&
+				queue.every(
+					(entry, index) =>
+						entry.step.uid === state.plan[index].stepUid &&
+						entry.row.uid === state.plan[index].rowUid
+				);
+			if (!planMatches) {
+				setError(
+					"This experiment has changed since your session started, so it cannot be resumed. Please contact the researcher."
+				);
+				return;
+			}
+
+			recorderRef.current = recorder;
+			nextSeqRef.current = state.savedStepCount;
+			setParticipant({ name: state.participant.name ?? "", email: state.participant.email ?? "" });
+			setParticipantCondition(state.participantCondition);
+
+			const resumeIndex = state.lastPlanIndex === null ? 0 : state.lastPlanIndex + 1;
+			if (resumeIndex >= queue.length) {
+				await finishSession();
+				return;
+			}
+
+			await SessionService.recordResume(session, {
+				fromSeq: state.savedStepCount,
+				fromPlanIndex: resumeIndex,
+				browser_info: currentBrowserInfo(),
+			});
+			interruptedPlanIndexRef.current = resumeIndex;
+			setRunPlan({
+				queue: withResumeRecalibration(definition, queue, resumeIndex),
+				startIndex: resumeIndex,
+			});
+			setSessionStarted(true);
+			setStep("experiment");
+		} catch {
+			setError(
+				"Could not resume your session. Check your internet connection and reload the page."
+			);
+		} finally {
+			setIsStarting(false);
+		}
+	};
+
+	const startAsNewParticipant = () => {
+		clearSessionPointer(experimentId);
+		setResumeInfo(null);
+		setStep("welcome");
+	};
 
 	const handleWelcomeContinue = () => {
 		if (isPreview) {
@@ -281,6 +486,68 @@ const ExperimentEngineRuntime: React.FC<ExperimentEngineRuntimeProps> = ({
 				<S.CompletionContainer>
 					<Typography variant="h3" textColor="danger">Error</Typography>
 					<Typography>{error}</Typography>
+				</S.CompletionContainer>
+			</S.Container>
+		);
+	}
+
+	if (step === "loading") {
+		return (
+			<S.Container>
+				<S.CompletionContainer>
+					<Spinner size="large" />
+				</S.CompletionContainer>
+			</S.Container>
+		);
+	}
+
+	if (step === "resume" && resumeInfo) {
+		const name = resumeInfo.state.participant.name;
+		return (
+			<S.Container>
+				<S.WelcomeContainer>
+					<Typography variant="h2">Welcome back{name ? `, ${name}` : ""}</Typography>
+					<Typography>
+						Your session was interrupted. You can continue where you left off.
+					</Typography>
+					{experimentNeedsEyeTracking && (
+						<Typography>You will set up and calibrate the camera again first.</Typography>
+					)}
+					<S.ButtonGroup>
+						<Button colorScheme="secondary" onClick={startAsNewParticipant}>
+							I am a different participant
+						</Button>
+						<Button
+							colorScheme="primary"
+							onClick={() => void resumeExperiment()}
+							state={{ disabled: isStarting }}
+						>
+							{isStarting ? "Resuming..." : "Continue"}
+						</Button>
+					</S.ButtonGroup>
+				</S.WelcomeContainer>
+			</S.Container>
+		);
+	}
+
+	if (step === "saving" && saveError) {
+		return (
+			<S.Container>
+				<S.CompletionContainer>
+					<Typography variant="h3">Your responses are not saved yet</Typography>
+					<Typography>{saveError}</Typography>
+					<Typography>
+						Check your internet connection and try again. If it keeps failing, download your
+						responses and send the file to the researcher.
+					</Typography>
+					<S.ButtonGroup>
+						<Button colorScheme="secondary" onClick={downloadResponses}>
+							Download my responses
+						</Button>
+						<Button colorScheme="primary" onClick={() => void finishSession()}>
+							Try again
+						</Button>
+					</S.ButtonGroup>
 				</S.CompletionContainer>
 			</S.Container>
 		);
@@ -412,14 +679,14 @@ const ExperimentEngineRuntime: React.FC<ExperimentEngineRuntimeProps> = ({
 		);
 	}
 
-	if (isSubmitting || isStarting) {
+	if (step === "saving" || isStarting) {
 		return (
 			<S.Container>
 				<S.CompletionContainer>
 					<Spinner size="large" />
 					<Typography variant="body-1">
-						{isSubmitting
-							? "Submitting your responses. Please do not close this window..."
+						{step === "saving"
+							? "Saving your responses. Please do not close this window..."
 							: "Preparing your session..."}
 					</Typography>
 				</S.CompletionContainer>
@@ -433,9 +700,11 @@ const ExperimentEngineRuntime: React.FC<ExperimentEngineRuntimeProps> = ({
 
 	return (
 		<ExperimentSession
-			key={participantCondition ?? "default"}
+			key={`${participantCondition ?? "default"}:${runPlan?.startIndex ?? 0}`}
 			definition={definition}
 			participantCondition={participantCondition}
+			runPlan={runPlan}
+			onStepComplete={handleStepComplete}
 			onFinish={handleFinish}
 		/>
 	);

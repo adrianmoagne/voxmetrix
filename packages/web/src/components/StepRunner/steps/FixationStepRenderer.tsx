@@ -17,7 +17,7 @@ interface FixationStepRendererProps {
 const FixationStepRenderer: React.FC<FixationStepRendererProps> = ({ step, row, onComplete }) => {
 	const durationMs = resolveBound(step.props.durationMs, row);
 	const hideCursor = step.props.hideCursor ? resolveBound(step.props.hideCursor, row) : true;
-	const startedAtRef = useRef(Date.now());
+	const startedAtRef = useRef(performance.now());
 
 	useEffect(() => {
 		const timer = setTimeout(() => {

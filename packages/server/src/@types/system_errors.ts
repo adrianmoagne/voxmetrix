@@ -4,6 +4,7 @@ export enum SystemErrors {
 	UNAUTHORIZED = "Unauthorized access",
 	EMAIL_ALREADY_EXISTS = "Email already exists",
 	USERNAME_ALREADY_EXISTS = "Username already exists",
+	REGISTRATION_CLOSED = "Registration is closed",
 
 	// Media
 	NO_FILE_UPLOADED = "No file uploaded",
@@ -26,6 +27,12 @@ export enum SystemErrors {
 	NO_GROUPS = "No participant conditions are configured for this experiment",
 	MISSING_URL_CONDITION = "This experiment requires a condition in the URL (?condition=)",
 	INVALID_URL_CONDITION = "The requested participant condition is not available for this experiment",
+
+	// Result sessions
+	SESSION_NOT_FOUND = "Session not found",
+	SESSION_COMPLETED = "Session is already completed",
+	INVALID_SESSION_DATA = "Invalid session data",
+	INVALID_STEP_DATA = "Invalid step data",
 
 	// Project
 	PROJECT_NOT_FOUND = "Project not found",
